@@ -16,8 +16,9 @@ const freelancerSteps = [
 
 export const HowItWorksPreview = () => {
   return (
-    <section className="section-padding bg-subtle-gradient">
-      <div className="container-wide mx-auto">
+    <section className="section-padding section-white relative">
+      <div className="absolute inset-0 bg-mesh" />
+      <div className="container-wide mx-auto relative">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold font-display mb-4">
@@ -32,7 +33,7 @@ export const HowItWorksPreview = () => {
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
           {/* For Clients */}
           <div className="card-elevated p-8 lg:p-10">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-action/10 text-action text-sm font-medium mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
               For Clients
             </div>
             <h3 className="text-2xl font-bold font-display mb-8">
@@ -41,8 +42,8 @@ export const HowItWorksPreview = () => {
             <div className="space-y-6">
               {clientSteps.map((step, index) => (
                 <div key={step.title} className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-lg bg-action/10 flex items-center justify-center flex-shrink-0">
-                    <step.icon className="w-5 h-5 text-action" />
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <step.icon className="w-6 h-6 text-primary" />
                   </div>
                   <div>
                     <div className="flex items-center gap-2 mb-1">
@@ -64,7 +65,7 @@ export const HowItWorksPreview = () => {
 
           {/* For Freelancers */}
           <div className="card-elevated p-8 lg:p-10">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent/10 text-accent text-sm font-medium mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
               For Freelancers
             </div>
             <h3 className="text-2xl font-bold font-display mb-8">
@@ -73,8 +74,8 @@ export const HowItWorksPreview = () => {
             <div className="space-y-6">
               {freelancerSteps.map((step, index) => (
                 <div key={step.title} className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
-                    <step.icon className="w-5 h-5 text-accent" />
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <step.icon className="w-6 h-6 text-primary" />
                   </div>
                   <div>
                     <div className="flex items-center gap-2 mb-1">

@@ -35,8 +35,11 @@ const features = [
 
 export const WhyYouLink = () => {
   return (
-    <section className="section-padding bg-background">
-      <div className="container-wide mx-auto">
+    <section className="section-padding section-white relative">
+      {/* Subtle mesh overlay */}
+      <div className="absolute inset-0 bg-mesh opacity-50" />
+      
+      <div className="container-wide mx-auto relative">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold font-display mb-4">
@@ -56,8 +59,8 @@ export const WhyYouLink = () => {
               className="card-elevated card-hover p-6 lg:p-8 group"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-5 group-hover:bg-accent/20 transition-colors">
-                <feature.icon className="w-6 h-6 text-accent" />
+              <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center mb-5 group-hover:bg-primary/15 transition-colors">
+                <feature.icon className="w-7 h-7 text-primary" />
               </div>
               <h3 className="text-xl font-semibold font-display mb-3">
                 {feature.title}
