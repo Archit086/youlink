@@ -22,6 +22,7 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          dark: "hsl(var(--primary-dark))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -79,6 +80,7 @@ export default {
         'glow': 'var(--shadow-glow)',
         'action': 'var(--shadow-action)',
         'elevated': 'var(--shadow-lg)',
+        'card': 'var(--shadow-card)',
       },
       keyframes: {
         "accordion-down": {

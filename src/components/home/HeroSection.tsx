@@ -5,16 +5,20 @@ import { ArrowRight, Shield, Users, Award } from "lucide-react";
 export const HeroSection = () => {
   return (
     <section className="relative overflow-hidden bg-subtle-gradient">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-action/10 rounded-full blur-3xl" />
+      {/* Mesh Background */}
+      <div className="absolute inset-0 bg-mesh" />
+      
+      {/* Abstract Shapes */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
+        <div className="absolute top-40 right-20 w-96 h-96 bg-primary/4 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 left-1/3 w-80 h-80 bg-primary/3 rounded-full blur-3xl" />
       </div>
 
       <div className="container-wide mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32 relative">
         <div className="max-w-4xl mx-auto text-center">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium mb-8 animate-fade-in">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-8 animate-fade-in">
             <Shield size={16} />
             <span>Supervisor-Led • Quality-Controlled • Transparent</span>
           </div>
@@ -34,13 +38,13 @@ export const HeroSection = () => {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 animate-slide-up" style={{ animationDelay: "0.2s" }}>
             <Link to="/hire">
-              <Button variant="hero" size="xl">
+              <Button variant="action" size="xl">
                 Hire a Team
                 <ArrowRight size={20} />
               </Button>
             </Link>
             <Link to="/join">
-              <Button variant="heroOutline" size="xl">
+              <Button variant="outline" size="xl" className="border-2 border-primary/20 hover:bg-primary hover:text-primary-foreground">
                 Join as Freelancer
               </Button>
             </Link>
@@ -49,8 +53,8 @@ export const HeroSection = () => {
           {/* Trust Indicators */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-12 animate-fade-in" style={{ animationDelay: "0.4s" }}>
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
-                <Users className="w-5 h-5 text-accent" />
+              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shadow-card">
+                <Users className="w-6 h-6 text-primary" />
               </div>
               <div className="text-left">
                 <p className="font-semibold text-foreground">Verified Teams</p>
@@ -58,8 +62,8 @@ export const HeroSection = () => {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-action/10 flex items-center justify-center">
-                <Shield className="w-5 h-5 text-action" />
+              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shadow-card">
+                <Shield className="w-6 h-6 text-primary" />
               </div>
               <div className="text-left">
                 <p className="font-semibold text-foreground">Legal-Backed</p>
@@ -67,8 +71,8 @@ export const HeroSection = () => {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-success/10 flex items-center justify-center">
-                <Award className="w-5 h-5 text-success" />
+              <div className="w-12 h-12 rounded-xl bg-success/10 flex items-center justify-center shadow-card">
+                <Award className="w-6 h-6 text-success" />
               </div>
               <div className="text-left">
                 <p className="font-semibold text-foreground">Fair Payouts</p>
