@@ -6,7 +6,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Send, CheckCircle, Users, Shield, Clock } from "lucide-react";
+import { Send, Users, Shield, Clock, CheckCircle } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 const serviceOptions = [
   "Creative & Design",
@@ -44,6 +45,7 @@ const benefits = [
 const Hire = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     organization: "",
@@ -67,31 +69,102 @@ const Hire = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    try {
+      // Save to database
+      const { error: dbError } = await supabase
+        .from("client_enquiries")
+        .insert({
+          name: formData.name,
+          organization: formData.organization || null,
+          email: formData.email,
+          phone: formData.phone,
+          service: formData.service,
+          description: formData.description,
+          budget: formData.budget || null,
+          timeline: formData.timeline || null,
+        });
 
-    toast({
-      title: "Enquiry Submitted!",
-      description: "We've received your project details. Our team will get back to you within 24-48 hours.",
-    });
+      if (dbError) {
+        console.error("Database error:", dbError);
+        throw new Error("Failed to save enquiry");
+      }
 
-    setFormData({
-      name: "",
-      organization: "",
-      email: "",
-      phone: "",
-      service: "",
-      description: "",
-      budget: "",
-      timeline: "",
-    });
-    setIsSubmitting(false);
+      // Send email notification
+      const { error: emailError } = await supabase.functions.invoke("send-notification-email", {
+        body: {
+          type: "client_enquiry",
+          data: formData,
+        },
+      });
+
+      if (emailError) {
+        console.error("Email error:", emailError);
+        // Don't throw - the form was saved, email is secondary
+      }
+
+      setIsSubmitted(true);
+      toast({
+        title: "Enquiry Submitted!",
+        description: "We've received your project details. Our team will get back to you within 24-48 hours.",
+      });
+
+      setFormData({
+        name: "",
+        organization: "",
+        email: "",
+        phone: "",
+        service: "",
+        description: "",
+        budget: "",
+        timeline: "",
+      });
+    } catch (error) {
+      console.error("Submission error:", error);
+      toast({
+        title: "Submission Failed",
+        description: "There was an error submitting your enquiry. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
+  if (isSubmitted) {
+    return (
+      <Layout>
+        <section className="section-padding bg-subtle-gradient min-h-[60vh] flex items-center">
+          <div className="container-narrow mx-auto text-center">
+            <div className="card-elevated p-12 max-w-xl mx-auto">
+              <div className="w-20 h-20 rounded-full bg-success/10 flex items-center justify-center mx-auto mb-6">
+                <CheckCircle className="w-10 h-10 text-success" />
+              </div>
+              <h1 className="text-3xl font-bold font-display mb-4">Thank You!</h1>
+              <p className="text-lg text-muted-foreground mb-6">
+                Thanks, we've received your details. Our team will review and get back to you shortly.
+              </p>
+              <p className="text-sm text-muted-foreground">
+                You can expect to hear from us within 24-48 hours.
+              </p>
+              <Button 
+                variant="outline" 
+                className="mt-8"
+                onClick={() => setIsSubmitted(false)}
+              >
+                Submit Another Enquiry
+              </Button>
+            </div>
+          </div>
+        </section>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
-      <section className="section-padding bg-subtle-gradient">
-        <div className="container-wide mx-auto">
+      <section className="section-padding bg-subtle-gradient relative">
+        <div className="absolute inset-0 bg-mesh" />
+        <div className="container-wide mx-auto relative">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
             {/* Left Column - Info */}
             <div>
@@ -106,8 +179,8 @@ const Hire = () => {
               <div className="space-y-4 mb-8">
                 {benefits.map((benefit) => (
                   <div key={benefit.text} className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
-                      <benefit.icon className="w-5 h-5 text-accent" />
+                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shadow-card">
+                      <benefit.icon className="w-6 h-6 text-primary" />
                     </div>
                     <span className="font-medium">{benefit.text}</span>
                   </div>
@@ -118,22 +191,28 @@ const Hire = () => {
                 <h3 className="font-semibold mb-3">What Happens Next?</h3>
                 <ol className="space-y-2 text-sm text-muted-foreground">
                   <li className="flex items-start gap-2">
-                    <span className="font-medium text-accent">1.</span>
+                    <span className="font-medium text-primary">1.</span>
                     <span>We review your requirements within 24 hours</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="font-medium text-accent">2.</span>
+                    <span className="font-medium text-primary">2.</span>
                     <span>Schedule a call to discuss details if needed</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="font-medium text-accent">3.</span>
+                    <span className="font-medium text-primary">3.</span>
                     <span>Receive a detailed proposal with team allocation</span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="font-medium text-accent">4.</span>
+                    <span className="font-medium text-primary">4.</span>
                     <span>Sign agreement and kick off your project</span>
                   </li>
                 </ol>
+              </div>
+
+              <div className="mt-6 p-4 rounded-xl bg-primary/5 border border-primary/10">
+                <p className="text-sm text-muted-foreground">
+                  <strong className="text-foreground">Payment Note:</strong> Client payments are handled after requirement finalization. No upfront online payment required at this stage.
+                </p>
               </div>
             </div>
 

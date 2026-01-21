@@ -14,7 +14,111 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      client_enquiries: {
+        Row: {
+          budget: string | null
+          created_at: string
+          description: string
+          email: string
+          id: string
+          name: string
+          organization: string | null
+          phone: string
+          service: string
+          status: string
+          timeline: string | null
+          updated_at: string
+        }
+        Insert: {
+          budget?: string | null
+          created_at?: string
+          description: string
+          email: string
+          id?: string
+          name: string
+          organization?: string | null
+          phone: string
+          service: string
+          status?: string
+          timeline?: string | null
+          updated_at?: string
+        }
+        Update: {
+          budget?: string | null
+          created_at?: string
+          description?: string
+          email?: string
+          id?: string
+          name?: string
+          organization?: string | null
+          phone?: string
+          service?: string
+          status?: string
+          timeline?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      freelancer_applications: {
+        Row: {
+          college: string
+          created_at: string
+          current_year: string | null
+          degree: string
+          email: string
+          experience: string
+          field: string
+          full_name: string
+          id: string
+          phone: string
+          portfolio_link: string | null
+          resume_url: string | null
+          skills: string
+          status: string
+          subscription_expires_at: string | null
+          subscription_status: string
+          updated_at: string
+        }
+        Insert: {
+          college: string
+          created_at?: string
+          current_year?: string | null
+          degree: string
+          email: string
+          experience: string
+          field: string
+          full_name: string
+          id?: string
+          phone: string
+          portfolio_link?: string | null
+          resume_url?: string | null
+          skills: string
+          status?: string
+          subscription_expires_at?: string | null
+          subscription_status?: string
+          updated_at?: string
+        }
+        Update: {
+          college?: string
+          created_at?: string
+          current_year?: string | null
+          degree?: string
+          email?: string
+          experience?: string
+          field?: string
+          full_name?: string
+          id?: string
+          phone?: string
+          portfolio_link?: string | null
+          resume_url?: string | null
+          skills?: string
+          status?: string
+          subscription_expires_at?: string | null
+          subscription_status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
