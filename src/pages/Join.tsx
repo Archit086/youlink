@@ -6,7 +6,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Upload, Send, GraduationCap, Briefcase, Users, Wallet } from "lucide-react";
+import { Upload, Send, GraduationCap, Briefcase, Users, Wallet, CheckCircle } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 const fieldOptions = [
   "Creative & Design",
@@ -33,6 +34,7 @@ const benefits = [
 const Join = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -58,39 +60,131 @@ const Join = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    try {
+      // Save to database
+      const { error: dbError } = await supabase
+        .from("freelancer_applications")
+        .insert({
+          full_name: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+          college: formData.college,
+          degree: formData.degree,
+          current_year: formData.currentYear || null,
+          field: formData.field,
+          skills: formData.skills,
+          portfolio_link: formData.portfolioLink || null,
+          experience: formData.experience,
+        });
 
-    toast({
-      title: "Application Submitted!",
-      description: "Thank you for applying! We'll review your profile and get back to you within 3-5 business days.",
-    });
+      if (dbError) {
+        console.error("Database error:", dbError);
+        throw new Error("Failed to save application");
+      }
 
-    setFormData({
-      fullName: "",
-      email: "",
-      phone: "",
-      college: "",
-      degree: "",
-      currentYear: "",
-      field: "",
-      skills: "",
-      portfolioLink: "",
-      experience: "",
-    });
-    setIsSubmitting(false);
+      // Send email notification
+      const { error: emailError } = await supabase.functions.invoke("send-notification-email", {
+        body: {
+          type: "freelancer_application",
+          data: {
+            full_name: formData.fullName,
+            email: formData.email,
+            phone: formData.phone,
+            college: formData.college,
+            degree: formData.degree,
+            current_year: formData.currentYear,
+            field: formData.field,
+            skills: formData.skills,
+            portfolio_link: formData.portfolioLink,
+            experience: formData.experience,
+          },
+        },
+      });
+
+      if (emailError) {
+        console.error("Email error:", emailError);
+        // Don't throw - the form was saved, email is secondary
+      }
+
+      setIsSubmitted(true);
+      toast({
+        title: "Application Submitted!",
+        description: "Thank you for applying! We'll review your profile and get back to you within 3-5 business days.",
+      });
+
+      setFormData({
+        fullName: "",
+        email: "",
+        phone: "",
+        college: "",
+        degree: "",
+        currentYear: "",
+        field: "",
+        skills: "",
+        portfolioLink: "",
+        experience: "",
+      });
+    } catch (error) {
+      console.error("Submission error:", error);
+      toast({
+        title: "Submission Failed",
+        description: "There was an error submitting your application. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
+  if (isSubmitted) {
+    return (
+      <Layout>
+        <section className="section-padding bg-subtle-gradient min-h-[60vh] flex items-center">
+          <div className="container-narrow mx-auto text-center">
+            <div className="card-elevated p-12 max-w-xl mx-auto">
+              <div className="w-20 h-20 rounded-full bg-success/10 flex items-center justify-center mx-auto mb-6">
+                <CheckCircle className="w-10 h-10 text-success" />
+              </div>
+              <h1 className="text-3xl font-bold font-display mb-4">Application Received!</h1>
+              <p className="text-lg text-muted-foreground mb-6">
+                Thanks, we've received your details. Our team will review and get back to you shortly.
+              </p>
+              <p className="text-sm text-muted-foreground mb-4">
+                You can expect to hear from us within 3-5 business days.
+              </p>
+              <div className="p-4 rounded-xl bg-primary/5 border border-primary/10 text-left">
+                <p className="text-sm text-muted-foreground">
+                  <strong className="text-foreground">Next Steps:</strong> Once approved, you'll receive an email with instructions to complete your ₹99/month subscription via PhonePe to activate your account.
+                </p>
+              </div>
+              <Button 
+                variant="outline" 
+                className="mt-8"
+                onClick={() => setIsSubmitted(false)}
+              >
+                Submit Another Application
+              </Button>
+            </div>
+          </div>
+        </section>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="section-padding bg-hero-gradient text-primary-foreground">
-        <div className="container-wide mx-auto">
+      <section className="section-padding bg-hero-gradient text-white relative overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-20 w-64 h-64 bg-white/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-20 right-20 w-80 h-80 bg-white/5 rounded-full blur-3xl" />
+        </div>
+        <div className="container-wide mx-auto relative">
           <div className="max-w-3xl">
-            <h1 className="text-4xl sm:text-5xl font-bold font-display mb-6">
+            <h1 className="text-4xl sm:text-5xl font-bold font-display mb-6 text-white">
               Join as a Freelancer
             </h1>
-            <p className="text-xl text-primary-foreground/80 mb-8">
+            <p className="text-xl text-white/80 mb-8">
               Be part of our verified freelancer network. Work on supervised projects, 
               receive mentorship, and earn fairly — all while growing your skills.
             </p>
@@ -98,9 +192,9 @@ const Join = () => {
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {benefits.map((benefit) => (
                 <div key={benefit.title} className="p-4 rounded-xl bg-white/10 backdrop-blur-sm">
-                  <benefit.icon className="w-6 h-6 mb-2" />
-                  <h3 className="font-semibold text-sm mb-1">{benefit.title}</h3>
-                  <p className="text-xs text-primary-foreground/70">{benefit.description}</p>
+                  <benefit.icon className="w-6 h-6 mb-2 text-white" />
+                  <h3 className="font-semibold text-sm mb-1 text-white">{benefit.title}</h3>
+                  <p className="text-xs text-white/70">{benefit.description}</p>
                 </div>
               ))}
             </div>
@@ -109,8 +203,9 @@ const Join = () => {
       </section>
 
       {/* Form Section */}
-      <section className="section-padding bg-background">
-        <div className="container-narrow mx-auto">
+      <section className="section-padding section-white relative">
+        <div className="absolute inset-0 bg-mesh" />
+        <div className="container-narrow mx-auto relative">
           <div className="card-elevated p-8 lg:p-12">
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold font-display mb-2">Freelancer Application</h2>
@@ -269,8 +364,8 @@ const Join = () => {
                   </div>
 
                   <div className="space-y-2">
-                    <Label>Upload CV / Resume (PDF) *</Label>
-                    <div className="border-2 border-dashed border-border rounded-xl p-6 text-center hover:border-accent/50 transition-colors cursor-pointer">
+                    <Label>Upload CV / Resume (PDF)</Label>
+                    <div className="border-2 border-dashed border-border rounded-xl p-6 text-center hover:border-primary/50 transition-colors cursor-pointer">
                       <Upload className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
                       <p className="text-sm text-muted-foreground mb-1">
                         Click to upload or drag and drop
@@ -286,18 +381,18 @@ const Join = () => {
                       />
                     </div>
                     <p className="text-xs text-muted-foreground">
-                      Note: File upload will be enabled once backend is connected.
+                      Note: File upload feature coming soon. You can share your resume via portfolio link for now.
                     </p>
                   </div>
                 </div>
               </div>
 
               {/* Subscription Note */}
-              <div className="p-4 rounded-xl bg-accent/5 border border-accent/20">
-                <h4 className="font-semibold text-sm mb-2">Platform Subscription</h4>
+              <div className="p-4 rounded-xl bg-primary/5 border border-primary/20">
+                <h4 className="font-semibold text-sm mb-2">Platform Subscription (₹99/month)</h4>
                 <p className="text-sm text-muted-foreground">
                   After your application is approved, you'll need to complete a ₹99/month subscription 
-                  to activate your account and start receiving project assignments.
+                  via PhonePe to activate your account and start receiving project assignments.
                 </p>
               </div>
 
@@ -308,7 +403,7 @@ const Join = () => {
 
               <Button 
                 type="submit" 
-                variant="accent" 
+                variant="action" 
                 size="lg" 
                 className="w-full"
                 disabled={isSubmitting}
