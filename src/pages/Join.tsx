@@ -6,8 +6,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Upload, Send, GraduationCap, Briefcase, Users, Wallet, CheckCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { Lines, Reveal } from "@/components/site/Reveal";
 
 const fieldOptions = [
   "Creative & Design",
@@ -18,17 +18,13 @@ const fieldOptions = [
   "Other",
 ];
 
-const experienceLevels = [
-  "Beginner (0-1 years)",
-  "Intermediate (1-3 years)",
-  "Advanced (3+ years)",
-];
+const experienceLevels = ["Beginner (0-1 years)", "Intermediate (1-3 years)", "Advanced (3+ years)"];
 
 const benefits = [
-  { icon: Users, title: "Supervised Projects", description: "Work under experienced supervisors" },
-  { icon: GraduationCap, title: "Mentorship", description: "Continuous feedback & skill growth" },
-  { icon: Wallet, title: "Fair Payouts", description: "Milestone-based payments" },
-  { icon: Briefcase, title: "Real Projects", description: "Work on actual client projects" },
+  { title: "Supervised projects", description: "Work under experienced supervisors" },
+  { title: "Mentorship", description: "Continuous feedback & skill growth" },
+  { title: "Fair payouts", description: "Milestone-based payments" },
+  { title: "Real projects", description: "Work on actual client projects" },
 ];
 
 const Join = () => {
@@ -139,33 +135,37 @@ const Join = () => {
   if (isSubmitted) {
     return (
       <Layout>
-        <section className="section-padding bg-subtle-gradient min-h-[60vh] flex items-center">
-          <div className="container-narrow mx-auto text-center">
-            <div className="card-elevated p-12 max-w-xl mx-auto">
-              <div className="w-20 h-20 rounded-full bg-success/10 flex items-center justify-center mx-auto mb-6">
-                <CheckCircle className="w-10 h-10 text-success" />
-              </div>
-              <h1 className="text-3xl font-bold font-display mb-4">Application Received!</h1>
-              <p className="text-lg text-muted-foreground mb-6">
-                Thanks, we've received your details. Our team will review and get back to you shortly.
+        <section className="border-b">
+          <div className="flex items-baseline gap-16 border-b px-12 py-14 lg:px-20">
+            <span className="index-number">01</span>
+            <span className="label">Application received</span>
+          </div>
+
+          <div className="px-12 pb-24 pt-40 lg:px-20 lg:pb-40 lg:pt-56">
+            <h1 className="text-headline-40">
+              <Lines lines={["Thank you.", "We'll review and reply."]} stagger={90} />
+            </h1>
+          </div>
+
+          <div className="grid border-t lg:grid-cols-2">
+            <div className="cell">
+              <p className="max-w-prose text-body-20 opacity-70">
+                Thanks, we've received your details. Our team will review and get back to you shortly —
+                you can expect to hear from us within 3–5 business days.
               </p>
-              <p className="text-sm text-muted-foreground mb-4">
-                You can expect to hear from us within 3-5 business days.
+            </div>
+            <div className="cell border-t lg:border-l lg:border-t-0">
+              <p className="label opacity-60">Next steps</p>
+              <p className="mt-16 max-w-prose text-body-10 opacity-70">
+                Once approved, you'll receive an email with instructions to complete your ₹99/month
+                subscription via PhonePe to activate your account.
               </p>
-              <div className="p-4 rounded-xl bg-primary/5 border border-primary/10 text-left">
-                <p className="text-sm text-muted-foreground">
-                  <strong className="text-foreground">Next Steps:</strong> Once approved, you'll receive an email with instructions to complete your ₹99/month subscription via PhonePe to activate your account.
-                </p>
-              </div>
-              <Button 
-                variant="outline" 
-                className="mt-8"
-                onClick={() => setIsSubmitted(false)}
-              >
-                Submit Another Application
-              </Button>
             </div>
           </div>
+
+          <Button variant="outline" size="cell" className="border-x-0 border-b-0" onClick={() => setIsSubmitted(false)}>
+            Submit another application
+          </Button>
         </section>
       </Layout>
     );
@@ -173,66 +173,79 @@ const Join = () => {
 
   return (
     <Layout>
-      {/* Hero Section */}
-      <section className="section-padding bg-hero-gradient text-white relative overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-20 left-20 w-64 h-64 bg-white/5 rounded-full blur-3xl" />
-          <div className="absolute bottom-20 right-20 w-80 h-80 bg-white/5 rounded-full blur-3xl" />
+      <section className="border-b">
+        <div className="flex items-baseline gap-16 border-b px-12 py-14 lg:px-20">
+          <span className="index-number">01</span>
+          <span className="label">Join the network</span>
         </div>
-        <div className="container-wide mx-auto relative">
-          <div className="max-w-3xl">
-            <h1 className="text-4xl sm:text-5xl font-bold font-display mb-6 text-white">
-              Join as a Freelancer
-            </h1>
-            <p className="text-xl text-white/80 mb-8">
-              Be part of our verified freelancer network. Work on supervised projects, 
-              receive mentorship, and earn fairly — all while growing your skills.
-            </p>
-            
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {benefits.map((benefit) => (
-                <div key={benefit.title} className="p-4 rounded-xl bg-white/10 backdrop-blur-sm">
-                  <benefit.icon className="w-6 h-6 mb-2 text-white" />
-                  <h3 className="font-semibold text-sm mb-1 text-white">{benefit.title}</h3>
-                  <p className="text-xs text-white/70">{benefit.description}</p>
-                </div>
-              ))}
+
+        <div className="grid lg:grid-cols-12">
+          {/* Left — the offer, pinned */}
+          <div className="lg:col-span-5">
+            <div className="pin">
+              <Reveal className="cell">
+                <h1 className="text-headline-30">
+                  <Lines lines={["Work on real", "client projects."]} stagger={90} />
+                </h1>
+                <p className="mt-24 max-w-prose text-body-20 opacity-70">
+                  Be part of our verified freelancer network. Work on supervised projects, receive
+                  mentorship, and earn fairly — all while growing your skills.
+                </p>
+              </Reveal>
+
+              <Reveal className="cell border-t" delay={100}>
+                <p className="label opacity-60">What you get</p>
+                <ul className="mt-20">
+                  {benefits.map((benefit, index) => (
+                    <li
+                      key={benefit.title}
+                      className="flex items-start gap-16 border-t py-12 font-mono text-caption-20 uppercase first:border-t-0"
+                    >
+                      <span className="tabular-nums opacity-60">{String(index + 1).padStart(2, "0")}</span>
+                      <span>
+                        {benefit.title}
+                        <span className="ml-8 opacity-60">{benefit.description}</span>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </Reveal>
+
+              <Reveal className="cell border-t" delay={160}>
+                <p className="label opacity-60">Platform subscription (₹99/month)</p>
+                <p className="mt-16 max-w-prose text-body-10 opacity-70">
+                  After your application is approved, you'll need to complete a ₹99/month subscription
+                  via PhonePe to activate your account and start receiving project assignments.
+                </p>
+              </Reveal>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Form Section */}
-      <section className="section-padding section-white relative">
-        <div className="absolute inset-0 bg-mesh" />
-        <div className="container-narrow mx-auto relative">
-          <div className="card-elevated p-8 lg:p-12">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl font-bold font-display mb-2">Freelancer Application</h2>
-              <p className="text-muted-foreground">
-                Fill out the form below to apply. All fields marked with * are required.
-              </p>
+          {/* Right — the application */}
+          <div className="border-t lg:col-span-7 lg:border-l lg:border-t-0">
+            <div className="flex items-baseline justify-between gap-16 border-b px-12 py-14 lg:px-20">
+              <span className="label">Freelancer application</span>
+              <span className="label-muted">* required</span>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-8">
-              {/* Personal Information */}
-              <div>
-                <h3 className="text-lg font-semibold font-display mb-4 pb-2 border-b border-border">
-                  Personal Information
-                </h3>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="fullName">Full Name *</Label>
+            <form onSubmit={handleSubmit}>
+              <div className="cell space-y-24">
+                <p className="label opacity-60">Personal information</p>
+
+                <div className="grid gap-20 sm:grid-cols-2">
+                  <div className="space-y-8">
+                    <Label htmlFor="fullName">Full name *</Label>
                     <Input
                       id="fullName"
                       name="fullName"
                       value={formData.fullName}
                       onChange={handleChange}
                       placeholder="Your full name"
+                      autoComplete="name"
                       required
                     />
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-8">
                     <Label htmlFor="email">Email ID *</Label>
                     <Input
                       id="email"
@@ -241,23 +254,25 @@ const Join = () => {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="your@email.com"
+                      autoComplete="email"
                       required
                     />
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">Phone Number *</Label>
+                  <div className="space-y-8">
+                    <Label htmlFor="phone">Phone number *</Label>
                     <Input
                       id="phone"
                       name="phone"
                       type="tel"
                       value={formData.phone}
                       onChange={handleChange}
-                      placeholder="+91 98765 43210"
+                      placeholder="+91 00000 00000"
+                      autoComplete="tel"
                       required
                     />
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="college">College / University Name *</Label>
+                  <div className="space-y-8">
+                    <Label htmlFor="college">College / University *</Label>
                     <Input
                       id="college"
                       name="college"
@@ -267,7 +282,7 @@ const Join = () => {
                       required
                     />
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-8">
                     <Label htmlFor="degree">Degree / Course *</Label>
                     <Input
                       id="degree"
@@ -278,8 +293,8 @@ const Join = () => {
                       required
                     />
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="currentYear">Current Year (Optional)</Label>
+                  <div className="space-y-8">
+                    <Label htmlFor="currentYear">Current year (optional)</Label>
                     <Input
                       id="currentYear"
                       name="currentYear"
@@ -291,131 +306,88 @@ const Join = () => {
                 </div>
               </div>
 
-              {/* Professional Information */}
-              <div>
-                <h3 className="text-lg font-semibold font-display mb-4 pb-2 border-b border-border">
-                  Professional Information
-                </h3>
-                <div className="space-y-4">
-                  <div className="grid sm:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="field">Field of Work *</Label>
-                      <Select
-                        value={formData.field}
-                        onValueChange={(value) => handleSelectChange("field", value)}
-                        required
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select your field" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {fieldOptions.map((option) => (
-                            <SelectItem key={option} value={option}>
-                              {option}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="experience">Experience Level *</Label>
-                      <Select
-                        value={formData.experience}
-                        onValueChange={(value) => handleSelectChange("experience", value)}
-                        required
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select experience" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {experienceLevels.map((option) => (
-                            <SelectItem key={option} value={option}>
-                              {option}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
+              <div className="cell space-y-24 border-t">
+                <p className="label opacity-60">Professional information</p>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="skills">Skills & Areas of Interest *</Label>
-                    <Textarea
-                      id="skills"
-                      name="skills"
-                      value={formData.skills}
-                      onChange={handleChange}
-                      placeholder="List your key skills, tools you're proficient in, and areas you want to work on..."
-                      rows={3}
+                <div className="grid gap-20 sm:grid-cols-2">
+                  <div className="space-y-8">
+                    <Label htmlFor="field">Field of work *</Label>
+                    <Select
+                      value={formData.field}
+                      onValueChange={(value) => handleSelectChange("field", value)}
                       required
-                    />
+                    >
+                      <SelectTrigger id="field">
+                        <SelectValue placeholder="Select your field" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {fieldOptions.map((option) => (
+                          <SelectItem key={option} value={option}>
+                            {option}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
+                  <div className="space-y-8">
+                    <Label htmlFor="experience">Experience level *</Label>
+                    <Select
+                      value={formData.experience}
+                      onValueChange={(value) => handleSelectChange("experience", value)}
+                      required
+                    >
+                      <SelectTrigger id="experience">
+                        <SelectValue placeholder="Select experience" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {experienceLevels.map((option) => (
+                          <SelectItem key={option} value={option}>
+                            {option}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="portfolioLink">Portfolio Link (Optional)</Label>
-                    <Input
-                      id="portfolioLink"
-                      name="portfolioLink"
-                      type="url"
-                      value={formData.portfolioLink}
-                      onChange={handleChange}
-                      placeholder="https://yourportfolio.com or LinkedIn URL"
-                    />
-                  </div>
+                <div className="space-y-8">
+                  <Label htmlFor="skills">Skills &amp; areas of interest *</Label>
+                  <Textarea
+                    id="skills"
+                    name="skills"
+                    value={formData.skills}
+                    onChange={handleChange}
+                    placeholder="List your key skills, tools you're proficient in, and areas you want to work on..."
+                    rows={4}
+                    required
+                  />
+                </div>
 
-                  <div className="space-y-2">
-                    <Label>Upload CV / Resume (PDF)</Label>
-                    <div className="border-2 border-dashed border-border rounded-xl p-6 text-center hover:border-primary/50 transition-colors cursor-pointer">
-                      <Upload className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
-                      <p className="text-sm text-muted-foreground mb-1">
-                        Click to upload or drag and drop
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        PDF only, max 5MB
-                      </p>
-                      <Input
-                        type="file"
-                        accept=".pdf"
-                        className="hidden"
-                        id="resume"
-                      />
-                    </div>
-                    <p className="text-xs text-muted-foreground">
-                      Note: File upload feature coming soon. You can share your resume via portfolio link for now.
-                    </p>
-                  </div>
+                <div className="space-y-8">
+                  <Label htmlFor="portfolioLink">Portfolio link (optional)</Label>
+                  <Input
+                    id="portfolioLink"
+                    name="portfolioLink"
+                    type="url"
+                    value={formData.portfolioLink}
+                    onChange={handleChange}
+                    placeholder="https://yourportfolio.com or LinkedIn URL"
+                  />
+                  <p className="font-mono text-caption-10 uppercase opacity-60">
+                    CV upload is coming soon — share your resume via the portfolio link for now.
+                  </p>
                 </div>
               </div>
 
-              {/* Subscription Note */}
-              <div className="p-4 rounded-xl bg-primary/5 border border-primary/20">
-                <h4 className="font-semibold text-sm mb-2">Platform Subscription (₹99/month)</h4>
-                <p className="text-sm text-muted-foreground">
-                  After your application is approved, you'll need to complete a ₹99/month subscription 
-                  via PhonePe to activate your account and start receiving project assignments.
+              <div className="cell space-y-20 border-t">
+                <p className="font-mono text-caption-10 uppercase opacity-60">
+                  Your data will be used only for internal screening and project coordination within
+                  YouLink. We respect your privacy.
                 </p>
               </div>
 
-              <p className="text-xs text-muted-foreground">
-                Your data will be used only for internal screening and project coordination within YouLink. 
-                We respect your privacy.
-              </p>
-
-              <Button 
-                type="submit" 
-                variant="action" 
-                size="lg" 
-                className="w-full"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? (
-                  <>Processing...</>
-                ) : (
-                  <>
-                    Submit Application
-                    <Send size={18} />
-                  </>
-                )}
+              <Button type="submit" variant="default" size="cell" className="border-t" disabled={isSubmitting}>
+                {isSubmitting ? "Processing..." : "Submit application"}
               </Button>
             </form>
           </div>

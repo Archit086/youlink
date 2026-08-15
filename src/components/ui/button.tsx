@@ -4,30 +4,61 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
 
+/**
+ * The system's signature component.
+ *
+ * Hover is a wipe, not a colour fade: a ::before panel scales in on the x-axis
+ * from the left edge over 800ms with the expo-out curve, and the label colour
+ * flips with it. Reduced-motion visitors get the same hover as an instant
+ * colour swap — the interaction never disappears, it just stops moving.
+ */
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-semibold ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  [
+    "relative isolate inline-flex w-fit shrink-0 items-center justify-center gap-8 overflow-hidden whitespace-nowrap",
+    "font-mono uppercase",
+    "transition-[color,background-color,border-color] duration-800 ease-out",
+    "before:pointer-events-none before:absolute before:inset-y-0 before:left-0 before:-z-10 before:h-full before:w-full",
+    "before:origin-left before:scale-x-0 before:transition-transform before:duration-800 before:ease-out before:content-['']",
+    "hover:before:scale-x-100",
+    "motion-reduce:transition-none motion-reduce:before:hidden motion-reduce:before:transition-none",
+    "disabled:pointer-events-none disabled:opacity-50 disabled:grayscale",
+    "[&_svg]:pointer-events-none [&_svg]:size-14 [&_svg]:shrink-0",
+  ].join(" "),
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
-        destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
-        // YouLink Custom Variants
-        action: "bg-action text-action-foreground hover:bg-action/90 shadow-action hover:shadow-lg hover:-translate-y-0.5",
-        accent: "bg-accent text-accent-foreground hover:bg-accent/90 shadow-glow hover:shadow-lg hover:-translate-y-0.5",
-        hero: "bg-action text-action-foreground text-base px-8 py-6 shadow-action hover:shadow-lg hover:-translate-y-1 transition-all duration-300",
-        heroOutline: "border-2 border-primary/20 bg-background/80 backdrop-blur-sm text-primary text-base px-8 py-6 hover:bg-primary hover:text-primary-foreground transition-all duration-300",
-        nav: "text-foreground/80 hover:text-foreground hover:bg-secondary/50 font-medium",
+        /* Primary — an inverted block that wipes to the accent. */
+        default:
+          "bg-theme-fg text-theme-bg before:bg-accent hover:text-ink motion-reduce:hover:bg-accent motion-reduce:hover:text-ink",
+        action:
+          "bg-theme-fg text-theme-bg before:bg-accent hover:text-ink motion-reduce:hover:bg-accent motion-reduce:hover:text-ink",
+        hero: "bg-theme-fg text-theme-bg before:bg-accent hover:text-ink motion-reduce:hover:bg-accent motion-reduce:hover:text-ink",
+
+        /* Secondary — a ruled cell that wipes to solid foreground. */
+        outline:
+          "border bg-theme-bg text-theme-fg before:bg-theme-fg hover:text-theme-bg motion-reduce:hover:bg-theme-fg motion-reduce:hover:text-theme-bg",
+        heroOutline:
+          "border bg-theme-bg text-theme-fg before:bg-theme-fg hover:text-theme-bg motion-reduce:hover:bg-theme-fg motion-reduce:hover:text-theme-bg",
+        secondary:
+          "bg-grey text-ink before:bg-ink hover:text-white motion-reduce:hover:bg-ink motion-reduce:hover:text-white",
+        accent:
+          "bg-accent text-ink before:bg-theme-fg hover:text-theme-bg motion-reduce:hover:bg-theme-fg motion-reduce:hover:text-theme-bg",
+        destructive:
+          "bg-ink text-white before:bg-accent hover:text-ink motion-reduce:hover:bg-accent motion-reduce:hover:text-ink",
+
+        /* Flat — no fill, colour shift only. */
+        ghost: "text-theme-fg before:bg-theme-fg hover:text-theme-bg motion-reduce:hover:bg-theme-fg",
+        nav: "text-theme-fg opacity-60 transition-opacity duration-300 before:hidden hover:opacity-100",
+        link: "text-theme-fg before:hidden underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-12 rounded-lg px-6 text-base",
-        xl: "h-14 rounded-xl px-8 text-lg",
-        icon: "h-10 w-10",
+        default: "h-36 px-12 text-caption-10",
+        sm: "h-28 px-10 text-caption-10",
+        lg: "h-44 px-16 text-caption-10",
+        xl: "h-52 px-20 text-caption-20",
+        /* Fills the width of its cell — the common case in a ruled grid. */
+        cell: "h-52 w-full px-20 text-caption-20",
+        icon: "size-36 px-0",
       },
     },
     defaultVariants: {

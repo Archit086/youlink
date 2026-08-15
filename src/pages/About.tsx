@@ -1,178 +1,187 @@
 import { Layout } from "@/components/layout/Layout";
-import { Target, Heart, Lightbulb, Users } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Lines, Reveal } from "@/components/site/Reveal";
+import { cellRules, gridColumns } from "@/components/site/ruled-grid";
+import { CTASection } from "@/components/home/CTASection";
+import { brand, principles } from "@/data/site";
 
 const values = [
   {
-    icon: Target,
-    title: "Quality First",
-    description: "Every project is executed with supervisor oversight, ensuring consistent, high-quality deliverables.",
+    title: "Quality first",
+    description:
+      "Every project is executed with supervisor oversight, ensuring consistent, high-quality deliverables.",
   },
   {
-    icon: Heart,
-    title: "Human-Centric",
-    description: "We prioritize people — fair payouts for freelancers, transparent pricing for clients.",
+    title: "Human-centric",
+    description: "We prioritise people — fair payouts for freelancers, transparent pricing for clients.",
   },
   {
-    icon: Lightbulb,
-    title: "Mentorship-Driven",
+    title: "Mentorship-driven",
     description: "Our freelancers grow through continuous feedback, skill development, and guidance.",
   },
   {
-    icon: Users,
     title: "Collaborative",
     description: "We believe in team-based delivery — where supervisors and freelancers work together.",
   },
 ];
 
-const About = () => {
-  return (
-    <Layout>
-      {/* Hero Section */}
-      <section className="section-padding bg-subtle-gradient">
-        <div className="container-narrow mx-auto text-center">
-          <h1 className="text-4xl sm:text-5xl font-bold font-display mb-6">
-            About <span className="text-gradient-hero">YouLink</span>
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            We're building a new kind of freelance ecosystem — one where quality, accountability, 
-            and human growth are at the center of everything.
-          </p>
-        </div>
-      </section>
+const challenges = [
+  "Inconsistent quality with no accountability",
+  "Freelancers working in isolation without guidance",
+  "Hidden pricing and unclear expectations",
+  "No legal protection for either party",
+];
 
-      {/* Vision & Mission */}
-      <section className="section-padding bg-background">
-        <div className="container-narrow mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 lg:gap-16">
-            <div className="card-elevated p-8 lg:p-10">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent/10 text-accent text-sm font-medium mb-6">
-                Our Vision
-              </div>
-              <h2 className="text-2xl font-bold font-display mb-4">
-                Redefining Freelance Work
-              </h2>
-              <p className="text-muted-foreground leading-relaxed">
-                We envision a world where freelance work is not just gig-based, but career-building. 
-                Where clients trust in quality and freelancers thrive with support, mentorship, and fair compensation.
-              </p>
-            </div>
-            <div className="card-elevated p-8 lg:p-10">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-action/10 text-action text-sm font-medium mb-6">
-                Our Mission
-              </div>
-              <h2 className="text-2xl font-bold font-display mb-4">
-                Supervised Excellence
-              </h2>
-              <p className="text-muted-foreground leading-relaxed">
-                To connect businesses with verified, supervisor-led freelancer teams that deliver 
-                professional, quality-controlled work — every single time.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+const answers = [
+  "Supervisor-led teams ensure quality at every step",
+  "Verified freelancers with continuous mentorship",
+  "Transparent pricing with no hidden costs",
+  "Legal-backed service agreements for protection",
+];
 
-      {/* The Problem We Solve */}
-      <section className="section-padding bg-subtle-gradient">
-        <div className="container-narrow mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold font-display mb-4">
-              The Problem We Solve
-            </h2>
-          </div>
-          <div className="card-elevated p-8 lg:p-12">
-            <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-              <div>
-                <h3 className="text-xl font-semibold font-display mb-4 text-destructive">
-                  Traditional Freelancing Challenges
-                </h3>
-                <ul className="space-y-3 text-muted-foreground">
-                  <li className="flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-destructive mt-2 flex-shrink-0" />
-                    <span>Inconsistent quality with no accountability</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-destructive mt-2 flex-shrink-0" />
-                    <span>Freelancers working in isolation without guidance</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-destructive mt-2 flex-shrink-0" />
-                    <span>Hidden pricing and unclear expectations</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-destructive mt-2 flex-shrink-0" />
-                    <span>No legal protection for either party</span>
-                  </li>
-                </ul>
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold font-display mb-4 text-accent">
-                  The YouLink Solution
-                </h3>
-                <ul className="space-y-3 text-muted-foreground">
-                  <li className="flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0" />
-                    <span>Supervisor-led teams ensure quality at every step</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0" />
-                    <span>Verified freelancers with continuous mentorship</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0" />
-                    <span>Transparent pricing with no hidden costs</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="w-1.5 h-1.5 rounded-full bg-accent mt-2 flex-shrink-0" />
-                    <span>Legal-backed service agreements for protection</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+const About = () => (
+  <Layout>
+    <section className="border-b">
+      <div className="flex items-baseline gap-16 border-b px-12 py-14 lg:px-20">
+        <span className="index-number">01</span>
+        <span className="label">About</span>
+      </div>
 
-      {/* Our Values */}
-      <section className="section-padding bg-background">
-        <div className="container-wide mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold font-display mb-4">
-              Our Core Values
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              These principles guide everything we do at YouLink.
-            </p>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {values.map((value) => (
-              <div key={value.title} className="card-elevated card-hover p-6 text-center">
-                <div className="w-14 h-14 rounded-xl bg-accent/10 flex items-center justify-center mx-auto mb-5">
-                  <value.icon className="w-7 h-7 text-accent" />
-                </div>
-                <h3 className="text-lg font-semibold font-display mb-2">{value.title}</h3>
-                <p className="text-sm text-muted-foreground">{value.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <div className="px-12 pb-24 pt-40 lg:px-20 lg:pb-40 lg:pt-56">
+        <h1 className="text-headline-40">
+          <Lines lines={["We connect you", "with a you."]} stagger={90} />
+        </h1>
+      </div>
 
-      {/* Founder Story */}
-      <section className="section-padding bg-hero-gradient text-primary-foreground">
-        <div className="container-narrow mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold font-display mb-6">
-            Built With Purpose
+      <div className="grid border-t lg:grid-cols-2">
+        <Reveal className="cell">
+          <p className="max-w-prose text-body-20">{brand.positioning}</p>
+        </Reveal>
+        <Reveal className="cell border-t lg:border-l lg:border-t-0" delay={90}>
+          <p className="max-w-prose text-body-10 opacity-70">{brand.reach}</p>
+        </Reveal>
+      </div>
+    </section>
+
+    {/* The promise, at scale */}
+    <section className="border-b px-12 py-40 lg:px-20 lg:py-56">
+      <p className="text-headline-30">
+        <Lines lines={["We don't just create content", "or run ads — we build brands", "from the ground up."]} />
+      </p>
+    </section>
+
+    {/* The model */}
+    <section className="border-b">
+      <div className="flex items-baseline gap-16 border-b px-12 py-14 lg:px-20">
+        <span className="index-number">02</span>
+        <span className="label">How we work</span>
+      </div>
+
+      <div className="grid border-b lg:grid-cols-2">
+        <div className="cell">
+          <h2 className="text-headline-20">
+            <Lines lines={["A structured freelance", "ecosystem, supervised", "end to end"]} />
           </h2>
-          <p className="text-lg text-primary-foreground/80 max-w-2xl mx-auto leading-relaxed">
-            YouLink was born from a simple observation: talented freelancers often lack structure, 
-            and clients struggle to find reliable teams. We bridge this gap by creating a supervised 
-            ecosystem where everyone wins — freelancers grow, clients succeed, and quality is never compromised.
-          </p>
         </div>
-      </section>
-    </Layout>
-  );
-};
+        <Reveal className="cell border-t lg:border-l lg:border-t-0" delay={90}>
+          <p className="max-w-prose text-body-20 opacity-70">{brand.model}</p>
+        </Reveal>
+      </div>
+
+      <div className={gridColumns({ sm: 2, lg: 3 })}>
+        {principles.map((principle, index) => (
+          <Reveal
+            key={principle.title}
+            delay={index * 60}
+            className={cn("cell", cellRules(index, { sm: 2, lg: 3 }))}
+          >
+            <span className="index-number">{String(index + 1).padStart(2, "0")}</span>
+            <h3 className="mt-16 text-headline-10">{principle.title}</h3>
+            <p className="mt-12 max-w-prose text-body-10 opacity-70">{principle.description}</p>
+          </Reveal>
+        ))}
+      </div>
+    </section>
+
+    {/* Problem / answer */}
+    <section className="border-b">
+      <div className="flex items-baseline gap-16 border-b px-12 py-14 lg:px-20">
+        <span className="index-number">03</span>
+        <span className="label">The problem we solve</span>
+      </div>
+
+      <div className="cell border-b">
+        <h2 className="text-headline-20">
+          <Lines lines={["Freelance work usually breaks", "in the same four places."]} />
+        </h2>
+      </div>
+
+      <div className="grid lg:grid-cols-2">
+        <Reveal className="cell">
+          <p className="label opacity-60">Traditional freelancing</p>
+          <ul className="mt-20">
+            {challenges.map((item, index) => (
+              <li key={item} className="flex items-start gap-16 border-t py-12 first:border-t-0">
+                <span className="index-number pt-2">{String(index + 1).padStart(2, "0")}</span>
+                <span className="text-body-10 opacity-70">{item}</span>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+
+        <Reveal className="cell border-t lg:border-l lg:border-t-0" delay={100}>
+          <p className="label">The YouLink answer</p>
+          <ul className="mt-20">
+            {answers.map((item, index) => (
+              <li key={item} className="flex items-start gap-16 border-t py-12 first:border-t-0">
+                <span className="index-number pt-2">{String(index + 1).padStart(2, "0")}</span>
+                <span className="text-body-10">{item}</span>
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+      </div>
+    </section>
+
+    {/* Values */}
+    <section className="border-b">
+      <div className="flex items-baseline gap-16 border-b px-12 py-14 lg:px-20">
+        <span className="index-number">04</span>
+        <span className="label">Values</span>
+      </div>
+
+      <div className={gridColumns({ sm: 2, lg: 4 })}>
+        {values.map((value, index) => (
+          <Reveal
+            key={value.title}
+            delay={index * 70}
+            className={cn("cell", cellRules(index, { sm: 2, lg: 4 }))}
+          >
+            <span className="index-number">{String(index + 1).padStart(2, "0")}</span>
+            <h3 className="mt-16 text-headline-10">{value.title}</h3>
+            <p className="mt-12 max-w-prose text-body-10 opacity-70">{value.description}</p>
+          </Reveal>
+        ))}
+      </div>
+    </section>
+
+    {/* Why we exist */}
+    <section className="grid border-b lg:grid-cols-3">
+      <div className="cell pin">
+        <p className="label opacity-60">Why we exist</p>
+      </div>
+      <Reveal className="cell border-t lg:col-span-2 lg:border-l lg:border-t-0" delay={80}>
+        <p className="max-w-prose text-body-30">
+          Talented freelancers often lack structure, and clients struggle to find reliable teams. We
+          bridge that gap with a supervised ecosystem where freelancers grow, clients succeed, and
+          quality is never compromised.
+        </p>
+        <p className="mt-32 max-w-prose border-t pt-20 text-body-10 opacity-70">{brand.goal}</p>
+      </Reveal>
+    </section>
+
+    <CTASection />
+  </Layout>
+);
 
 export default About;

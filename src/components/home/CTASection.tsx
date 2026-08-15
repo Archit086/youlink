@@ -1,52 +1,52 @@
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { Lines } from "@/components/site/Reveal";
+import { ArrowDiagonal, ArrowRightGlyph } from "@/components/site/Glyphs";
+import { brand } from "@/data/site";
 
-export const CTASection = () => {
-  return (
-    <section className="section-padding bg-hero-gradient text-primary-foreground relative overflow-hidden">
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-white rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent rounded-full blur-3xl" />
+/**
+ * The closing destination. An inverted panel carrying the invitation, a long
+ * drawn arrow, and a thin accent edge — one idea and one action.
+ */
+export const CTASection = () => (
+  <section className="panel-ink border-t">
+    <div className="grid lg:grid-cols-2">
+      {/* The wordmark, at scale */}
+      <div className="flex min-h-[40svh] flex-col justify-between border-b p-12 lg:min-h-[70svh] lg:border-b-0 lg:p-20">
+        <p className="font-mono text-caption-10 uppercase opacity-60">{brand.tagline}</p>
+        <p className="text-headline-50" aria-hidden="true">
+          YouLink
+        </p>
       </div>
 
-      <div className="container-narrow mx-auto text-center relative">
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-white/90 text-sm font-medium mb-6">
-          <Sparkles size={16} />
-          <span>Ready to get started?</span>
-        </div>
-
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-display mb-6">
-          Let's Build Something Great Together
+      {/* The invitation */}
+      <div className="relative flex min-h-[40svh] flex-col justify-between p-12 lg:min-h-[70svh] lg:border-l lg:p-20">
+        <h2 className="text-headline-30">
+          <Lines lines={["Have a brand in mind?", "Let's build it."]} stagger={90} />
         </h2>
 
-        <p className="text-lg text-primary-foreground/80 max-w-xl mx-auto mb-10">
-          Whether you need a team for your next project or want to join our network of verified freelancers, 
-          YouLink is here to help you succeed.
-        </p>
+        <ArrowDiagonal className="my-40 ml-auto w-[40%] max-w-200 opacity-70" />
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link to="/hire">
-            <Button 
-              size="xl" 
-              className="bg-action text-action-foreground hover:bg-action/90 shadow-action"
-            >
-              Hire a Team
-              <ArrowRight size={20} />
-            </Button>
+        <div className="grid border-t sm:grid-cols-2">
+          <Link
+            to="/hire"
+            className="group flex items-center justify-between gap-24 py-20 pr-16 font-mono text-caption-20 uppercase transition-opacity duration-300 hover:opacity-70"
+          >
+            Start a project
+            <ArrowRightGlyph className="transition-transform duration-300 ease-out group-hover:translate-x-4" />
           </Link>
-          <Link to="/join">
-            <Button 
-              size="xl" 
-              variant="outline"
-              className="border-2 border-white/30 bg-white/10 text-white hover:bg-white hover:text-primary"
-            >
-              Join as Freelancer
-            </Button>
+
+          <Link
+            to="/join"
+            className="group flex items-center justify-between gap-24 border-t py-20 pr-16 font-mono text-caption-20 uppercase transition-opacity duration-300 hover:opacity-70 sm:border-l sm:border-t-0 sm:pl-16"
+          >
+            Join as freelancer
+            <ArrowRightGlyph className="transition-transform duration-300 ease-out group-hover:translate-x-4" />
           </Link>
         </div>
       </div>
-    </section>
-  );
-};
+    </div>
+
+    {/* Accent edge */}
+    <div className="h-8 bg-accent" aria-hidden="true" />
+  </section>
+);

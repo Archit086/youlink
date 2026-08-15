@@ -1,122 +1,92 @@
 import { Link } from "react-router-dom";
+import { brand } from "@/data/site";
+import { ArrowRightGlyph } from "@/components/site/Glyphs";
 
-const footerLinks = {
-  platform: [
-    { name: "How It Works", path: "/how-it-works" },
-    { name: "Services", path: "/services" },
-    { name: "Pricing", path: "/pricing" },
-  ],
-  company: [
-    { name: "About Us", path: "/about" },
-    { name: "Contact", path: "/hire" },
-  ],
-  legal: [
-    { name: "Terms & Conditions", path: "/terms" },
-    { name: "Privacy Policy", path: "/privacy" },
-    { name: "Refund Policy", path: "/refund-policy" },
-  ],
-  join: [
-    { name: "Hire a Team", path: "/hire" },
-    { name: "Join as Freelancer", path: "/join" },
-  ],
-};
+const columns = [
+  {
+    heading: "Studio",
+    links: [
+      { name: "Work", path: "/work" },
+      { name: "Services", path: "/services" },
+      { name: "About", path: "/about" },
+    ],
+  },
+  {
+    heading: "Engagement",
+    links: [
+      { name: "Process", path: "/how-it-works" },
+      { name: "Pricing", path: "/pricing" },
+      { name: "Start a project", path: "/hire" },
+      { name: "Join as freelancer", path: "/join" },
+    ],
+  },
+  {
+    heading: "Legal",
+    links: [
+      { name: "Terms & Conditions", path: "/terms" },
+      { name: "Privacy Policy", path: "/privacy" },
+      { name: "Refund Policy", path: "/refund-policy" },
+    ],
+  },
+];
 
-export const Footer = () => {
-  return (
-    <footer className="bg-hero-gradient text-white">
-      <div className="container-wide mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 lg:gap-12">
-          {/* Brand */}
-          <div className="col-span-2 md:col-span-1">
-            <Link to="/" className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center">
-                <span className="text-xl font-bold text-accent-foreground font-display">Y</span>
-              </div>
-              <span className="text-xl font-bold font-display">YouLink</span>
-            </Link>
-            <p className="text-primary-foreground/70 text-sm leading-relaxed">
-              Quality-controlled freelance services with supervisor-led teams.
-            </p>
-          </div>
+export const Footer = () => (
+  <footer className="border-t">
+    {/* Contact strip — one cell per channel, each with its own arrow */}
+    <div className="grid border-b sm:grid-cols-2">
+      <Link
+        to="/hire"
+        className="group flex items-center justify-between gap-24 border-b px-12 py-16 transition-colors duration-800 ease-out hover:bg-theme-fg hover:text-theme-bg sm:border-b-0 lg:px-20"
+      >
+        <span className="text-body-10">Start a project</span>
+        <ArrowRightGlyph className="transition-transform duration-300 ease-out group-hover:translate-x-4" />
+      </Link>
 
-          {/* Platform */}
-          <div>
-            <h4 className="font-semibold mb-4">Platform</h4>
-            <ul className="space-y-3">
-              {footerLinks.platform.map((link) => (
-                <li key={link.path}>
-                  <Link
-                    to={link.path}
-                    className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+      <a
+        href={brand.instagram}
+        target="_blank"
+        rel="noreferrer noopener"
+        className="group flex items-center justify-between gap-24 px-12 py-16 transition-colors duration-800 ease-out hover:bg-theme-fg hover:text-theme-bg sm:border-l lg:px-20"
+      >
+        <span className="text-body-10">Instagram {brand.instagramHandle}</span>
+        <ArrowRightGlyph className="transition-transform duration-300 ease-out group-hover:translate-x-4 group-hover:-translate-y-4" />
+      </a>
+    </div>
 
-          {/* Company */}
-          <div>
-            <h4 className="font-semibold mb-4">Company</h4>
-            <ul className="space-y-3">
-              {footerLinks.company.map((link) => (
-                <li key={link.path}>
-                  <Link
-                    to={link.path}
-                    className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Legal */}
-          <div>
-            <h4 className="font-semibold mb-4">Legal</h4>
-            <ul className="space-y-3">
-              {footerLinks.legal.map((link) => (
-                <li key={link.path}>
-                  <Link
-                    to={link.path}
-                    className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Get Started */}
-          <div>
-            <h4 className="font-semibold mb-4">Get Started</h4>
-            <ul className="space-y-3">
-              {footerLinks.join.map((link) => (
-                <li key={link.path}>
-                  <Link
-                    to={link.path}
-                    className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        <div className="border-t border-primary-foreground/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-primary-foreground/60">
-            © {new Date().getFullYear()} YouLink. All rights reserved.
-          </p>
-          <p className="text-sm text-primary-foreground/60">
-            Built with trust, delivered with excellence.
-          </p>
-        </div>
+    <div className="grid lg:grid-cols-4">
+      <div className="cell lg:col-span-1">
+        <p className="max-w-prose text-body-10 opacity-70">{brand.positioning}</p>
       </div>
-    </footer>
-  );
-};
+
+      {columns.map((column) => (
+        <nav key={column.heading} aria-label={column.heading} className="cell border-t lg:border-l lg:border-t-0">
+          <h2 className="label opacity-60">{column.heading}</h2>
+          <ul className="mt-20">
+            {column.links.map((link) => (
+              <li key={link.path}>
+                <Link
+                  to={link.path}
+                  className="link-wipe block py-6 font-mono text-caption-20 uppercase transition-opacity duration-300 ease-out hover:opacity-70"
+                >
+                  {link.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      ))}
+    </div>
+
+    {/* The wordmark, run to the edges */}
+    <div className="panel-ink overflow-hidden border-t px-12 pb-8 pt-16 lg:px-20">
+      <p aria-hidden="true" className="whitespace-nowrap text-headline-50 leading-[0.75]">
+        YouLink
+      </p>
+    </div>
+
+    <div className="panel-ink flex flex-col gap-8 border-t px-12 py-14 font-mono text-caption-10 uppercase sm:flex-row sm:items-center sm:justify-between lg:px-20">
+      <p className="opacity-60">© {new Date().getFullYear()} YouLink. All rights reserved.</p>
+      <p className="opacity-60">{brand.tagline}</p>
+    </div>
+  </footer>
+);
