@@ -1,206 +1,114 @@
 import { Layout } from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { 
-  Send, ClipboardCheck, Users, FileSignature, Rocket, HeartHandshake,
-  UserPlus, Search, CheckCircle, CreditCard, Briefcase, GraduationCap,
-  ArrowRight
-} from "lucide-react";
+import { Lines, Reveal } from "@/components/site/Reveal";
+import { CTASection } from "@/components/home/CTASection";
+import { clientProcess, freelancerProcess } from "@/data/site";
 
-const clientSteps = [
-  {
-    icon: Send,
-    title: "Submit Project Enquiry",
-    description: "Fill out our project enquiry form with your requirements, timeline, and budget expectations.",
-  },
-  {
-    icon: ClipboardCheck,
-    title: "Requirement Assessment",
-    description: "Our team reviews your project, clarifies details, and prepares a comprehensive scope document.",
-  },
-  {
-    icon: Users,
-    title: "Team & Supervisor Assignment",
-    description: "We match you with the right freelancer team led by an experienced supervisor for your project type.",
-  },
-  {
-    icon: FileSignature,
-    title: "Legal Agreement + 50% Advance",
-    description: "Sign a service agreement for legal protection. Project begins after 50% advance payment.",
-  },
-  {
-    icon: Rocket,
-    title: "Milestone-Based Execution",
-    description: "Work progresses through defined milestones with regular updates and quality checkpoints.",
-  },
-  {
-    icon: HeartHandshake,
-    title: "Delivery + Post-Support",
-    description: "Final delivery after quality review, followed by post-project support as per agreement.",
-  },
-];
+interface TrackProps {
+  index: string;
+  label: string;
+  titleLines: string[];
+  lede: string;
+  steps: readonly { title: string; description: string }[];
+  action: { label: string; to: string };
+}
 
-const freelancerSteps = [
-  {
-    icon: UserPlus,
-    title: "Apply via Onboarding Form",
-    description: "Submit your profile with skills, experience, portfolio, and CV for initial screening.",
-  },
-  {
-    icon: Search,
-    title: "Profile Screening & Verification",
-    description: "Our team reviews your application, verifies credentials, and assesses skill alignment.",
-  },
-  {
-    icon: CheckCircle,
-    title: "Approval by Admin/Supervisor",
-    description: "Qualified applicants are approved and added to our verified freelancer network.",
-  },
-  {
-    icon: CreditCard,
-    title: "Subscription Payment (₹99/month)",
-    description: "Activate your account with a nominal monthly subscription to access project opportunities.",
-  },
-  {
-    icon: Briefcase,
-    title: "Assignment to Supervised Projects",
-    description: "Get matched to projects based on your skills, work under supervisor guidance.",
-  },
-  {
-    icon: GraduationCap,
-    title: "Mentorship + Payout Cycle",
-    description: "Receive continuous feedback, skill development support, and fair milestone-based payouts.",
-  },
-];
+/** A pinned title column against a scrolling list of ruled steps. */
+const Track = ({ index, label, titleLines, lede, steps, action }: TrackProps) => (
+  <section className="border-b">
+    <div className="flex items-baseline gap-16 border-b px-12 py-14 lg:px-20">
+      <span className="index-number">{index}</span>
+      <span className="label">{label}</span>
+    </div>
 
-const HowItWorks = () => {
-  return (
-    <Layout>
-      {/* Hero Section */}
-      <section className="section-padding bg-subtle-gradient">
-        <div className="container-narrow mx-auto text-center">
-          <h1 className="text-4xl sm:text-5xl font-bold font-display mb-6">
-            How <span className="text-gradient-hero">YouLink</span> Works
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            A structured, transparent process designed for success — 
-            whether you're a client seeking quality work or a freelancer looking to grow.
-          </p>
-        </div>
-      </section>
+    <div className="grid lg:grid-cols-3">
+      <div className="cell pin">
+        <h2 className="text-headline-20">
+          <Lines lines={titleLines} />
+        </h2>
+        <p className="mt-20 max-w-prose text-body-10 opacity-70">{lede}</p>
+        <Button asChild variant="default" className="mt-24">
+          <Link to={action.to}>{action.label}</Link>
+        </Button>
+      </div>
 
-      {/* For Clients */}
-      <section className="section-padding bg-background">
-        <div className="container-wide mx-auto">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-action/10 text-action text-sm font-medium mb-4">
-              For Clients
+      <ol className="border-t lg:col-span-2 lg:border-l lg:border-t-0">
+        {steps.map((step, stepIndex) => (
+          <Reveal
+            as="li"
+            key={step.title}
+            delay={stepIndex * 50}
+            className="grid gap-8 border-b px-12 py-16 last:border-b-0 sm:grid-cols-[48px_1fr] lg:px-20"
+          >
+            <span className="index-number sm:pt-6">{String(stepIndex + 1).padStart(2, "0")}</span>
+            <div>
+              <h3 className="text-headline-10">{step.title}</h3>
+              <p className="mt-8 max-w-prose text-body-10 opacity-70">{step.description}</p>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-bold font-display mb-4">
-              Get Quality Work Delivered
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              From enquiry to delivery, here's how we ensure your project succeeds.
-            </p>
-          </div>
+          </Reveal>
+        ))}
+      </ol>
+    </div>
+  </section>
+);
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-12">
-            {clientSteps.map((step, index) => (
-              <div key={step.title} className="card-elevated p-6 lg:p-8 relative">
-                <div className="absolute top-6 right-6 w-8 h-8 rounded-full bg-action/10 text-action text-sm font-bold flex items-center justify-center">
-                  {index + 1}
-                </div>
-                <div className="w-12 h-12 rounded-xl bg-action/10 flex items-center justify-center mb-5">
-                  <step.icon className="w-6 h-6 text-action" />
-                </div>
-                <h3 className="text-xl font-semibold font-display mb-3">{step.title}</h3>
-                <p className="text-muted-foreground">{step.description}</p>
-              </div>
-            ))}
-          </div>
+const HowItWorks = () => (
+  <Layout>
+    <section className="border-b">
+      <div className="flex items-baseline gap-16 border-b px-12 py-14 lg:px-20">
+        <span className="index-number">01</span>
+        <span className="label">Process</span>
+      </div>
 
-          <div className="text-center">
-            <Link to="/hire">
-              <Button variant="action" size="lg">
-                Start Your Project
-                <ArrowRight size={16} />
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
+      <div className="px-12 pb-24 pt-40 lg:px-20 lg:pb-40 lg:pt-56">
+        <h1 className="text-headline-40">
+          <Lines lines={["The whole path,", "in the open."]} stagger={90} />
+        </h1>
+      </div>
 
-      {/* Divider */}
-      <div className="h-px bg-border" />
+      <div className="cell border-t">
+        <p className="max-w-prose text-body-20 opacity-70">
+          A structured, transparent process designed for success — whether you're a client seeking
+          quality work or a freelancer looking to grow.
+        </p>
+      </div>
+    </section>
 
-      {/* For Freelancers */}
-      <section className="section-padding bg-subtle-gradient">
-        <div className="container-wide mx-auto">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 text-accent text-sm font-medium mb-4">
-              For Freelancers
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-bold font-display mb-4">
-              Join Our Verified Network
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              From application to earning, here's your journey to becoming a YouLink freelancer.
-            </p>
-          </div>
+    <Track
+      index="02"
+      label="For clients"
+      titleLines={["Get quality work", "delivered."]}
+      lede="From enquiry to delivery, here's how we make sure your project succeeds."
+      steps={clientProcess}
+      action={{ label: "Start your project", to: "/hire" }}
+    />
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-12">
-            {freelancerSteps.map((step, index) => (
-              <div key={step.title} className="card-elevated p-6 lg:p-8 relative bg-card">
-                <div className="absolute top-6 right-6 w-8 h-8 rounded-full bg-accent/10 text-accent text-sm font-bold flex items-center justify-center">
-                  {index + 1}
-                </div>
-                <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mb-5">
-                  <step.icon className="w-6 h-6 text-accent" />
-                </div>
-                <h3 className="text-xl font-semibold font-display mb-3">{step.title}</h3>
-                <p className="text-muted-foreground">{step.description}</p>
-              </div>
-            ))}
-          </div>
+    <Track
+      index="03"
+      label="For freelancers"
+      titleLines={["Join our verified", "network."]}
+      lede="From application to earning, here's your journey to becoming a YouLink freelancer."
+      steps={freelancerProcess}
+      action={{ label: "Apply now", to: "/join" }}
+    />
 
-          <div className="text-center">
-            <Link to="/join">
-              <Button variant="accent" size="lg">
-                Apply Now
-                <ArrowRight size={16} />
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
+    <section className="grid border-b lg:grid-cols-2">
+      <div className="cell">
+        <h2 className="text-headline-20">Have questions before you start?</h2>
+      </div>
+      <div className="grid grid-cols-2 border-t lg:border-l lg:border-t-0">
+        <Button asChild variant="outline" size="cell" className="border-y-0 border-l-0">
+          <Link to="/pricing">View pricing</Link>
+        </Button>
+        <Button asChild variant="outline" size="cell" className="border-y-0 border-r-0">
+          <Link to="/hire">Contact us</Link>
+        </Button>
+      </div>
+    </section>
 
-      {/* FAQ Teaser */}
-      <section className="section-padding bg-background">
-        <div className="container-narrow mx-auto">
-          <div className="card-elevated p-8 lg:p-12 text-center">
-            <h2 className="text-2xl font-bold font-display mb-4">
-              Have Questions?
-            </h2>
-            <p className="text-muted-foreground mb-6 max-w-lg mx-auto">
-              We're here to help. Reach out through our contact form or explore our pricing and policies.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link to="/hire">
-                <Button variant="outline" size="lg">
-                  Contact Us
-                </Button>
-              </Link>
-              <Link to="/pricing">
-                <Button variant="outline" size="lg">
-                  View Pricing
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-    </Layout>
-  );
-};
+    <CTASection />
+  </Layout>
+);
 
 export default HowItWorks;

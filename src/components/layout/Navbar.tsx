@@ -1,102 +1,172 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { ThemeToggle } from "@/components/site/ThemeToggle";
+import { ArrowRightGlyph } from "@/components/site/Glyphs";
+import { navLinks } from "@/data/site";
 
-const navLinks = [
-  { name: "Home", path: "/" },
-  { name: "About", path: "/about" },
-  { name: "Services", path: "/services" },
-  { name: "How It Works", path: "/how-it-works" },
-];
+/** Local studio time, in the same mono register as every other label. */
+const StudioClock = () => {
+  const [time, setTime] = useState("");
 
+  useEffect(() => {
+    const render = () =>
+      setTime(
+        new Intl.DateTimeFormat("en-IN", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+          timeZone: "Asia/Kolkata",
+        })
+          .format(new Date())
+          .toUpperCase(),
+      );
+
+    render();
+    const id = window.setInterval(render, 30_000);
+    return () => window.clearInterval(id);
+  }, []);
+
+  return (
+    <span className="font-mono text-caption-20 uppercase tabular-nums">
+      {time} IST
+      <span className="ml-8 opacity-60">India</span>
+    </span>
+  );
+};
+
+/**
+ * A 60px sticky bar, present from the first pixel and never hidden.
+ * It is a grid of ruled cells: an inverted logo tile, the studio clock, the
+ * navigation, the theme toggle, and a solid contact cell at the far edge.
+ */
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsOpen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
+
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-border/50 shadow-sm">
-      <div className="container-wide mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 lg:h-20">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-xl bg-hero-gradient flex items-center justify-center">
-              <span className="text-xl font-bold text-white font-display">Y</span>
-            </div>
-            <span className="text-xl font-bold font-display text-foreground">YouLink</span>
-          </Link>
+    <header className="sticky inset-x-0 top-0 z-50 border-b bg-theme-bg">
+      <div className="flex min-h-[var(--site-header-height)] items-stretch">
+        {/* Inverted square tile — the strongest identity mark on the page. */}
+        <Link
+          to="/"
+          aria-label="YouLink — home"
+          className="flex size-[var(--site-header-height)] shrink-0 items-center justify-center bg-theme-fg text-theme-bg"
+        >
+          <span className="perspective-[1000px]">
+            <span className="block animate-logo-coin font-mono text-caption-20 uppercase [transform-style:preserve-3d]">
+              YL
+            </span>
+          </span>
+        </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-1">
-            {navLinks.map((link) => (
-              <Link key={link.path} to={link.path}>
-                <Button 
-                  variant="nav" 
-                  className={location.pathname === link.path ? "text-accent" : ""}
-                >
-                  {link.name}
-                </Button>
-              </Link>
-            ))}
-          </div>
-
-          {/* CTA Buttons */}
-          <div className="hidden lg:flex items-center gap-3">
-            <Link to="/join">
-              <Button variant="outline" size="lg">
-                Join as Freelancer
-              </Button>
-            </Link>
-            <Link to="/hire">
-              <Button variant="action" size="lg">
-                Hire a Team
-              </Button>
-            </Link>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            className="lg:hidden p-2 rounded-lg hover:bg-secondary"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+        <div className="hidden flex-1 items-center border-l px-20 lg:flex">
+          <StudioClock />
         </div>
 
-        {/* Mobile Menu */}
-        {isOpen && (
-          <div className="lg:hidden py-4 border-t border-border/50 animate-fade-in">
-            <div className="flex flex-col gap-2">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  onClick={() => setIsOpen(false)}
-                  className={`px-4 py-3 rounded-lg font-medium transition-colors ${
-                    location.pathname === link.path
-                      ? "bg-accent/10 text-accent"
-                      : "hover:bg-secondary"
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              ))}
-              <div className="flex flex-col gap-2 mt-4 px-4">
-                <Link to="/join" onClick={() => setIsOpen(false)}>
-                  <Button variant="outline" className="w-full">
-                    Join as Freelancer
-                  </Button>
-                </Link>
-                <Link to="/hire" onClick={() => setIsOpen(false)}>
-                  <Button variant="action" className="w-full">
-                    Hire a Team
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        )}
+        <nav aria-label="Primary" className="hidden items-stretch border-l lg:flex">
+          {navLinks.map((link) => {
+            const isActive = location.pathname === link.path;
+            return (
+              <Link
+                key={link.path}
+                to={link.path}
+                aria-current={isActive ? "page" : undefined}
+                className={cn(
+                  "flex items-center px-16 text-body-10 transition-colors duration-300 ease-out",
+                  "hover:bg-theme-fg hover:text-theme-bg",
+                  isActive && "bg-theme-fg text-theme-bg",
+                )}
+              >
+                {link.name}
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div className="ml-auto flex items-stretch lg:ml-0">
+          <ThemeToggle />
+
+          {/* The contact cell — solid, full height, arrow at the far edge. */}
+          <Link
+            to="/hire"
+            className="group hidden items-center gap-40 bg-theme-fg px-20 text-theme-bg transition-colors duration-800 ease-out hover:bg-accent hover:text-ink lg:flex"
+          >
+            <span className="text-body-10">Start a project</span>
+            <ArrowRightGlyph className="transition-transform duration-300 ease-out group-hover:translate-x-4" />
+          </Link>
+
+          <button
+            type="button"
+            onClick={() => setIsOpen((open) => !open)}
+            aria-expanded={isOpen}
+            aria-controls="mobile-navigation"
+            aria-label={isOpen ? "Close menu" : "Open menu"}
+            className="flex size-[var(--site-header-height)] shrink-0 items-center justify-center border-l bg-theme-fg font-mono text-caption-10 uppercase text-theme-bg lg:hidden"
+          >
+            {isOpen ? "Close" : "Menu"}
+          </button>
+        </div>
       </div>
-    </nav>
+
+      {/* Mobile panel — the same ruled rows, at display scale. */}
+      <div
+        id="mobile-navigation"
+        hidden={!isOpen}
+        className="h-[calc(100dvh-var(--site-header-height))] overflow-y-auto border-t bg-theme-bg lg:hidden"
+      >
+        <nav aria-label="Mobile">
+          {navLinks.map((link, index) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              className="flex items-baseline gap-16 border-b px-12 py-16 transition-colors duration-300 ease-out hover:bg-theme-fg hover:text-theme-bg"
+            >
+              <span className="index-number">{String(index + 1).padStart(2, "0")}</span>
+              <span className="text-headline-10">{link.name}</span>
+            </Link>
+          ))}
+        </nav>
+
+        <Link
+          to="/hire"
+          className="flex items-center justify-between gap-16 bg-theme-fg px-12 py-20 text-theme-bg"
+        >
+          <span className="font-mono text-caption-20 uppercase">Start a project</span>
+          <ArrowRightGlyph />
+        </Link>
+
+        <Link
+          to="/join"
+          className="flex items-center justify-between gap-16 border-b px-12 py-20"
+        >
+          <span className="font-mono text-caption-20 uppercase">Join as freelancer</span>
+          <ArrowRightGlyph />
+        </Link>
+
+        <div className="px-12 py-16">
+          <StudioClock />
+        </div>
+      </div>
+    </header>
   );
 };
