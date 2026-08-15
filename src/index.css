@@ -60,6 +60,24 @@
     scrollbar-color: rgb(var(--theme-fg)) rgb(var(--theme-bg));
   }
 
+  /* Lenis smooth scroll */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
   body {
     background-color: rgb(var(--theme-bg));
     color: rgb(var(--theme-fg));
@@ -291,7 +309,7 @@
   }
 
   /* ---------------------------------------------------------------- */
-  /* Reveal — per-line masks, rising from their own baseline          */
+  /* Reveal — GSAP ScrollTrigger driven, CSS provides initial state   */
   /* ---------------------------------------------------------------- */
   .reveal-mask {
     overflow: hidden;
@@ -300,33 +318,30 @@
   .reveal-inner {
     display: block;
     transform: translateY(110%);
-    transition: transform 800ms cubic-bezier(0.16, 1, 0.3, 1);
-    transition-delay: var(--reveal-delay, 0ms);
+    will-change: transform;
   }
 
-  [data-visible="true"] .reveal-inner,
-  .reveal-inner[data-visible="true"] {
-    transform: translateY(0);
+  /* GSAP-driven reveal: initial hidden state for elements */
+  .gsap-reveal {
+    will-change: transform, opacity, clip-path;
   }
 
-  /* Panels and images wipe in with clip-path rather than fading. */
-  .reveal-wipe {
-    clip-path: inset(0 0 100% 0);
-    transition: clip-path 800ms cubic-bezier(0.16, 1, 0.3, 1);
-    transition-delay: var(--reveal-delay, 0ms);
-  }
-
-  .reveal-wipe[data-visible="true"] {
-    clip-path: inset(0 0 0 0);
+  /* ScrollTrigger pinning support */
+  .pin-spacer {
+    /* Override default pin-spacer background so it doesn't create visible gaps */
+    background: transparent !important;
   }
 
   @media (prefers-reduced-motion: reduce) {
     .reveal-inner {
-      transform: none;
+      transform: none !important;
     }
 
-    .reveal-wipe {
-      clip-path: none;
+    .gsap-reveal {
+      opacity: 1 !important;
+      transform: none !important;
+      clip-path: none !important;
+      will-change: auto;
     }
   }
 
