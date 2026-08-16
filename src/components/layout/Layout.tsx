@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
 import { SiteBackground } from "@/components/site/SiteBackground";
+import { SmoothScroll } from "@/components/site/SmoothScroll";
 
 interface LayoutProps {
   children: ReactNode;
@@ -9,6 +10,7 @@ interface LayoutProps {
 
 export const Layout = ({ children }: LayoutProps) => (
   <div className="flex min-h-screen flex-col">
+    <SmoothScroll />
     <SiteBackground />
     <a
       href="#main"

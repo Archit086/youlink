@@ -10,10 +10,12 @@ import { brand, clients } from "@/data/site";
  * client roster. No stock imagery — type, texture and colour blocks only.
  */
 export const HeroSection = () => (
-  <section className="border-b">
+  // data-field: the section itself is transparent so the particle background
+  // shows through the empty right-hand panel. Content halves paint their own.
+  <section data-field className="border-b">
     <div className="grid lg:grid-cols-2">
       {/* Left — the name, at the largest size the site uses */}
-      <div className="flex min-h-[46svh] flex-col justify-center p-12 lg:min-h-[calc(100svh-var(--site-header-height))] lg:p-20">
+      <div className="surface flex min-h-[46svh] flex-col justify-center p-12 lg:min-h-[calc(100svh-var(--site-header-height))] lg:p-20">
         <h1 className="text-headline-50">
           <Lines lines={["YouLink"]} />
         </h1>
