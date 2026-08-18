@@ -120,21 +120,21 @@ export const MetricsBand = () => {
             <div
               key={metric.label}
               data-panel
-              className={cn(column.offset, index > 0 && "border-t lg:border-l lg:border-t-0")}
+              className={cn(column.offset, index > 0 && "border-t border-theme-fg/10 lg:border-l lg:border-t-0")}
             >
               <div
                 className={cn(
-                  "flex min-h-[38svh] flex-col justify-between p-12 lg:p-20",
+                  "flex min-h-[46svh] flex-col justify-between p-16 lg:p-28",
                   column.height,
                   column.tone,
                 )}
               >
-                <dd className="text-digit-30 tabular-nums">
+                <dd className="serif-accent text-[clamp(5rem,11vw,9.5rem)] leading-[0.9] tabular-nums">
                   <span data-count={metric.value}>{metric.value}</span>
                 </dd>
 
-                <div className="mt-40">
-                  <dt className="text-body-20">{metric.label}</dt>
+                <div className="mt-56">
+                  <dt className="serif-accent text-[clamp(1.25rem,1.8vw,1.6rem)]">{metric.label}</dt>
                   <p className="mt-8 max-w-prose font-mono text-caption-10 uppercase opacity-60">
                     {metric.note}
                   </p>

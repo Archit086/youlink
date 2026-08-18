@@ -7,9 +7,9 @@ import { cellRules, gridColumns } from "@/components/site/ruled-grid";
 /** Section 05 — why the work holds up: the model behind the delivery. */
 export const OperatingModel = () => (
   <section className="border-b">
-    <div className="flex items-baseline gap-16 border-b px-12 py-14 lg:px-20">
+    <div className="flex items-baseline gap-16 border-b border-theme-fg/15 px-16 py-18 lg:px-28">
       <span className="index-number">06</span>
-      <span className="label">Operating model</span>
+      <span className="label-serif">( Operating model )</span>
     </div>
 
     <div className="grid border-b lg:grid-cols-2">

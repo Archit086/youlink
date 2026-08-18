@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { cn } from "@/lib/utils";
 import { services } from "@/data/site";
 import { Lines } from "@/components/site/Reveal";
 import { WireFigure, ArrowRightGlyph } from "@/components/site/Glyphs";
@@ -114,19 +115,19 @@ export const ServicesIndex = () => {
     <section ref={sectionRef} className="border-b">
       <div className="grid lg:grid-cols-2">
         {/* Left — the statement, held in place for the whole scrub */}
-        <div className="panel-grey flex flex-col justify-between p-12 lg:min-h-[calc(100svh-var(--site-header-height))] lg:p-20">
+        <div className="panel-grey flex flex-col justify-between p-16 lg:min-h-[calc(100svh-var(--site-header-height))] lg:p-28">
           <div>
             <h2 className="text-headline-40">
               <Lines lines={["Here's what", "YouLink does to", "your brand"]} />
             </h2>
 
             {/* Index markers — track the active capability */}
-            <ol className="mt-40 hidden lg:block" aria-hidden="true">
+            <ol className="mt-56 hidden lg:block" aria-hidden="true">
               {services.map((service, index) => (
                 <li
                   key={service.id}
                   data-marker
-                  className="flex items-baseline gap-16 border-t py-8 font-mono text-caption-10 uppercase"
+                  className="flex items-baseline gap-16 border-t border-theme-fg/15 py-10 font-mono text-caption-10 uppercase"
                 >
                   <span className="tabular-nums">{String(index + 1).padStart(2, "0")}</span>
                   <span>{service.title}</span>
@@ -148,7 +149,7 @@ export const ServicesIndex = () => {
 
             <Link
               to="/hire"
-              className="group mt-24 inline-flex items-center gap-24 bg-ink px-16 py-12 font-mono text-caption-10 uppercase text-white transition-colors duration-800 ease-out hover:bg-accent hover:text-ink"
+              className="pill mt-28 w-fit"
             >
               Talk to the studio
               <ArrowRightGlyph className="size-14 transition-transform duration-300 ease-out group-hover:translate-x-4" />
@@ -156,25 +157,43 @@ export const ServicesIndex = () => {
           </div>
         </div>
 
-        {/* Right — the panels the scroll moves through */}
+        {/* Right — the panels the scroll moves through. Each carries its own
+            ground, so advancing the stack shifts the section between dark and
+            light rather than only swapping text. */}
         <div
           ref={stackRef}
-          className="panel-ink relative overflow-hidden border-t lg:border-l lg:border-t-0"
+          className="surface relative overflow-hidden border-t lg:border-l lg:border-t-0"
         >
           {services.map((service, index) => (
             <article
               key={service.id}
               data-panel
-              className="grid content-center gap-24 border-b p-12 last:border-b-0 lg:grid-cols-12 lg:gap-20 lg:border-b-0 lg:p-20"
+              className={cn(
+                "relative grid content-center gap-24 border-b p-16 last:border-b-0",
+                "lg:grid-cols-12 lg:gap-20 lg:border-b-0 lg:p-28",
+                index % 2 === 0 ? "panel-ink" : "surface",
+              )}
             >
-              <div className="flex gap-16 lg:col-span-6">
+              <div className="relative z-10 flex gap-16 lg:col-span-6">
                 <span className="index-number pt-8">{String(index + 1).padStart(2, "0")}</span>
-                <h3 className="text-headline-10">{service.title}</h3>
+                <h3 className="serif-accent text-[clamp(1.75rem,3vw,2.75rem)] leading-[1.1]">
+                  {service.title}
+                </h3>
               </div>
 
-              <p className="max-w-prose text-body-10 opacity-80 lg:col-span-6">{service.summary}</p>
+              <p className="relative z-10 max-w-prose text-body-10 opacity-80 lg:col-span-6">
+                {service.summary}
+              </p>
 
-              <div data-figure className="lg:col-span-6">
+              <div data-figure className="relative lg:col-span-6">
+                {/* Soft mass of light behind the geometry */}
+                <span
+                  aria-hidden="true"
+                  className={cn(
+                    "orb pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[130%] w-[130%] -translate-x-1/2 -translate-y-1/2",
+                    index % 2 === 1 && "orb-accent",
+                  )}
+                />
                 <WireFigure variant={index} />
               </div>
 

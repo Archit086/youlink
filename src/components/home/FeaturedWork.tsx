@@ -9,9 +9,9 @@ export const FeaturedWork = () => {
 
   return (
     <section className="border-b">
-      <div className="flex items-baseline gap-16 border-b px-12 py-14 lg:px-20">
+      <div className="flex items-baseline gap-16 border-b border-theme-fg/15 px-16 py-18 lg:px-28">
         <span className="index-number">05</span>
-        <span className="label">Selected work</span>
+        <span className="label-serif">( Selected work )</span>
         <Link to="/work" className="link-wipe ml-auto font-mono text-caption-10 uppercase">
           All {clients.length} brands
         </Link>

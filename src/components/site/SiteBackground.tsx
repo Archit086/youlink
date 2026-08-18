@@ -15,7 +15,11 @@ const ParticleWave = lazy(() =>
  */
 export const SiteBackground = () => (
   <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden" aria-hidden="true">
-    <Suspense fallback={<div className="halftone absolute inset-0 opacity-40" />}>
+    {/* Permanent CSS texture. It shows while the chunk loads, and stays as the
+        visible fallback if WebGL is unavailable and the canvas bails out. */}
+    <div className="halftone absolute inset-0 opacity-30" />
+
+    <Suspense fallback={null}>
       <ParticleWave density={180} opacity={0.5} />
     </Suspense>
   </div>

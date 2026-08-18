@@ -13,15 +13,16 @@
     /* Fluid slope: 375px → 1600px viewport. Drives every clamp() in the type scale. */
     --fluid-slope: calc((100vw - 375px) / 1225);
 
-    /* The palette. Four values. */
-    --color-ink: #1b1f27;
-    --color-white: #ffffff;
-    --color-grey: #d9dade;
+    /* The palette. Warm-shifted: nothing is pure black or pure white, which is
+       most of what makes the page feel soft rather than clinical. */
+    --color-ink: #0d0d14;
+    --color-white: #f0f0f5;
+    --color-grey: #e2e2ea;
     --color-accent: #ffa8ce;
 
     /* The invertible pair — light is the default. */
-    --theme-bg: 255 255 255;
-    --theme-fg: 27 31 39;
+    --theme-bg: 240 240 245;
+    --theme-fg: 13 13 20;
 
     --site-header-height: 60px;
     --sb-size: 6px;
@@ -32,20 +33,20 @@
 
   [data-theme="dark"],
   .dark {
-    --theme-bg: 27 31 39;
-    --theme-fg: 255 255 255;
+    --theme-bg: 13 13 20;
+    --theme-fg: 240 240 245;
   }
 
   /* A section can invert itself without a second stylesheet. */
   .invert-theme {
-    --theme-bg: 27 31 39;
-    --theme-fg: 255 255 255;
+    --theme-bg: 13 13 20;
+    --theme-fg: 240 240 245;
   }
 
   [data-theme="dark"] .invert-theme,
   .dark .invert-theme {
-    --theme-bg: 255 255 255;
-    --theme-fg: 27 31 39;
+    --theme-bg: 240 240 245;
+    --theme-fg: 13 13 20;
   }
 
   * {
@@ -158,13 +159,385 @@
   /* The hairline grid                                                 */
   /* ---------------------------------------------------------------- */
 
+  /* ---------------------------------------------------------------- */
+  /* Editorial voice — serif italic, for accent moments only.          */
+  /* ---------------------------------------------------------------- */
+  .serif-accent {
+    font-family: "DM Serif Display", "Iowan Old Style", Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+
+  /* A parenthetical section label: ( The studio ) */
+  .label-serif {
+    font-family: "DM Serif Display", "Iowan Old Style", Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1rem, 1.2vw, 1.25rem);
+    letter-spacing: 0;
+    opacity: 0.7;
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Pill — the softer button shape                                    */
+  /* ---------------------------------------------------------------- */
+  .pill {
+    @apply relative inline-flex shrink-0 items-center gap-12 overflow-hidden rounded-full px-20 py-10;
+    @apply font-mono text-caption-10 uppercase;
+    border: 1px solid rgb(var(--theme-fg) / 0.35);
+    transition:
+      color 600ms cubic-bezier(0.19, 1, 0.22, 1),
+      border-color 600ms cubic-bezier(0.19, 1, 0.22, 1);
+  }
+
+  .pill::before {
+    content: "";
+    @apply absolute inset-0 -z-10 origin-left scale-x-0 rounded-full;
+    background-color: rgb(var(--theme-fg));
+    transition: transform 600ms cubic-bezier(0.19, 1, 0.22, 1);
+  }
+
+  .pill:hover {
+    color: rgb(var(--theme-bg));
+    border-color: rgb(var(--theme-fg));
+  }
+
+  .pill:hover::before {
+    @apply scale-x-100;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pill::before {
+      display: none;
+    }
+
+    .pill:hover {
+      background-color: rgb(var(--theme-fg));
+      color: rgb(var(--theme-bg));
+    }
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Hero — three stacked layers: blobs, wordmark, overlay             */
+  /* ---------------------------------------------------------------- */
+  /* The hero is always a white ground with black type, regardless of theme. */
+  .hero-light {
+    --theme-bg: 255 255 255;
+    --theme-fg: 13 13 20;
+    background-color: rgb(var(--theme-bg));
+    color: rgb(var(--theme-fg));
+  }
+
+  .hero-blob-container {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  /* Registered so the reveal radius can be transitioned rather than snapping. */
+  @property --reveal-r {
+    syntax: "<length>";
+    inherits: false;
+    initial-value: 0px;
+  }
+
+  /* Layer 1b — the texture, revealed in a soft disc that follows the cursor.
+     It sits above the masses and below the wordmark, so letters stay solid
+     black while the texture shows through the space around them. */
+  .hero-video {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+    --reveal-r: 0px;
+    -webkit-mask-image: radial-gradient(
+      circle var(--reveal-r) at var(--mx, 50%) var(--my, 50%),
+      #000 0%,
+      #000 62%,
+      transparent 100%
+    );
+    mask-image: radial-gradient(
+      circle var(--reveal-r) at var(--mx, 50%) var(--my, 50%),
+      #000 0%,
+      #000 62%,
+      transparent 100%
+    );
+    transition: --reveal-r 600ms cubic-bezier(0.19, 1, 0.22, 1);
+  }
+
+  .hero-video video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Without a hover-capable pointer there is no cursor to follow, so the
+     texture is simply always present. */
+  @media (hover: none) {
+    .hero-video {
+      --reveal-r: 150vmax !important;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-video {
+      transition: none;
+    }
+  }
+
+  .hero-blob {
+    position: absolute;
+    background: rgb(var(--theme-fg));
+    will-change: border-radius, transform;
+  }
+
+  .hero-blob--1 {
+    width: clamp(300px, 40vw, 600px);
+    height: clamp(400px, 50vh, 700px);
+    top: 10%;
+    right: 15%;
+    animation: blob-morph-1 15s ease-in-out infinite alternate;
+  }
+
+  .hero-blob--2 {
+    width: clamp(200px, 25vw, 400px);
+    height: clamp(250px, 35vh, 500px);
+    top: 30%;
+    right: 5%;
+    animation: blob-morph-2 18s ease-in-out -5s infinite alternate;
+  }
+
+  .hero-blob--3 {
+    width: clamp(150px, 20vw, 300px);
+    height: clamp(200px, 25vh, 350px);
+    bottom: 10%;
+    right: 25%;
+    animation: blob-morph-3 20s ease-in-out -10s infinite alternate;
+  }
+
+  @keyframes blob-morph-1 {
+    0% {
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+      transform: rotate(0deg) scale(1);
+    }
+    25% {
+      border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+      transform: rotate(5deg) scale(1.05);
+    }
+    50% {
+      border-radius: 50% 60% 30% 60% / 30% 50% 70% 40%;
+      transform: rotate(-3deg) scale(0.95);
+    }
+    75% {
+      border-radius: 40% 60% 50% 40% / 60% 40% 60% 30%;
+      transform: rotate(8deg) scale(1.02);
+    }
+    100% {
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+      transform: rotate(0deg) scale(1);
+    }
+  }
+
+  @keyframes blob-morph-2 {
+    0% {
+      border-radius: 40% 60% 60% 40% / 70% 30% 50% 60%;
+      transform: translate(0, 0);
+    }
+    50% {
+      border-radius: 60% 40% 30% 70% / 40% 60% 40% 50%;
+      transform: translate(-20px, 15px);
+    }
+    100% {
+      border-radius: 40% 60% 60% 40% / 70% 30% 50% 60%;
+      transform: translate(0, 0);
+    }
+  }
+
+  @keyframes blob-morph-3 {
+    0% {
+      border-radius: 50% 50% 40% 60% / 60% 40% 60% 40%;
+      transform: translate(0, 0) scale(1);
+    }
+    33% {
+      border-radius: 40% 60% 50% 50% / 50% 50% 40% 60%;
+      transform: translate(10px, -20px) scale(1.08);
+    }
+    66% {
+      border-radius: 60% 40% 60% 40% / 40% 60% 50% 50%;
+      transform: translate(-15px, 10px) scale(0.92);
+    }
+    100% {
+      border-radius: 50% 50% 40% 60% / 60% 40% 60% 40%;
+      transform: translate(0, 0) scale(1);
+    }
+  }
+
+  /* Layer 2 — the wordmark */
+  .hero-wordmark {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 2vw;
+    pointer-events: none;
+  }
+
+  .hero-wordmark-text {
+    font-size: clamp(80px, 18vw, 350px);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 0.85;
+    color: rgb(var(--theme-fg));
+    text-wrap: nowrap;
+  }
+
+  /* Layer 3 — the UI */
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: clamp(24px, 3vw, 48px);
+    pointer-events: none;
+  }
+
+  .hero-overlay > * {
+    pointer-events: auto;
+  }
+
+  .hero-overlay-top {
+    max-width: 400px;
+  }
+
+  .hero-tagline {
+    font-family: "DM Serif Display", "Iowan Old Style", Georgia, serif;
+    font-style: italic;
+    font-size: clamp(16px, 1.4vw, 22px);
+    line-height: 1.5;
+    opacity: 0.8;
+  }
+
+  .hero-overlay-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.6;
+  }
+
+  /* Below lg: fewer masses, and the overlay stacks. */
+  @media (max-width: 1023px) {
+    .hero-blob--3 {
+      display: none;
+    }
+
+    .hero-wordmark-text {
+      font-size: clamp(80px, 15vw, 120px);
+    }
+
+    .hero-overlay-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-blob {
+      animation: none !important;
+    }
+
+    .hero-blob--1 {
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    }
+
+    .hero-blob--2 {
+      border-radius: 40% 60% 60% 40% / 70% 30% 50% 60%;
+    }
+
+    .hero-blob--3 {
+      border-radius: 50% 50% 40% 60% / 60% 40% 60% 40%;
+    }
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Orb — a soft mass of light behind the wire figures                */
+  /* ---------------------------------------------------------------- */
+  .orb {
+    background: radial-gradient(
+      circle at 50% 50%,
+      rgb(var(--theme-fg) / 0.16) 0%,
+      rgb(var(--theme-fg) / 0.07) 42%,
+      transparent 70%
+    );
+    filter: blur(28px);
+    animation: orb-drift 26s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+  }
+
+  .orb-accent {
+    background: radial-gradient(
+      circle at 50% 50%,
+      color-mix(in srgb, var(--color-accent) 34%, transparent) 0%,
+      color-mix(in srgb, var(--color-accent) 12%, transparent) 45%,
+      transparent 72%
+    );
+  }
+
+  @keyframes orb-drift {
+    from {
+      transform: translate3d(-6%, 4%, 0) scale(0.9);
+    }
+    to {
+      transform: translate3d(6%, -5%, 0) scale(1.12);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .orb {
+      animation: none;
+    }
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Route change — a quiet fade, never a slide                        */
+  /* ---------------------------------------------------------------- */
+  .page-enter {
+    animation: page-fade 300ms cubic-bezier(0.19, 1, 0.22, 1) both;
+  }
+
+  @keyframes page-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .page-enter {
+      animation: none;
+    }
+  }
+
   /* A cell. Padding lives inside; the 1px rule is the gutter. */
   .cell {
-    @apply px-12 py-20 lg:px-20;
+    @apply px-16 py-28 lg:px-28 lg:py-36;
   }
 
   .cell-tight {
-    @apply px-12 py-14 lg:px-20;
+    @apply px-16 py-18 lg:px-28;
   }
 
   /* Rules are drawn with Tailwind's own border-t/b/l/r utilities: the base
@@ -287,6 +660,29 @@
     }
   }
 
+  /* Outline display type — letterforms drawn, not filled. */
+  .text-outline {
+    -webkit-text-stroke: 1.5px currentColor;
+    color: transparent;
+    /* Paint order keeps the stroke from eating into the counters. */
+    paint-order: stroke fill;
+  }
+
+  @supports not (-webkit-text-stroke: 1px currentColor) {
+    .text-outline {
+      color: inherit;
+      opacity: 0.25;
+    }
+  }
+
+  /* The collage words. Sized well past the display scale on purpose. */
+  .word-collage {
+    font-size: clamp(4rem, 17vw, 15.5rem);
+    line-height: 0.78;
+    letter-spacing: -0.05em;
+    font-weight: 450;
+  }
+
   /* A mono list item marked with a small accent square. */
   .spec-item {
     @apply flex items-start gap-10 font-mono text-caption-20 uppercase;
@@ -315,8 +711,9 @@
 
   .reveal-inner {
     display: block;
-    transform: translateY(110%);
-    transition: transform 800ms cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(120%);
+    /* Slower and more drawn out — the reveal should feel unhurried. */
+    transition: transform 1200ms cubic-bezier(0.19, 1, 0.22, 1);
     transition-delay: var(--reveal-delay, 0ms);
   }
 
@@ -328,8 +725,26 @@
   /* Panels and images wipe in with clip-path rather than fading. */
   .reveal-wipe {
     clip-path: inset(0 0 100% 0);
-    transition: clip-path 800ms cubic-bezier(0.16, 1, 0.3, 1);
+    transition: clip-path 1200ms cubic-bezier(0.19, 1, 0.22, 1);
     transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  /* Parallax frame: the media inside drifts slower than its container, so the
+     crop reads as a window rather than a pasted rectangle. GSAP scrubs the
+     inner element; the frame just supplies the crop and the overscale. */
+  .parallax-frame {
+    @apply relative overflow-hidden;
+  }
+
+  .parallax-media {
+    @apply h-full w-full object-cover;
+    /* Overscaled so the drift never exposes an edge. */
+    scale: 1.18;
+    transition: scale 900ms cubic-bezier(0.19, 1, 0.22, 1), filter 900ms cubic-bezier(0.19, 1, 0.22, 1);
+  }
+
+  .parallax-frame:hover .parallax-media {
+    scale: 1.24;
   }
 
   .reveal-wipe[data-visible="true"] {

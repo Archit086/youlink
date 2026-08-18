@@ -87,7 +87,7 @@ export const ClientShowcase = () => {
     <section className="border-b">
       {/* Title band — display type against a texture panel */}
       <div className="grid border-b lg:grid-cols-2">
-        <div className="p-12 lg:p-20">
+        <div className="p-16 lg:p-28">
           <h2 className="text-headline-50">
             <Lines lines={["Clients"]} />
           </h2>
@@ -101,12 +101,12 @@ export const ClientShowcase = () => {
       <div className="grid lg:grid-cols-12">
         {/* Left — label, active client, and its mark */}
         <div className="flex flex-col border-b lg:col-span-3 lg:border-b-0 lg:border-r">
-          <div className="p-12 lg:p-20">
-            <p className="spec-item">Who we work with</p>
+          <div className="p-16 lg:p-28">
+            <p className="label-serif">( Who we work with )</p>
           </div>
 
           <div className="mt-auto">
-            <div className="flex items-baseline justify-between gap-16 px-12 pb-12 lg:px-20">
+            <div className="flex items-baseline justify-between gap-16 px-16 pb-16 lg:px-28">
               <span className="label truncate">{active.name}</span>
               <span className="label shrink-0 tabular-nums opacity-60">
                 {String(activeIndex + 1).padStart(2, "0")} — {String(clients.length).padStart(2, "0")}
@@ -122,7 +122,7 @@ export const ClientShowcase = () => {
         </div>
 
         {/* Middle — the standing statement */}
-        <div className="flex flex-col border-b p-12 lg:col-span-4 lg:border-b-0 lg:border-r lg:p-20">
+        <div className="flex flex-col border-b p-16 lg:col-span-4 lg:border-b-0 lg:border-r lg:p-28">
           <p className="max-w-prose text-body-10">
             We've worked with brands across diverse industries — from fashion and food to healthcare,
             retail, jewellery, and industrial sectors. Legacy names with decades of trust, new cafés
@@ -131,7 +131,7 @@ export const ClientShowcase = () => {
 
           <Link
             to="/hire"
-            className="group mt-24 inline-flex w-fit items-center gap-24 bg-theme-fg px-16 py-12 font-mono text-caption-10 uppercase text-theme-bg transition-colors duration-800 ease-out hover:bg-accent hover:text-ink"
+            className="pill mt-28 w-fit"
           >
             Work with us
             <ArrowRightGlyph className="size-14 transition-transform duration-300 ease-out group-hover:translate-x-4" />
@@ -147,7 +147,7 @@ export const ClientShowcase = () => {
           {clients.map((client, index) => {
             const isActive = client.id === activeId;
             return (
-              <li key={client.id} data-row className="border-b last:border-b-0">
+              <li key={client.id} data-row className="border-b border-theme-fg/12 last:border-b-0">
                 <button
                   type="button"
                   onMouseEnter={() => {
@@ -161,8 +161,8 @@ export const ClientShowcase = () => {
                   onClick={() => setActiveId(client.id)}
                   aria-pressed={isActive}
                   className={cn(
-                    "flex w-full flex-wrap items-center justify-between gap-x-20 gap-y-4 px-12 py-12 text-left",
-                    "transition-colors duration-300 ease-out lg:px-20",
+                    "flex w-full flex-wrap items-center justify-between gap-x-20 gap-y-4 px-16 py-16 text-left",
+                    "transition-colors duration-500 ease-out lg:px-28",
                     isActive && "bg-theme-fg text-theme-bg",
                   )}
                 >

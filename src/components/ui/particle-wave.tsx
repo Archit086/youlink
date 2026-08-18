@@ -73,7 +73,24 @@ const ParticleWave: React.FC<ParticleWaveProps> = ({ className = "", density = 1
 
     const scene = new THREE.Scene();
 
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    /*
+     * WebGLRenderer THROWS if a context cannot be created — and because this
+     * runs inside an effect, an uncaught throw unmounts the whole React tree
+     * and blanks the site. Browsers cap the number of live WebGL contexts
+     * (Chrome ~16), so this genuinely happens with several tabs open, as well
+     * as when WebGL is disabled or blocklisted.
+     *
+     * This is decoration: if it cannot run, bail out quietly and leave the CSS
+     * halftone behind the canvas as the visible texture.
+     */
+    let renderer: THREE.WebGLRenderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    } catch (error) {
+      console.warn("ParticleWave: WebGL unavailable, falling back to CSS texture.", error);
+      return;
+    }
+
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(width, height, false);
     renderer.setClearColor(0x000000, 0);
@@ -166,6 +183,13 @@ const ParticleWave: React.FC<ParticleWaveProps> = ({ className = "", density = 1
     });
     intersectionObserver.observe(container);
 
+    // A lost context (GPU reset, or the browser reclaiming one) must not throw.
+    const onContextLost = (event: Event) => {
+      event.preventDefault();
+      stop();
+    };
+    canvas.addEventListener("webglcontextlost", onContextLost);
+
     // Follow the theme toggle.
     const themeObserver = new MutationObserver(() => {
       particleMaterial.uniforms.uColor.value = readColor();
@@ -178,6 +202,7 @@ const ParticleWave: React.FC<ParticleWaveProps> = ({ className = "", density = 1
 
     return () => {
       stop();
+      canvas.removeEventListener("webglcontextlost", onContextLost);
       resizeObserver.disconnect();
       intersectionObserver.disconnect();
       themeObserver.disconnect();

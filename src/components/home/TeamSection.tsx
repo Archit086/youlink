@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import { team, teamIsPlaceholder } from "@/data/site";
 import { Lines, Reveal } from "@/components/site/Reveal";
 import { CornerBadge } from "@/components/site/CornerBadge";
+import { ParallaxMedia } from "@/components/site/ParallaxMedia";
 import { ArrowRightGlyph } from "@/components/site/Glyphs";
 
 /**
@@ -17,7 +18,7 @@ export const TeamSection = () => (
   <section className="border-b">
     <div className="flex flex-wrap items-baseline gap-16 border-b px-12 py-14 lg:px-20">
       <span className="index-number">07</span>
-      <span className="label">Team</span>
+      <span className="label-serif">( Team )</span>
       {teamIsPlaceholder && (
         <span className="ml-auto bg-accent px-8 py-4 font-mono text-caption-10 uppercase text-ink">
           Placeholder — replace before launch
@@ -48,29 +49,23 @@ export const TeamSection = () => (
             key={member.id}
             delay={index * 80}
             className={cn(
-              "group border-t sm:[&:nth-child(-n+2)]:border-t-0 sm:[&:nth-child(even)]:border-l",
+              "group border-t border-theme-fg/15 sm:[&:nth-child(-n+2)]:border-t-0 sm:[&:nth-child(even)]:border-l",
               "lg:border-t-0 lg:[&:not(:first-child)]:border-l",
             )}
           >
             <div className="peer relative aspect-[4/5] overflow-hidden border-b">
-              <img
-                src={member.photo}
-                alt=""
-                loading="lazy"
-                decoding="async"
-                className="h-full w-full object-cover grayscale transition-transform duration-800 ease-out group-hover:scale-110"
-              />
+              <ParallaxMedia src={member.photo} distance={40} className="h-full w-full" />
               <CornerBadge>{member.role}</CornerBadge>
             </div>
 
             <div
               className={cn(
-                "flex items-end justify-between gap-16 p-12 transition-colors duration-800 ease-out lg:p-16",
+                "flex items-end justify-between gap-16 p-16 transition-colors duration-800 ease-out lg:p-20",
                 isLast ? "bg-ink text-accent" : "bg-accent text-ink",
               )}
             >
               <div>
-                <p className="text-headline-10 leading-none">{member.name}</p>
+                <p className="serif-accent text-[clamp(1.5rem,2.2vw,2rem)] leading-none">{member.name}</p>
                 <p className="mt-8 font-mono text-caption-10 uppercase opacity-70">{member.focus}</p>
               </div>
               <ArrowRightGlyph className="shrink-0 transition-transform duration-300 ease-out group-hover:translate-x-4" />

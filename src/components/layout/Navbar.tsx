@@ -64,7 +64,7 @@ export const Navbar = () => {
   }, []);
 
   return (
-    <header className="sticky inset-x-0 top-0 z-50 border-b bg-theme-bg">
+    <header className="sticky inset-x-0 top-0 z-50 border-b border-theme-fg/15 bg-theme-bg/70 backdrop-blur-xl">
       <div className="flex min-h-[var(--site-header-height)] items-stretch">
         {/* Inverted square tile — the strongest identity mark on the page. */}
         <Link
@@ -92,9 +92,8 @@ export const Navbar = () => {
                 to={link.path}
                 aria-current={isActive ? "page" : undefined}
                 className={cn(
-                  "flex items-center px-16 text-body-10 transition-colors duration-300 ease-out",
-                  "hover:bg-theme-fg hover:text-theme-bg",
-                  isActive && "bg-theme-fg text-theme-bg",
+                  "flex items-center px-16 text-body-10 transition-opacity duration-500 ease-out",
+                  isActive ? "opacity-100" : "opacity-50 hover:opacity-100",
                 )}
               >
                 {link.name}
@@ -106,14 +105,13 @@ export const Navbar = () => {
         <div className="ml-auto flex items-stretch lg:ml-0">
           <ThemeToggle />
 
-          {/* The contact cell — solid, full height, arrow at the far edge. */}
-          <Link
-            to="/hire"
-            className="group hidden items-center gap-40 bg-theme-fg px-20 text-theme-bg transition-colors duration-800 ease-out hover:bg-accent hover:text-ink lg:flex"
-          >
-            <span className="text-body-10">Start a project</span>
-            <ArrowRightGlyph className="transition-transform duration-300 ease-out group-hover:translate-x-4" />
-          </Link>
+          {/* The contact pill — bordered, filling on hover. */}
+          <div className="hidden items-center border-l pl-20 pr-16 lg:flex">
+            <Link to="/hire" className="pill">
+              Start a project
+              <ArrowRightGlyph className="size-14" />
+            </Link>
+          </div>
 
           <button
             type="button"

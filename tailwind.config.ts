@@ -88,14 +88,18 @@ export default {
       fontFamily: {
         sans: ["Inter", "system-ui", "-apple-system", "Arial", "sans-serif"],
         mono: ["JetBrains Mono", "ui-monospace", "SFMono-Regular", "monospace"],
+        /* Editorial voice — used italic, for accent moments only. */
+        serif: ["DM Serif Display", "Iowan Old Style", "Georgia", "serif"],
       },
       fontSize: {
         /* Named by role, not by size. All display sizes are fluid. */
         "caption-10": ["12px", { lineHeight: "1.1", letterSpacing: "-0.04em", fontWeight: "400" }],
         "caption-20": ["14px", { lineHeight: "1", letterSpacing: "-0.04em", fontWeight: "400" }],
-        "body-10": ["16px", { lineHeight: "1.3", letterSpacing: "-0.04em", fontWeight: "450" }],
-        "body-20": ["24px", { lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "450" }],
-        "body-30": [fluid(24, 32), { lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "450" }],
+        /* Body copy runs light and loose — the single biggest contributor to
+           the page feeling unhurried rather than dense. */
+        "body-10": ["16px", { lineHeight: "1.7", letterSpacing: "-0.02em", fontWeight: "350" }],
+        "body-20": ["24px", { lineHeight: "1.45", letterSpacing: "-0.02em", fontWeight: "350" }],
+        "body-30": [fluid(24, 32), { lineHeight: "1.35", letterSpacing: "-0.02em", fontWeight: "350" }],
         "headline-10": [fluid(24, 40), { lineHeight: "1.1", letterSpacing: "-0.04em", fontWeight: "450" }],
         "headline-20": [fluid(32, 48), { lineHeight: "1", letterSpacing: "-0.04em", fontWeight: "450" }],
         "headline-30": [fluid(40, 56), { lineHeight: "1", letterSpacing: "-0.04em", fontWeight: "450" }],
