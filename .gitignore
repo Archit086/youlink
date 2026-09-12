@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local environment. Never commit real values; copy .env.example to .env.
+.env
+.env.*
+!.env.example

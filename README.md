@@ -33,7 +33,7 @@ npm run dev      # http://localhost:8080
 
 ## Environment
 
-Copy the Supabase values into `.env`:
+Copy `.env.example` to `.env` and fill in the Supabase values. `.env` is gitignored; never commit it.
 
 ```
 VITE_SUPABASE_URL=...
