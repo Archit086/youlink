@@ -1,54 +1,65 @@
-import { Client } from "@/data/site";
-import { cn } from "@/lib/utils";
-import { CornerBadge } from "@/components/site/CornerBadge";
+import { FadeIn } from "@/components/motion/FadeIn";
+import { Panel } from "@/components/site/Page";
+import type { Client } from "@/data/site";
+import { caseMedia } from "@/data/media";
 
 interface CaseCardProps {
   client: Client;
   index: string;
-  /** "feature" is the full-width lead case; "standard" is the supporting scale. */
-  scale?: "feature" | "standard";
-  className?: string;
+  delay?: number;
 }
 
 /**
- * A case plate. There are no licensed client images to publish, so scale,
- * hairlines and a corner-notched index carry the composition instead of
- * placeholder photography. The whole panel is a `peer`, so the badge inverts
- * when any part of it is hovered.
+ * One client engagement: what the brand is, and what YouLink did for it. The
+ * card carries a media frame only where a capture exists for that client.
  */
-export const CaseCard = ({ client, index, scale = "standard", className }: CaseCardProps) => {
-  const isFeature = scale === "feature";
+export const CaseCard = ({ client, index, delay = 0 }: CaseCardProps) => {
+  const media = caseMedia[client.id];
 
   return (
-    <article className={cn("relative h-full", className)}>
-      <div className="peer flex h-full flex-col p-12 pt-40 transition-colors duration-800 ease-out hover:bg-theme-fg hover:text-theme-bg lg:p-20 lg:pt-48">
-        <p className="label opacity-60">{client.sector}</p>
-
-        <h3 className={cn("mt-16", isFeature ? "text-headline-30" : "text-headline-10")}>{client.name}</h3>
-
-        <div className="mt-8 flex flex-wrap gap-x-16 gap-y-2 font-mono text-caption-10 uppercase opacity-60">
-          {client.handle && <span>{client.handle}</span>}
-          {client.since && <span>Since {client.since}</span>}
+    <FadeIn delay={delay} y={30} className="h-full">
+      <Panel className="flex h-full flex-col md:p-10">
+        <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+          <span
+            className="display-sans"
+            style={{ fontSize: "clamp(2rem, 4.5vw, 3.5rem)" }}
+          >
+            {index}
+          </span>
+          {client.since && (
+            <span className="eyebrow text-[#D7E2EA] opacity-40">Since {client.since}</span>
+          )}
         </div>
 
-        <div className={cn("mt-32 grid flex-1 gap-24 border-t pt-20", isFeature && "lg:grid-cols-2 lg:gap-40")}>
-          <div>
-            <p className="label opacity-60">The brand</p>
-            <p className={cn("mt-12 max-w-prose opacity-80", isFeature ? "text-body-20" : "text-body-10")}>
-              {client.profile}
-            </p>
-          </div>
+        <h3
+          className="mt-4 font-medium leading-tight text-[#D7E2EA]"
+          style={{ fontSize: "clamp(1.25rem, 2.6vw, 2rem)" }}
+        >
+          {client.name}
+        </h3>
 
-          <div>
-            <p className="label opacity-60">Our work</p>
-            <p className={cn("mt-12 max-w-prose opacity-80", isFeature ? "text-body-20" : "text-body-10")}>
-              {client.engagement}
-            </p>
-          </div>
-        </div>
-      </div>
+        <p className="mt-1 eyebrow text-[#D7E2EA] opacity-40">
+          {client.sector}
+          {client.handle && ` · ${client.handle}`}
+        </p>
 
-      <CornerBadge>{index}</CornerBadge>
-    </article>
+        {media && (
+          <img
+            src={media.columnTwo}
+            alt={`Work for ${client.name}`}
+            loading="lazy"
+            className="mt-6 h-56 w-full rounded-[24px] object-cover md:h-72 md:rounded-[28px]"
+          />
+        )}
+
+        <p className="mt-6 text-sm font-light leading-relaxed text-[#D7E2EA] opacity-70">
+          {client.profile}
+        </p>
+
+        <p className="mt-4 border-t border-[#D7E2EA]/15 pt-4 text-sm font-light leading-relaxed text-[#D7E2EA] opacity-60">
+          {client.engagement}
+        </p>
+      </Panel>
+    </FadeIn>
   );
 };

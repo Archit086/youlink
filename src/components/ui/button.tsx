@@ -5,60 +5,34 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 /**
- * The system's signature component.
- *
- * Hover is a wipe, not a colour fade: a ::before panel scales in on the x-axis
- * from the left edge over 800ms with the expo-out curve, and the label colour
- * flips with it. Reduced-motion visitors get the same hover as an instant
- * colour swap — the interaction never disappears, it just stops moving.
+ * Pill-shaped by default, to match the two hero buttons. The loud spectrum
+ * gradient lives in `ContactButton`; everything here is a quieter variant.
  */
 const buttonVariants = cva(
   [
-    "relative isolate inline-flex w-fit shrink-0 items-center justify-center gap-8 overflow-hidden whitespace-nowrap",
-    "font-mono uppercase",
-    "transition-[color,background-color,border-color] duration-800 ease-out",
-    "before:pointer-events-none before:absolute before:inset-y-0 before:left-0 before:-z-10 before:h-full before:w-full",
-    "before:origin-left before:scale-x-0 before:transition-transform before:duration-800 before:ease-out before:content-['']",
-    "hover:before:scale-x-100",
-    "motion-reduce:transition-none motion-reduce:before:hidden motion-reduce:before:transition-none",
-    "disabled:pointer-events-none disabled:opacity-50 disabled:grayscale",
-    "[&_svg]:pointer-events-none [&_svg]:size-14 [&_svg]:shrink-0",
+    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full",
+    "font-medium",
+    "transition-all duration-300 ease-out hover:scale-[1.03] active:scale-[0.99]",
+    "disabled:pointer-events-none disabled:opacity-50",
+    "[&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   ].join(" "),
   {
     variants: {
       variant: {
-        /* Primary — an inverted block that wipes to the accent. */
-        default:
-          "bg-theme-fg text-theme-bg before:bg-accent hover:text-ink motion-reduce:hover:bg-accent motion-reduce:hover:text-ink",
-        action:
-          "bg-theme-fg text-theme-bg before:bg-accent hover:text-ink motion-reduce:hover:bg-accent motion-reduce:hover:text-ink",
-        hero: "bg-theme-fg text-theme-bg before:bg-accent hover:text-ink motion-reduce:hover:bg-accent motion-reduce:hover:text-ink",
-
-        /* Secondary — a ruled cell that wipes to solid foreground. */
-        outline:
-          "border bg-theme-bg text-theme-fg before:bg-theme-fg hover:text-theme-bg motion-reduce:hover:bg-theme-fg motion-reduce:hover:text-theme-bg",
-        heroOutline:
-          "border bg-theme-bg text-theme-fg before:bg-theme-fg hover:text-theme-bg motion-reduce:hover:bg-theme-fg motion-reduce:hover:text-theme-bg",
-        secondary:
-          "bg-grey text-ink before:bg-ink hover:text-white motion-reduce:hover:bg-ink motion-reduce:hover:text-white",
-        accent:
-          "bg-accent text-ink before:bg-theme-fg hover:text-theme-bg motion-reduce:hover:bg-theme-fg motion-reduce:hover:text-theme-bg",
-        destructive:
-          "bg-ink text-white before:bg-accent hover:text-ink motion-reduce:hover:bg-accent motion-reduce:hover:text-ink",
-
-        /* Flat — no fill, colour shift only. */
-        ghost: "text-theme-fg before:bg-theme-fg hover:text-theme-bg motion-reduce:hover:bg-theme-fg",
-        nav: "text-theme-fg opacity-60 transition-opacity duration-300 before:hidden hover:opacity-100",
-        link: "text-theme-fg before:hidden underline-offset-4 hover:underline",
+        default: "bg-white font-semibold text-gray-900 hover:bg-gray-100",
+        outline: "border-2 border-[#D7E2EA] text-[#D7E2EA] hover:bg-[#D7E2EA]/10",
+        secondary: "bg-[#D7E2EA]/10 text-[#D7E2EA] hover:bg-[#D7E2EA]/20",
+        ghost: "text-[#D7E2EA] hover:bg-[#D7E2EA]/10",
+        destructive: "bg-destructive text-destructive-foreground hover:opacity-90",
+        link: "rounded-none text-[#D7E2EA] underline-offset-4 hover:underline hover:scale-100",
       },
       size: {
-        default: "h-36 px-12 text-caption-10",
-        sm: "h-28 px-10 text-caption-10",
-        lg: "h-44 px-16 text-caption-10",
-        xl: "h-52 px-20 text-caption-20",
-        /* Fills the width of its cell — the common case in a ruled grid. */
-        cell: "h-52 w-full px-20 text-caption-20",
-        icon: "size-36 px-0",
+        default: "h-11 px-8 text-sm",
+        sm: "h-9 px-6 text-xs",
+        lg: "h-14 px-12 text-base",
+        /** Fills the width of its container. */
+        cell: "h-14 w-full px-10 text-sm",
+        icon: "size-11 px-0",
       },
     },
     defaultVariants: {

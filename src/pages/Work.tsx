@@ -1,173 +1,107 @@
 import { Layout } from "@/components/layout/Layout";
-import { cn } from "@/lib/utils";
-import { Lines, Reveal } from "@/components/site/Reveal";
-import { cellRules, gridColumns } from "@/components/site/ruled-grid";
+import { FadeIn } from "@/components/motion/FadeIn";
+import { PageHeader, Panel, Section } from "@/components/site/Page";
+import { ContactButton } from "@/components/site/Buttons";
 import { CaseCard } from "@/components/work/CaseCard";
-import { CTASection } from "@/components/home/CTASection";
-import { clients, contentFormats, metrics, sectors } from "@/data/site";
+import { clients, clientsBySector, contentFormats, metrics } from "@/data/site";
 
-const Work = () => {
-  const lead = clients.find((client) => client.id === "chawlas") ?? clients[0];
+const Work = () => (
+  <Layout>
+    <PageHeader
+      eyebrow="01 — Work"
+      title={`${clients.length} brands. Six industries.`}
+      lead="We've worked with brands across diverse industries — from fashion and food to healthcare, retail, jewellery, and industrial sectors. Legacy names, new cafés, and platforms we helped build from the ground up."
+    >
+      <ContactButton to="/hire">Start a project</ContactButton>
+    </PageHeader>
 
-  // The lead case is shown in full above, so it is not repeated in its sector.
-  const groups = sectors
-    .map((sector) => ({
-      sector,
-      items: clients.filter((client) => client.sector === sector && client.id !== lead.id),
-    }))
-    .filter((group) => group.items.length > 0);
+    <Section eyebrow="02 — By the numbers">
+      <dl className="grid gap-4 sm:grid-cols-3">
+        {metrics.map((metric, index) => (
+          <FadeIn key={metric.label} delay={index * 0.08} y={30}>
+            <Panel className="h-full">
+              <dd
+                className="display-sans"
+                style={{ fontSize: "clamp(3rem, 7vw, 6rem)" }}
+              >
+                {metric.value}
+              </dd>
+              <dt className="mt-4 text-base font-medium text-[#D7E2EA]">{metric.label}</dt>
+              <p className="mt-2 text-sm font-light leading-relaxed text-[#D7E2EA] opacity-60">
+                {metric.note}
+              </p>
+            </Panel>
+          </FadeIn>
+        ))}
+      </dl>
+    </Section>
 
-  return (
-    <Layout>
-      {/* Page statement */}
-      <section className="border-b">
-        <div className="flex items-baseline gap-16 border-b px-12 py-14 lg:px-20">
-          <span className="index-number">01</span>
-          <span className="label">Work</span>
-        </div>
+    <Section eyebrow="03 — Client index">
+      <ul className="overflow-hidden rounded-[28px] border border-[#D7E2EA]/15 md:rounded-[36px]">
+        {clients.map((client, index) => (
+          <FadeIn
+            as="li"
+            key={client.id}
+            delay={Math.min(index * 0.04, 0.4)}
+            y={16}
+            className="flex flex-wrap items-baseline gap-x-6 gap-y-1 border-t border-[#D7E2EA]/15 px-6 py-4 text-sm text-[#D7E2EA] transition-colors duration-300 first:border-t-0 hover:bg-[#D7E2EA]/[0.06]"
+          >
+            <span className="w-8 shrink-0 tabular-nums opacity-40">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <span className="font-medium md:w-64">{client.name}</span>
+            <span className="basis-full pl-14 font-light opacity-50 md:basis-auto md:flex-1 md:pl-0">
+              {client.sector}
+            </span>
+            {client.handle && (
+              <span className="hidden font-light opacity-40 lg:block">{client.handle}</span>
+            )}
+          </FadeIn>
+        ))}
+      </ul>
+    </Section>
 
-        <div className="px-12 pb-24 pt-40 lg:px-20 lg:pb-40 lg:pt-56">
-          <h1 className="text-headline-40">
-            <Lines lines={[`${clients.length} brands.`, "Six industries."]} stagger={90} />
-          </h1>
-        </div>
-
-        <div className="grid border-t lg:grid-cols-2">
-          <Reveal className="cell">
-            <p className="max-w-prose text-body-20 opacity-70">
-              We've worked with brands across diverse industries — from fashion and food to
-              healthcare, retail, jewellery, and industrial sectors. Legacy names, new cafés, and
-              platforms we helped build from the ground up.
-            </p>
-          </Reveal>
-
-          <dl className="grid border-t sm:grid-cols-3 lg:border-l lg:border-t-0">
-            {metrics.map((metric) => (
-              <div key={metric.label} className="border-t p-12 first:border-t-0 sm:border-l sm:border-t-0 sm:first:border-l-0 lg:p-20">
-                <dt className="order-2 font-mono text-caption-10 uppercase opacity-60">{metric.label}</dt>
-                <dd className="order-1 text-digit-10">{metric.value}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </section>
-
-      {/* Client index */}
-      <section className="border-b">
-        <div className="flex items-baseline gap-16 border-b px-12 py-14 lg:px-20">
-          <span className="index-number">02</span>
-          <span className="label">Client index</span>
-        </div>
-
-        <ul>
-          {clients.map((client, index) => (
-            <Reveal
-              as="li"
+    {clientsBySector.map(({ sector, items }, sectorIndex) => (
+      <Section
+        key={sector}
+        eyebrow={`${String(sectorIndex + 4).padStart(2, "0")} — ${sector}`}
+        title={`${items.length} ${items.length === 1 ? "brand" : "brands"}`}
+      >
+        <div className="grid gap-4 lg:grid-cols-2">
+          {items.map((client, index) => (
+            <CaseCard
               key={client.id}
-              delay={index * 35}
-              className="flex flex-wrap items-baseline gap-x-20 gap-y-2 border-b px-12 py-12 font-mono text-caption-20 uppercase transition-colors duration-300 ease-out last:border-b-0 hover:bg-theme-fg hover:text-theme-bg lg:px-20"
-            >
-              <span className="w-24 shrink-0 tabular-nums opacity-60">
+              client={client}
+              index={String(index + 1).padStart(2, "0")}
+              delay={index * 0.07}
+            />
+          ))}
+        </div>
+      </Section>
+    ))}
+
+    <Section
+      eyebrow="07 — Output"
+      title="Creative design work and reels"
+      lead="Alongside campaign and identity work, we produce the day-to-day content that keeps a brand visible."
+    >
+      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        {contentFormats.map((format, index) => (
+          <FadeIn as="li" key={format} delay={index * 0.06} y={30}>
+            <Panel className="h-full">
+              <span
+                className="display-sans block"
+                style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.75rem)" }}
+              >
                 {String(index + 1).padStart(2, "0")}
               </span>
-              <span className="lg:w-280">{client.name}</span>
-              <span className="basis-full pl-44 opacity-60 lg:basis-auto lg:flex-1 lg:pl-0">
-                {client.sector}
-              </span>
-              {client.handle && <span className="hidden opacity-60 md:block">{client.handle}</span>}
-            </Reveal>
-          ))}
-        </ul>
-      </section>
-
-      {/* Lead case */}
-      <section className="border-b">
-        <div className="flex items-baseline gap-16 border-b px-12 py-14 lg:px-20">
-          <span className="index-number">03</span>
-          <span className="label">Featured</span>
-        </div>
-        <Reveal variant="wipe">
-          <CaseCard client={lead} index="01" scale="feature" />
-        </Reveal>
-      </section>
-
-      {/* Cases by sector */}
-      {groups.map(({ sector, items }, sectorIndex) => (
-        <section key={sector} className="border-b">
-          <div className="flex items-baseline gap-16 border-b px-12 py-14 lg:px-20">
-            <span className="index-number">{String(sectorIndex + 4).padStart(2, "0")}</span>
-            <span className="label">{sector}</span>
-            <span className="label-muted ml-auto">
-              {items.length} {items.length === 1 ? "brand" : "brands"}
-            </span>
-          </div>
-
-          <div className="grid lg:grid-cols-2">
-            {items.map((client, index) => {
-              // An odd trailing card takes the full width and steps up in scale.
-              const isTrailingOdd = index === items.length - 1 && items.length % 2 === 1;
-              return (
-                <Reveal
-                  key={client.id}
-                  variant="wipe"
-                  delay={index * 70}
-                  className={cn(
-                    "border-t first:border-t-0",
-                    "lg:[&:nth-child(2)]:border-t-0 lg:[&:nth-child(even)]:border-l",
-                    isTrailingOdd && "lg:col-span-2 lg:border-l-0",
-                  )}
-                >
-                  <CaseCard
-                    client={client}
-                    index={String(index + 1).padStart(2, "0")}
-                    scale={isTrailingOdd ? "feature" : "standard"}
-                  />
-                </Reveal>
-              );
-            })}
-          </div>
-        </section>
-      ))}
-
-      {/* Output formats */}
-      <section className="border-b">
-        <div className="flex items-baseline gap-16 border-b px-12 py-14 lg:px-20">
-          <span className="index-number">07</span>
-          <span className="label">Output</span>
-        </div>
-
-        <div className="grid border-b lg:grid-cols-2">
-          <div className="cell">
-            <h2 className="text-headline-30">
-              <Lines lines={["Creative design work", "and reels"]} />
-            </h2>
-          </div>
-          <Reveal className="cell border-t lg:border-l lg:border-t-0" delay={90}>
-            <p className="max-w-prose text-body-20 opacity-70">
-              Alongside campaign and identity work, we produce the day-to-day content that keeps a
-              brand visible.
-            </p>
-          </Reveal>
-        </div>
-
-        <ul className={gridColumns({ sm: 2, lg: 5 })}>
-          {contentFormats.map((format, index) => (
-            <Reveal
-              as="li"
-              key={format}
-              delay={index * 60}
-              className={cn("px-12 py-20 lg:px-20", cellRules(index, { sm: 2, lg: 5 }))}
-            >
-              <span className="index-number">{String(index + 1).padStart(2, "0")}</span>
-              <p className="mt-12 text-headline-10">{format}</p>
-            </Reveal>
-          ))}
-        </ul>
-      </section>
-
-      <CTASection />
-    </Layout>
-  );
-};
+              <p className="mt-3 text-base font-medium text-[#D7E2EA]">{format}</p>
+            </Panel>
+          </FadeIn>
+        ))}
+      </ul>
+    </Section>
+  </Layout>
+);
 
 export default Work;

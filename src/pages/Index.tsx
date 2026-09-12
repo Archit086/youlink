@@ -1,28 +1,20 @@
 import { Layout } from "@/components/layout/Layout";
 import { HeroSection } from "@/components/home/HeroSection";
-import { MetricsBand } from "@/components/home/MetricsBand";
-import { StudioStatement } from "@/components/home/StudioStatement";
-import { WhatWeDo } from "@/components/home/WhatWeDo";
-import { ServicesIndex } from "@/components/home/ServicesIndex";
-import { ClientShowcase } from "@/components/work/ClientShowcase";
-import { FeaturedWork } from "@/components/home/FeaturedWork";
-import { OperatingModel } from "@/components/home/OperatingModel";
-import { TeamSection } from "@/components/home/TeamSection";
-import { CTASection } from "@/components/home/CTASection";
+import { MarqueeSection } from "@/components/home/MarqueeSection";
+import { AboutSection } from "@/components/home/AboutSection";
+import { ServicesSection } from "@/components/home/ServicesSection";
+import { ProjectsSection } from "@/components/home/ProjectsSection";
+import { TestimonialsSection } from "@/components/home/TestimonialsSection";
 
-/** Statement → proof → studio → capability → clients → work → model → people → invitation. */
+/** Statement → showcase → studio → capability → work → clients. */
 const Index = () => (
-  <Layout>
+  <Layout showNavbar={false}>
     <HeroSection />
-    <MetricsBand />
-    <StudioStatement />
-    <WhatWeDo />
-    <ServicesIndex />
-    <ClientShowcase />
-    <FeaturedWork />
-    <OperatingModel />
-    <TeamSection />
-    <CTASection />
+    <MarqueeSection />
+    <AboutSection />
+    <ServicesSection />
+    <ProjectsSection />
+    <TestimonialsSection />
   </Layout>
 );
 

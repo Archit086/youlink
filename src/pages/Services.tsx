@@ -1,10 +1,8 @@
-import { Layout } from "@/components/layout/Layout";
 import { Link } from "react-router-dom";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Lines, Reveal } from "@/components/site/Reveal";
-import { cellRules, gridColumns } from "@/components/site/ruled-grid";
-import { CTASection } from "@/components/home/CTASection";
+import { Layout } from "@/components/layout/Layout";
+import { FadeIn } from "@/components/motion/FadeIn";
+import { Numbered, PageHeader, Panel, RuledList, Section } from "@/components/site/Page";
+import { ContactButton, LiveProjectButton } from "@/components/site/Buttons";
 import { contentFormats, services } from "@/data/site";
 
 const deliveryHighlights = [
@@ -31,143 +29,122 @@ const workflow = [
 
 const Services = () => (
   <Layout>
-    <section className="border-b">
-      <div className="flex items-baseline gap-16 border-b px-12 py-14 lg:px-20">
-        <span className="index-number">01</span>
-        <span className="label">Services</span>
-      </div>
+    <PageHeader
+      eyebrow="01 — Services"
+      title="Here's what YouLink does to your brand"
+      lead="From website development and social media management to branding and marketing — all delivered by supervised, verified teams with accountability at every step."
+    >
+      <ContactButton to="/hire">Start a project</ContactButton>
+    </PageHeader>
 
-      <div className="px-12 pb-24 pt-40 lg:px-20 lg:pb-40 lg:pt-56">
-        <h1 className="text-headline-40">
-          <Lines lines={["Here's what YouLink", "does to your brand."]} stagger={90} />
-        </h1>
-      </div>
-
-      <div className="cell border-t">
-        <p className="max-w-prose text-body-20 opacity-70">
-          From website development and social media management to branding and marketing — all
-          delivered by supervised, verified teams with accountability at every step.
-        </p>
-      </div>
-
-      <div className={cn(gridColumns({ lg: 3 }), "border-t")}>
+    <Section eyebrow="02 — How delivery works">
+      <div className="grid gap-4 lg:grid-cols-3">
         {deliveryHighlights.map((item, index) => (
-          <Reveal key={item.title} delay={index * 70} className={cn("cell", cellRules(index, { lg: 3 }))}>
-            <span className="index-number">{String(index + 1).padStart(2, "0")}</span>
-            <h2 className="mt-16 text-headline-10">{item.title}</h2>
-            <p className="mt-12 max-w-prose text-body-10 opacity-70">{item.description}</p>
-          </Reveal>
+          <Numbered
+            key={item.title}
+            index={index + 1}
+            title={item.title}
+            description={item.description}
+            delay={index * 0.07}
+          />
         ))}
       </div>
-    </section>
+    </Section>
 
-    {/* Services in full */}
-    {services.map((service, index) => (
-      <section
-        key={service.id}
-        id={service.id}
-        className="scroll-mt-[var(--site-header-height)] border-b"
-      >
-        <div className="flex items-baseline gap-16 border-b px-12 py-14 lg:px-20">
-          <span className="index-number">{String(index + 1).padStart(2, "0")}</span>
-          <span className="label">{service.title}</span>
-        </div>
+    <Section eyebrow="03 — Capabilities" title="Five things we do, end to end">
+      <div className="flex flex-col gap-4">
+        {services.map((service, index) => (
+          <FadeIn key={service.id} delay={index * 0.06} y={30}>
+            <Panel id={service.id} className="scroll-mt-24 md:p-10">
+              <div className="grid gap-8 lg:grid-cols-12">
+                <div className="lg:col-span-5">
+                  <span
+                    className="display-sans block"
+                    style={{ fontSize: "clamp(2.5rem, 6vw, 5rem)" }}
+                  >
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <h3
+                    className="mt-4 font-medium leading-tight text-[#D7E2EA]"
+                    style={{ fontSize: "clamp(1.25rem, 2.6vw, 2.1rem)" }}
+                  >
+                    {service.title}
+                  </h3>
+                  <p className="mt-4 max-w-md text-sm font-light leading-relaxed text-[#D7E2EA] opacity-60 md:text-base">
+                    {service.summary}
+                  </p>
+                  <LiveProjectButton to="/hire" className="mt-6">
+                    Start with {service.title}
+                  </LiveProjectButton>
+                </div>
 
-        <div className="grid lg:grid-cols-12">
-          <Reveal className="cell lg:col-span-5">
-            <h2 className="text-headline-20">
-              <Lines lines={[service.title]} />
-            </h2>
-            <p className="mt-20 max-w-prose text-body-10 opacity-70">{service.summary}</p>
-            <Button asChild variant="outline" className="mt-24">
-              <Link to="/hire">Start with {service.title}</Link>
-            </Button>
-          </Reveal>
+                <div className="lg:col-span-4">
+                  <p className="eyebrow text-[#D7E2EA] opacity-50">What you get</p>
+                  <RuledList items={service.capabilities} className="mt-4" />
+                </div>
 
-          <Reveal className="cell border-t lg:col-span-4 lg:border-l lg:border-t-0" delay={90}>
-            <p className="label opacity-60">What you get</p>
-            <ul className="mt-20">
-              {service.capabilities.map((capability) => (
-                <li
-                  key={capability}
-                  className="flex items-start gap-8 border-t py-10 font-mono text-caption-20 uppercase first:border-t-0"
-                >
-                  <span className="opacity-40">—</span>
-                  {capability}
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-
-          {service.idealFor && (
-            <Reveal className="cell border-t lg:col-span-3 lg:border-l lg:border-t-0" delay={150}>
-              <p className="label opacity-60">Ideal for</p>
-              <p className="mt-20 max-w-prose text-body-10 opacity-70">{service.idealFor}</p>
-            </Reveal>
-          )}
-        </div>
-      </section>
-    ))}
-
-    {/* Content output */}
-    <section className="border-b">
-      <div className="flex items-baseline gap-16 border-b px-12 py-14 lg:px-20">
-        <span className="index-number">06</span>
-        <span className="label">Content output</span>
+                {service.idealFor && (
+                  <div className="lg:col-span-3">
+                    <p className="eyebrow text-[#D7E2EA] opacity-50">Ideal for</p>
+                    <p className="mt-4 text-sm font-light leading-relaxed text-[#D7E2EA] opacity-60">
+                      {service.idealFor}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </Panel>
+          </FadeIn>
+        ))}
       </div>
+    </Section>
 
-      <div className="grid border-b lg:grid-cols-2">
-        <div className="cell">
-          <h2 className="text-headline-30">
-            <Lines lines={["The formats we shoot,", "week after week"]} />
-          </h2>
-        </div>
-        <Reveal className="cell border-t lg:border-l lg:border-t-0" delay={90}>
-          <p className="max-w-prose text-body-20 opacity-70">
-            Creative design work and video content produced as part of ongoing social media
-            engagements.
-          </p>
-        </Reveal>
-      </div>
-
-      <ul className={gridColumns({ sm: 2, lg: 5 })}>
+    <Section
+      eyebrow="04 — Content output"
+      title="The formats we shoot, week after week"
+      lead="Creative design work and video content produced as part of ongoing social media engagements."
+    >
+      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {contentFormats.map((format, index) => (
-          <Reveal
-            as="li"
-            key={format}
-            delay={index * 60}
-            className={cn("px-12 py-20 lg:px-20", cellRules(index, { sm: 2, lg: 5 }))}
-          >
-            <span className="index-number">{String(index + 1).padStart(2, "0")}</span>
-            <p className="mt-12 text-headline-10">{format}</p>
-          </Reveal>
+          <FadeIn as="li" key={format} delay={index * 0.06} y={30}>
+            <Panel className="h-full">
+              <span
+                className="display-sans block"
+                style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.75rem)" }}
+              >
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <p className="mt-3 text-base font-medium text-[#D7E2EA]">{format}</p>
+            </Panel>
+          </FadeIn>
         ))}
       </ul>
-    </section>
+    </Section>
 
-    {/* Typical workflow */}
-    <section className="grid border-b lg:grid-cols-3">
-      <div className="cell pin">
-        <p className="label opacity-60">Typical workflow</p>
-        <h2 className="mt-16 text-headline-20">However the brief starts, delivery runs the same way.</h2>
-      </div>
-
-      <ol className="border-t lg:col-span-2 lg:border-l lg:border-t-0">
+    <Section
+      eyebrow="05 — Typical workflow"
+      title="However the brief starts, delivery runs the same way"
+    >
+      <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {workflow.map((step, index) => (
-          <Reveal
-            as="li"
-            key={step}
-            delay={index * 60}
-            className="flex items-baseline gap-16 border-b px-12 py-16 last:border-b-0 lg:px-20"
-          >
-            <span className="index-number">{String(index + 1).padStart(2, "0")}</span>
-            <p className="text-body-20">{step}</p>
-          </Reveal>
+          <Numbered as="li" key={step} index={index + 1} title={step} delay={index * 0.06} />
         ))}
       </ol>
-    </section>
 
-    <CTASection />
+      <FadeIn delay={0.2} y={20} className="mt-10 flex flex-wrap gap-4">
+        <ContactButton to="/hire">Start a project</ContactButton>
+        <LiveProjectButton to="/pricing">View pricing</LiveProjectButton>
+      </FadeIn>
+    </Section>
+
+    <Section>
+      <p className="text-sm font-light text-[#D7E2EA] opacity-50">
+        Looking to work with us instead?{" "}
+        <Link to="/join" className="underline underline-offset-4 hover:opacity-80">
+          Join the freelancer network
+        </Link>
+        .
+      </p>
+    </Section>
   </Layout>
 );
 

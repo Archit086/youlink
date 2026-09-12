@@ -1,33 +1,25 @@
 import { ReactNode } from "react";
-import { useLocation } from "react-router-dom";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
-import { SiteBackground } from "@/components/site/SiteBackground";
-import { SmoothScroll } from "@/components/site/SmoothScroll";
 
 interface LayoutProps {
   children: ReactNode;
+  /** The homepage hides the bar — its hero carries its own navigation. */
+  showNavbar?: boolean;
 }
 
-export const Layout = ({ children }: LayoutProps) => {
-  const { pathname } = useLocation();
-
-  return (
-    <div className="flex min-h-screen flex-col">
-      <SmoothScroll />
-      <SiteBackground />
-      <a
-        href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-12 focus:top-12 focus:z-[60] focus:bg-theme-fg focus:px-12 focus:py-10 focus:font-mono focus:text-caption-10 focus:uppercase focus:text-theme-bg"
-      >
-        Skip to content
-      </a>
-      <Navbar />
-      {/* Keyed on the route so each page fades in rather than snapping. */}
-      <main id="main" key={pathname} className="page-enter flex-1">
-        {children}
-      </main>
-      <Footer />
-    </div>
-  );
-};
+export const Layout = ({ children, showNavbar = true }: LayoutProps) => (
+  <div className="flex min-h-screen flex-col bg-[#0C0C0C]" style={{ overflowX: "clip" }}>
+    <a
+      href="#main"
+      className="sr-only focus:not-sr-only focus:absolute focus:left-5 focus:top-5 focus:z-[60] focus:rounded-full focus:bg-[#D7E2EA] focus:px-5 focus:py-2 focus:text-sm focus:font-medium focus:text-[#0C0C0C]"
+    >
+      Skip to content
+    </a>
+    {showNavbar && <Navbar />}
+    <main id="main" className="flex-1">
+      {children}
+    </main>
+    <Footer />
+  </div>
+);

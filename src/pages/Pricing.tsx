@@ -1,9 +1,8 @@
+import { Link } from "react-router-dom";
 import { Layout } from "@/components/layout/Layout";
-import { cn } from "@/lib/utils";
-import { Lines, Reveal } from "@/components/site/Reveal";
-import { cellRules, gridColumns } from "@/components/site/ruled-grid";
-import { ArrowLink } from "@/components/site/ArrowLink";
-import { CTASection } from "@/components/home/CTASection";
+import { FadeIn } from "@/components/motion/FadeIn";
+import { Numbered, PageHeader, Panel, RuledList, Section } from "@/components/site/Page";
+import { ContactButton } from "@/components/site/Buttons";
 
 const highlights = [
   {
@@ -58,130 +57,85 @@ const freelancerTerms = [
 
 const Pricing = () => (
   <Layout>
-    <section className="border-b">
-      <div className="flex items-baseline gap-16 border-b px-12 py-14 lg:px-20">
-        <span className="index-number">01</span>
-        <span className="label">Pricing &amp; engagement</span>
-      </div>
+    <PageHeader
+      eyebrow="01 — Pricing & engagement"
+      title="Priced to the brief, never to the guess"
+      lead="Transparent, fair pricing for quality-controlled work. Every project is unique, so every quote is built from scope — with no hidden costs and no surprises."
+    >
+      <ContactButton to="/hire">Request a quote</ContactButton>
+    </PageHeader>
 
-      <div className="px-12 pb-24 pt-40 lg:px-20 lg:pb-40 lg:pt-56">
-        <h1 className="text-headline-40">
-          <Lines lines={["Priced to the brief,", "never to the guess."]} stagger={90} />
-        </h1>
-      </div>
-
-      <div className="cell border-t">
-        <p className="max-w-prose text-body-20 opacity-70">
-          Transparent, fair pricing for quality-controlled work. Every project is unique, so every
-          quote is built from scope — with no hidden costs and no surprises.
-        </p>
-      </div>
-
-      <div className={cn(gridColumns({ sm: 2, lg: 4 }), "border-t")}>
+    <Section eyebrow="02 — What you can count on">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {highlights.map((item, index) => (
-          <Reveal key={item.title} delay={index * 60} className={cn("cell", cellRules(index, { sm: 2, lg: 4 }))}>
-            <span className="index-number">{String(index + 1).padStart(2, "0")}</span>
-            <h2 className="mt-16 text-headline-10">{item.title}</h2>
-            <p className="mt-12 max-w-prose text-body-10 opacity-70">{item.description}</p>
-          </Reveal>
+          <Numbered
+            key={item.title}
+            index={index + 1}
+            title={item.title}
+            description={item.description}
+            delay={index * 0.06}
+          />
         ))}
       </div>
-    </section>
+    </Section>
 
-    <section className="border-b">
-      <div className="flex items-baseline gap-16 border-b px-12 py-14 lg:px-20">
-        <span className="index-number">02</span>
-        <span className="label">How pricing works</span>
-      </div>
-
-      <div className="cell border-b">
-        <h2 className="text-headline-20">
-          <Lines lines={["Custom quotes, built", "from four inputs."]} />
-        </h2>
-      </div>
-
-      <div className="grid lg:grid-cols-2">
-        <ol>
+    <Section eyebrow="03 — How pricing works" title="Custom quotes, built from four inputs">
+      <div className="grid gap-4 lg:grid-cols-2">
+        <ol className="grid gap-4 sm:grid-cols-2">
           {quoteFactors.map((factor, index) => (
-            <Reveal
+            <Numbered
               as="li"
               key={factor.title}
-              delay={index * 60}
-              className="flex items-baseline gap-16 border-b px-12 py-16 last:border-b-0 lg:px-20"
-            >
-              <span className="index-number">{String(index + 1).padStart(2, "0")}</span>
-              <div>
-                <h3 className="text-headline-10">{factor.title}</h3>
-                <p className="mt-8 text-body-10 opacity-70">{factor.note}</p>
-              </div>
-            </Reveal>
+              index={index + 1}
+              title={factor.title}
+              description={factor.note}
+              delay={index * 0.06}
+            />
           ))}
         </ol>
 
-        <Reveal className="cell border-t lg:border-l lg:border-t-0" delay={120}>
-          <p className="label opacity-60">What's included</p>
-          <ul className="mt-20">
-            {included.map((item) => (
-              <li
-                key={item}
-                className="flex items-start gap-8 border-t py-10 font-mono text-caption-20 uppercase first:border-t-0"
-              >
-                <span className="opacity-40">—</span>
-                {item}
-              </li>
-            ))}
-          </ul>
-        </Reveal>
+        <FadeIn delay={0.12} y={30}>
+          <Panel className="h-full">
+            <p className="eyebrow text-[#D7E2EA] opacity-50">What's included</p>
+            <RuledList items={included} className="mt-6" />
+          </Panel>
+        </FadeIn>
       </div>
-    </section>
+    </Section>
 
-    <section className="border-b">
-      <div className="flex items-baseline gap-16 border-b px-12 py-14 lg:px-20">
-        <span className="index-number">03</span>
-        <span className="label">Payment terms</span>
+    <Section eyebrow="04 — Payment terms" title="Two sides, the same rules">
+      <div className="grid gap-4 lg:grid-cols-2">
+        <FadeIn delay={0} y={30}>
+          <Panel className="h-full">
+            <p className="eyebrow text-[#D7E2EA] opacity-50">For clients</p>
+            <RuledList items={clientTerms} className="mt-6" />
+          </Panel>
+        </FadeIn>
+        <FadeIn delay={0.1} y={30}>
+          <Panel className="h-full">
+            <p className="eyebrow text-[#D7E2EA] opacity-50">For freelancers</p>
+            <RuledList items={freelancerTerms} className="mt-6" />
+          </Panel>
+        </FadeIn>
       </div>
+    </Section>
 
-      <div className="grid lg:grid-cols-2">
-        <Reveal className="cell">
-          <p className="label opacity-60">For clients</p>
-          <ul className="mt-20">
-            {clientTerms.map((item) => (
-              <li key={item} className="border-t py-12 text-body-10 first:border-t-0">
-                {item}
-              </li>
-            ))}
-          </ul>
-        </Reveal>
-
-        <Reveal className="cell border-t lg:border-l lg:border-t-0" delay={100}>
-          <p className="label opacity-60">For freelancers</p>
-          <ul className="mt-20">
-            {freelancerTerms.map((item) => (
-              <li key={item} className="border-t py-12 text-body-10 first:border-t-0">
-                {item}
-              </li>
-            ))}
-          </ul>
-        </Reveal>
-      </div>
-
-      <div className="grid border-t lg:grid-cols-3">
-        <div className="cell">
-          <h3 className="text-headline-10">Revision &amp; refund policy</h3>
-        </div>
-        <div className="cell border-t lg:col-span-2 lg:border-l lg:border-t-0">
-          <p className="max-w-prose text-body-10 opacity-70">
+    <Section eyebrow="05 — Revisions & refunds" title="Revision & refund policy">
+      <FadeIn delay={0} y={30}>
+        <Panel>
+          <p className="max-w-2xl text-sm font-light leading-relaxed text-[#D7E2EA] opacity-70 md:text-base">
             We offer revisions within the agreed scope. Refund policies are defined in the service
             agreement and depend on project stage and deliverables completed.
           </p>
-          <ArrowLink to="/refund-policy" className="mt-20">
+          <Link
+            to="/refund-policy"
+            className="mt-6 inline-block text-sm font-medium text-[#D7E2EA] underline underline-offset-4 transition-opacity hover:opacity-70"
+          >
             View the full policy
-          </ArrowLink>
-        </div>
-      </div>
-    </section>
-
-    <CTASection />
+          </Link>
+        </Panel>
+      </FadeIn>
+    </Section>
   </Layout>
 );
 

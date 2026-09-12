@@ -1,233 +1,82 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { Link } from "react-router-dom";
-import { Marquee } from "@/components/site/Marquee";
-import { ArrowRightGlyph } from "@/components/site/Glyphs";
-import { brand, clients } from "@/data/site";
+import { SiteNav } from "@/components/layout/SiteNav";
+import { spotlightMask, useSpotlight } from "@/components/motion/useSpotlight";
+import { brand } from "@/data/site";
+import { heroImages } from "@/data/media";
 
 /**
- * A full-viewport typographic composition in three stacked layers:
- *
- *   z-1  organic masses, morphing in CSS
- *   z-2  the wordmark, opaque, punching through them
- *   z-3  the UI — tagline, CTA, standing bar
- *
- * The masses paint in `--theme-fg`, so the composition inverts with the theme
- * rather than being locked to black.
- *
- * Entrance is a GSAP timeline on mount (not scroll-triggered), applied only at
- * lg with motion allowed. The markup renders fully visible, so mobile and
- * reduced-motion visitors simply see the finished composition.
+ * Full-viewport opening. A base image slowly settles out of a zoom while a
+ * cursor-following spotlight uncovers a second image beneath it; the tagline
+ * sits over both, and the promise and call to action anchor the floor.
  */
 export const HeroSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
-  const videoRef = useRef<HTMLDivElement>(null);
-
-  /**
-   * Cursor-tracked reveal: the texture layer is masked to a soft disc that
-   * follows the pointer, so the artwork appears around the letters as you move
-   * across the wordmark and closes again when you leave. Pointer position is
-   * written to CSS custom properties inside a rAF, so the mask updates on the
-   * compositor rather than through React state.
-   */
-  useEffect(() => {
-    const section = sectionRef.current;
-    const layer = videoRef.current;
-    if (!section || !layer) return;
-
-    // Touch devices have no cursor; CSS shows the texture outright there.
-    if (!window.matchMedia?.("(hover: hover)").matches) return;
-
-    let frame = 0;
-    let pending: { x: number; y: number } | null = null;
-
-    const flush = () => {
-      frame = 0;
-      if (!pending) return;
-      layer.style.setProperty("--mx", `${pending.x}px`);
-      layer.style.setProperty("--my", `${pending.y}px`);
-      pending = null;
-    };
-
-    const onMove = (event: PointerEvent) => {
-      const rect = section.getBoundingClientRect();
-      pending = { x: event.clientX - rect.left, y: event.clientY - rect.top };
-      layer.style.setProperty("--reveal-r", "clamp(220px, 24vw, 420px)");
-      if (!frame) frame = requestAnimationFrame(flush);
-    };
-
-    const onLeave = () => {
-      layer.style.setProperty("--reveal-r", "0px");
-    };
-
-    section.addEventListener("pointermove", onMove);
-    section.addEventListener("pointerleave", onLeave);
-
-    return () => {
-      section.removeEventListener("pointermove", onMove);
-      section.removeEventListener("pointerleave", onLeave);
-      if (frame) cancelAnimationFrame(frame);
-    };
-  }, []);
-
-  useEffect(() => {
-    let cancelled = false;
-    let cleanup = () => {};
-
-    (async () => {
-      const { gsap } = await import("gsap");
-
-      const root = sectionRef.current;
-      if (cancelled || !root) return;
-
-      const ctx = gsap.context(() => {
-        const mm = gsap.matchMedia();
-
-        const query = (selector: string) => Array.from(root.querySelectorAll<HTMLElement>(selector));
-
-        mm.add("(min-width: 1024px) and (prefers-reduced-motion: no-preference)", () => {
-          const tl = gsap.timeline();
-
-          tl.from(query("[data-hero-blob]"), {
-            scale: 0,
-            autoAlpha: 0,
-            duration: 1.5,
-            ease: "power3.out",
-            stagger: 0.2,
-            transformOrigin: "50% 50%",
-          })
-            .from(
-              "[data-hero-wordmark]",
-              {
-                clipPath: "inset(100% 0 0 0)",
-                duration: 1.2,
-                ease: "power4.out",
-              },
-              0.3,
-            )
-            .from(
-              "[data-hero-tagline]",
-              { y: 30, autoAlpha: 0, duration: 0.8, ease: "power2.out" },
-              0.8,
-            )
-            .from("[data-hero-cta]", { y: 20, autoAlpha: 0, duration: 0.6, ease: "power2.out" }, 1)
-            .from("[data-hero-bar]", { autoAlpha: 0, duration: 0.6, ease: "power2.out" }, 1.2);
-
-          return () => tl.kill();
-        });
-
-        // Below lg: a plain fade, no clip-path.
-        mm.add("(max-width: 1023px) and (prefers-reduced-motion: no-preference)", () => {
-          const tween = gsap.from(
-            query("[data-hero-blob], [data-hero-wordmark], [data-hero-tagline], [data-hero-cta], [data-hero-bar]"),
-            { autoAlpha: 0, duration: 0.8, ease: "power2.out", stagger: 0.08 },
-          );
-
-          return () => tween.kill();
-        });
-
-        return () => mm.revert();
-      }, sectionRef);
-
-      cleanup = () => ctx.revert();
-    })();
-
-    return () => {
-      cancelled = true;
-      cleanup();
-    };
-  }, []);
+  const { x, y } = useSpotlight(sectionRef);
+  const mask = spotlightMask(x, y);
 
   return (
-    <>
-      <section
-        ref={sectionRef}
-        className="hero-light relative h-[100svh] w-full overflow-hidden border-b"
+    <section
+      ref={sectionRef}
+      className="relative h-screen w-full overflow-hidden bg-black"
+      style={{ height: "100dvh" }}
+    >
+      <div
+        aria-hidden="true"
+        className="hero-zoom absolute inset-0 z-10 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url("${heroImages.base}")` }}
+      />
+
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-30 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url("${heroImages.reveal}")`,
+          maskImage: mask,
+          WebkitMaskImage: mask,
+        }}
+      />
+
+      {/* Pinned to the hero rather than the viewport, so it never floats over
+          the white services panel further down. */}
+      <SiteNav className="absolute left-0 right-0 top-0" />
+
+      <div className="pointer-events-none absolute left-0 right-0 top-[14%] z-50 flex flex-col items-center px-5 text-center">
+        <h1 className="leading-[0.95] text-white">
+          <span
+            className="hero-anim hero-reveal block font-playfair text-5xl font-normal italic sm:text-7xl md:text-8xl"
+            style={{ letterSpacing: "-0.05em", animationDelay: "0.25s" }}
+          >
+            We connect you
+          </span>
+          <span
+            className="hero-anim hero-reveal -mt-1 block text-5xl font-normal sm:text-7xl md:text-8xl"
+            style={{ letterSpacing: "-0.08em", animationDelay: "0.42s" }}
+          >
+            with a you
+          </span>
+        </h1>
+      </div>
+
+      <div
+        className="hero-anim hero-fade absolute bottom-14 left-10 z-50 hidden max-w-[260px] sm:block md:left-14"
+        style={{ animationDelay: "0.7s" }}
       >
-        {/* Layer 1a — the masses */}
-        <div className="hero-blob-container" aria-hidden="true">
-          <div data-hero-blob className="hero-blob hero-blob--1" />
-          <div data-hero-blob className="hero-blob hero-blob--2" />
-          <div data-hero-blob className="hero-blob hero-blob--3" />
-        </div>
+        <p className="text-sm leading-relaxed text-white/80">{brand.promise}</p>
+      </div>
 
-        {/* Layer 1b — the texture, revealed around the cursor */}
-        <div ref={videoRef} className="hero-video" aria-hidden="true">
-          <video src="/media/hero-texture.mp4" autoPlay muted loop playsInline preload="metadata" />
-        </div>
-
-        {/* Layer 2 — the wordmark */}
-        <div className="hero-wordmark">
-          <h1 data-hero-wordmark className="hero-wordmark-text">
-            YouLink
-          </h1>
-        </div>
-
-        {/* Layer 3 — the UI */}
-        <div className="hero-overlay">
-          <div className="hero-overlay-top">
-            <p data-hero-tagline className="hero-tagline">
-              {brand.tagline}
-            </p>
-
-            <Link data-hero-cta to="/hire" className="pill mt-24">
-              Start a project
-              <ArrowRightGlyph className="size-14" />
-            </Link>
-          </div>
-
-          <div data-hero-bar className="hero-overlay-bottom font-mono">
-            <span>Creative platform in India</span>
-            <a
-              href={brand.instagram}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="link-wipe"
-            >
-              Instagram
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* The positioning and the roster, carried over from the previous hero so
-          the copy and client marquee are not lost with the layout change. */}
-      <section className="border-b">
-        <div className="grid lg:grid-cols-2">
-          <div className="panel-ink flex flex-col justify-between border-b p-16 lg:border-b-0 lg:p-28">
-            <p className="serif-accent max-w-[20ch] text-[clamp(1.75rem,3vw,2.75rem)] leading-[1.2]">
-              We don't just create content or run ads — we build brands from the ground up.
-            </p>
-
-            <Link to="/hire" className="pill mt-40 w-fit">
-              Start a project
-              <ArrowRightGlyph className="size-14" />
-            </Link>
-          </div>
-
-          <div className="panel-accent flex flex-col justify-between p-16 lg:border-l lg:p-28">
-            <p className="max-w-prose text-body-20">{brand.positioning}</p>
-
-            <div className="mt-40">
-              <p className="label-serif">( Working with )</p>
-              <div className="mt-16 border-t border-ink/15 pt-16">
-                <Marquee
-                  label="Selected clients"
-                  duration={52}
-                  items={clients.map((client) => (
-                    <span
-                      key={client.id}
-                      className="flex items-center gap-24 whitespace-nowrap pr-24 font-mono text-caption-20 uppercase"
-                    >
-                      {client.name}
-                      <span className="opacity-40">/</span>
-                    </span>
-                  ))}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </>
+      <div
+        className="hero-anim hero-fade absolute bottom-10 left-5 right-5 z-50 flex max-w-full flex-col items-start gap-4 sm:bottom-24 sm:left-auto sm:right-10 sm:max-w-[260px] sm:gap-5 md:right-14"
+        style={{ animationDelay: "0.85s" }}
+      >
+        <p className="text-xs leading-relaxed text-white/80 sm:text-sm">{brand.goal}</p>
+        <Link
+          to="/hire"
+          className="rounded-full bg-[#e8702a] px-7 py-3 text-sm font-medium text-white transition-all hover:scale-[1.03] hover:bg-[#d2611f] hover:shadow-lg hover:shadow-[#e8702a]/30 active:scale-95"
+        >
+          Start a project
+        </Link>
+      </div>
+    </section>
   );
 };

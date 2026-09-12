@@ -3,7 +3,7 @@ import * as LabelPrimitive from "@radix-ui/react-label";
 
 import { cn } from "@/lib/utils";
 
-/** Field labels use the same mono/uppercase treatment as every other label. */
+/** Field labels share the small register used by section eyebrows. */
 const Label = React.forwardRef<
   React.ElementRef<typeof LabelPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
@@ -11,7 +11,7 @@ const Label = React.forwardRef<
   <LabelPrimitive.Root
     ref={ref}
     className={cn(
-      "block font-mono text-caption-10 uppercase opacity-60",
+      "block text-xs font-medium text-[#D7E2EA] opacity-60",
       "peer-disabled:cursor-not-allowed peer-disabled:opacity-40",
       className,
     )}
