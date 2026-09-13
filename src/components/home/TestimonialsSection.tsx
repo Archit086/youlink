@@ -8,17 +8,19 @@ import { clients } from "@/data/site";
  * portraits are shown. When real testimonials are collected, pass them in the
  * same { text, name, role, image } shape.
  */
-const entries: Testimonial[] = clients.map((client) => ({
-  text: client.engagement,
-  name: client.name,
-  role: client.handle ?? client.sector,
-}));
+const entries: Testimonial[] = clients
+  .filter((client) => client.engagement)
+  .map((client) => ({
+    text: client.engagement ?? "",
+    name: client.name,
+    role: client.handle,
+  }));
 
 /** The full list, starting `offset` cards in, so neighbouring columns never line up. */
 const rotate = (offset: number) => [...entries.slice(offset), ...entries.slice(0, offset)];
 
 /*
- * Every column carries all eleven entries, so each loop is taller than the
+ * Every column carries every entry, so each loop is taller than the
  * viewport and never shows a gap. Columns appear one breakpoint at a time until
  * five fill a wide screen; the uneven durations keep them drifting apart.
  */

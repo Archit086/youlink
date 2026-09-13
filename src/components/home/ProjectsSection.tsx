@@ -1,11 +1,13 @@
 import { useRef, type CSSProperties } from "react";
 import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { FadeIn } from "@/components/motion/FadeIn";
-import { LiveProjectButton } from "@/components/site/Buttons";
-import { featuredClients } from "@/data/site";
+import { ContactButton, LiveProjectButton } from "@/components/site/Buttons";
+import { InstagramLink } from "@/components/site/ClientBits";
+import { currentClients } from "@/data/site";
 import { caseMedia } from "@/data/media";
 
-const cases = featuredClients
+/* The clients YouLink is working with now, in the order YouLink lists them. */
+const cases = currentClients
   .filter((client) => caseMedia[client.id])
   .map((client) => ({ client, media: caseMedia[client.id] }));
 
@@ -14,8 +16,8 @@ interface CaseCardProps {
   total: number;
   progress: MotionValue<number>;
   name: string;
-  sector: string;
-  kind: string;
+  sector?: string;
+  handle: string;
   media: { columnOne: [string, string]; columnTwo: string };
 }
 
@@ -25,7 +27,7 @@ const frame = "w-full rounded-[40px] object-cover sm:rounded-[50px] md:rounded-[
  * One card in the stack. Each sticks under the one before it and shrinks as the
  * next slides over, so the pile reads as depth rather than as a list.
  */
-const CaseCard = ({ index, total, progress, name, sector, kind, media }: CaseCardProps) => {
+const CaseCard = ({ index, total, progress, name, sector, handle, media }: CaseCardProps) => {
   const targetScale = 1 - (total - 1 - index) * 0.03;
   const scale = useTransform(progress, [index * (1 / total), 1], [1, targetScale]);
 
@@ -50,15 +52,15 @@ const CaseCard = ({ index, total, progress, name, sector, kind, media }: CaseCar
               {String(index + 1).padStart(2, "0")}
             </span>
 
-            <div className="flex flex-col gap-1">
-              <span className="eyebrow text-[#D7E2EA] opacity-60">{kind}</span>
+            <div className="flex flex-col items-start gap-2">
               <h3
                 className="font-medium leading-tight text-[#D7E2EA]"
                 style={{ fontSize: "clamp(1rem, 2.2vw, 2.1rem)" }}
               >
                 {name}
               </h3>
-              <span className="eyebrow text-[#D7E2EA] opacity-40">{sector}</span>
+              {sector && <span className="eyebrow text-[#D7E2EA] opacity-40">{sector}</span>}
+              <InstagramLink handle={handle} name={name} />
             </div>
           </div>
 
@@ -101,8 +103,8 @@ const CaseCard = ({ index, total, progress, name, sector, kind, media }: CaseCar
 };
 
 /**
- * Featured client engagements, stacked. Sits on top of the light services panel
- * and is pulled up over its own rounded shoulder.
+ * YouLink's current clients, stacked, each with a link to their Instagram.
+ * Pulled up over the section above on its own rounded shoulder.
  */
 export const ProjectsSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -135,11 +137,15 @@ export const ProjectsSection = () => {
             progress={scrollYProgress}
             name={client.name}
             sector={client.sector}
-            kind={client.handle ?? "Client"}
+            handle={client.handle}
             media={media}
           />
         ))}
       </div>
+
+      <FadeIn delay={0.1} y={20} className="mt-4 flex justify-center">
+        <ContactButton to="/work">See more work</ContactButton>
+      </FadeIn>
     </section>
   );
 };

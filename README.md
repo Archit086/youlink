@@ -61,10 +61,11 @@ The short version:
 ## Content
 
 All business content (services, clients, process, metrics) lives in `src/data/site.ts`. Every entry
-is sourced from either the YouLink portfolio deck or the previous site — nothing is invented. Keep it
-that way when adding to it.
+is sourced from the YouLink portfolio deck, the previous site, or YouLink directly (the client list,
+which clients are current, and their Instagram handles) — nothing is invented. Keep it that way
+when adding to it.
 
 Presentation imagery lives separately in `src/data/media.ts` — the two hero frames, the footer's still, haze overlay and video, the corner
-ornaments, the two showcase strips, and the three case frames. **All of it is placeholder art hot-linked
+ornaments, and the case frames. **All of it is placeholder art hot-linked
 from third-party hosts.** Replace it with YouLink's own captures before launch; the layout expects
-landscape frames for the showcase strip and one tall plus two stacked frames per case card.
+one tall plus two stacked frames per case card.

@@ -83,7 +83,11 @@ interface RevealImageListProps {
 function RevealImageList({ items, heading, className }: RevealImageListProps) {
   return (
     <div className={cn("flex flex-col gap-1 bg-[#0C0C0C]", className)}>
-      {heading && <p className="eyebrow text-[#D7E2EA] opacity-60">{heading}</p>}
+      {heading && (
+        <p className="text-2xl font-medium tracking-[-0.03em] text-[#D7E2EA] opacity-80 sm:text-3xl md:text-4xl">
+          {heading}
+        </p>
+      )}
       {items.map((item) => (
         <RevealImageListItem key={item.text} {...item} />
       ))}

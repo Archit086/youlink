@@ -71,29 +71,31 @@ Standard Tailwind scales — `px-6` is `1.5rem`, not `6px`. Radii are large and 
 | ----------------------------- | -------------------------------------------- |
 | Section shoulders, case cards | `40px` → `50px` → `60px` across breakpoints  |
 | Content panels                | `28px` → `36px`                              |
-| Showcase tiles, inputs        | `16px`                                       |
+| Inputs                        | `16px`                                       |
 | Buttons                       | fully round                                  |
 
 ---
 
 ## 2. Composition
 
-The homepage runs in five movements, in this order:
+The homepage runs in four movements, in this order:
 
 1. **Hero** — one `100dvh` viewport. A base image settles out of a slow zoom while a 260px spotlight
    trails the cursor and uncovers a second image beneath it. A glass pill nav across the top, the
    two-line tagline near the top third, the promise bottom-left and the goal plus an orange call to
    action bottom-right.
-2. **Showcase** — two strips of work running in opposite directions, driven by scroll offset.
-3. **About** — a centred statement revealed character by character as the reader scrolls, with four
+2. **About** — a centred statement revealed character by character as the reader scrolls, with four
    3D objects anchored in the corners.
-4. **Services** — five large serif titles with their summaries. Hovering or focusing one dims it and
+3. **Services** — five large serif titles with their summaries. Hovering or focusing one dims it and
    fans two photos out from behind its last letters (`RevealImageList` in `components/ui`).
-5. **Work** — featured engagements as cards that stick and shrink into a stack.
+4. **Work** — YouLink's current clients as cards that stick and shrink into a stack, each with an
+   Instagram link, then a "See more work" button to the full client list.
 
 Inner pages use a smaller vocabulary from the same system: `PageHeader`, `Section`, `Panel`,
 `Numbered` and `RuledList` in `src/components/site/Page.tsx`. They keep a 6xl measure and the same
-eyebrow-plus-serif-title opening.
+eyebrow-plus-serif-title opening, over a fixed generative tree (`TreeBackground`, via
+`Layout`) in bark brown and leaf green. It grows once and stays until the visitor changes page.
+The homepage turns it off.
 
 ---
 
@@ -119,7 +121,7 @@ than playing at them.
 
 ## 4. Accessibility notes
 
-- Decorative imagery (hero frames, ornaments, showcase strips) is `aria-hidden` with empty `alt`.
+- Decorative imagery (hero frames, ornaments) is `aria-hidden` with empty `alt`.
 - `AnimatedText` exposes the full string once in an `sr-only` span and hides the animated glyphs.
 - Focus is a 2px `mist` outline at 3px offset, defined once on `:focus-visible`.
 - The homepage has no header bar by design; the hero's `<nav>` is the landmark.

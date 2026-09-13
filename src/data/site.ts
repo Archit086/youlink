@@ -4,11 +4,12 @@
  * Provenance rules for anything added here:
  *   - "portfolio"  → stated in the YouLink portfolio deck
  *   - "site"       → already published on the YouLink website
+ *   - "client"     → supplied directly by YouLink (the client list and handles)
  * Nothing in this file is invented. No metric, client, quote or outcome is
  * recorded unless one of those two sources states it.
  */
 
-export type Source = "portfolio" | "site";
+export type Source = "portfolio" | "site" | "client";
 
 /* ------------------------------------------------------------------ */
 /* Brand                                                               */
@@ -38,9 +39,9 @@ export const brand = {
 
 export const metrics = [
   {
-    value: "11",
+    value: "15",
     label: "Brands in our portfolio",
-    note: "Named client engagements across our current book of work.",
+    note: "Brands we have managed, six of them current.",
   },
   {
     value: "06",
@@ -144,22 +145,36 @@ export const contentFormats = [
 ] as const;
 
 /* ------------------------------------------------------------------ */
-/* Clients — all eleven are named in the portfolio deck                */
+/* Clients                                                             */
 /* ------------------------------------------------------------------ */
+
+/*
+ * The list, its order, which clients are current, and every Instagram handle
+ * come from YouLink (September 2026). Profiles and engagement notes come from
+ * the portfolio deck and exist only for the brands it covers; nothing has been
+ * written for the rest. Sectors for Gift Heaven, GOAT, Chaffeine and Papa Ji
+ * Daal Wale are read from their names. Skyrise and Anaura Studio have no sector
+ * until YouLink confirms what they do.
+ */
 
 export interface Client {
   id: string;
   name: string;
-  handle?: string;
-  sector: string;
+  /** Instagram handle, including the leading @. */
+  handle: string;
+  sector?: string;
   /** What the client is, in the deck's own terms. */
-  profile: string;
+  profile?: string;
   /** What YouLink did for them, in the deck's own terms. */
-  engagement: string;
+  engagement?: string;
   /** Only where the deck states a founding year. */
   since?: string;
-  featured?: boolean;
+  /** An active engagement. Current clients lead the homepage work section. */
+  current?: boolean;
 }
+
+export const instagramUrl = (handle: string) =>
+  `https://www.instagram.com/${handle.replace(/^@/, "")}/`;
 
 export const sectors = [
   "Food & Hospitality",
@@ -169,25 +184,36 @@ export const sectors = [
 
 export const clients: Client[] = [
   {
-    id: "chawlas",
-    name: "Chawla's",
-    handle: "@chawlas_ambalacity",
-    sector: "Food & Hospitality",
-    profile:
-      "One of India's leading family restaurant chains, known for its strong legacy and loyal customer base.",
-    engagement:
-      "We worked on enhancing their digital presence through engaging content, social media management, and modern brand communication while maintaining their legacy identity.",
-    featured: true,
+    id: "gift-heaven",
+    name: "Gift Heaven",
+    handle: "@thegiftsheaven",
+    sector: "Fashion, Retail & Lifestyle",
+    current: true,
   },
   {
-    id: "hungry-holics",
-    name: "Hungry Holics",
-    handle: "@hungryholicindia",
+    id: "goat",
+    name: "GOAT",
+    handle: "@greatestofalltaste",
     sector: "Food & Hospitality",
+    current: true,
+  },
+  {
+    id: "chaffeine",
+    name: "Chaffeine",
+    handle: "@chaffeine.cafe",
+    sector: "Food & Hospitality",
+    current: true,
+  },
+  {
+    id: "saloni-lingerie",
+    name: "Saloni Lingerie",
+    handle: "@saloniinnerwear",
+    sector: "Fashion, Retail & Lifestyle",
     profile:
-      "A vibrant café brand known for its youthful atmosphere and modern food experience.",
+      "Recognised as one of North India's finest lingerie brands, with a strong presence in the retail market.",
     engagement:
-      "We helped strengthen their online presence through creative content, audience-focused branding, and engaging social media strategies designed to connect with younger consumers.",
+      "At YouLink, we managed their social media operations through consistent branding, aesthetic content creation, and audience engagement strategies.",
+    current: true,
   },
   {
     id: "kaale-kulfi-wala",
@@ -199,22 +225,38 @@ export const clients: Client[] = [
       "A heritage dessert brand recognised for its authentic traditional flavours and long-standing reputation.",
     engagement:
       "Our work focused on improving their digital presentation and social media visibility while preserving the traditional essence of the brand.",
+    current: true,
   },
   {
-    id: "saloni-lingerie",
-    name: "Saloni Lingerie",
-    handle: "@saloniinnerwear",
-    sector: "Fashion, Retail & Lifestyle",
+    id: "sri-onkar",
+    name: "SriOnkar",
+    handle: "@srionkarhospital",
+    sector: "Healthcare, Industrial & Professional",
     profile:
-      "Recognised as one of North India's finest lingerie brands, with a strong presence in the retail market.",
+      "A specialised ENT and Eye care hospital dedicated to quality healthcare and patient-focused services.",
     engagement:
-      "At YouLink, we managed their social media operations through consistent branding, aesthetic content creation, and audience engagement strategies.",
-    featured: true,
+      "We assisted in enhancing their online visibility and creating a professional digital presence to help them connect better with the local community.",
+    current: true,
+  },
+  {
+    id: "skyrise",
+    name: "Skyrise",
+    handle: "@theskyrisemeerut",
+  },
+  {
+    id: "chawlas",
+    name: "Chawla's",
+    handle: "@chawlas_ambalacity",
+    sector: "Food & Hospitality",
+    profile:
+      "One of India's leading family restaurant chains, known for its strong legacy and loyal customer base.",
+    engagement:
+      "We worked on enhancing their digital presence through engaging content, social media management, and modern brand communication while maintaining their legacy identity.",
   },
   {
     id: "norton-baby-planet",
-    name: "Norton Baby Planet",
-    handle: "@babyplanetindia",
+    name: "Norton's Baby Planet",
+    handle: "@norton.thebabyplanet",
     sector: "Fashion, Retail & Lifestyle",
     profile:
       "One of the largest baby stores in Ambala Cantt, offering a wide range of products for infants, kids, and mothers.",
@@ -223,8 +265,8 @@ export const clients: Client[] = [
   },
   {
     id: "mrtc-jewellers",
-    name: "MRTC Jewellers",
-    handle: "@mrtc_jewellers",
+    name: "MRTC",
+    handle: "@mrtc_jewellers_ambala_",
     sector: "Fashion, Retail & Lifestyle",
     since: "1900",
     profile:
@@ -233,59 +275,58 @@ export const clients: Client[] = [
       "At YouLink, we focused on strengthening their digital identity while preserving the heritage and trust associated with the brand.",
   },
   {
-    id: "jayesth",
-    name: "Jayesth Imitation Jewellers",
-    sector: "Fashion, Retail & Lifestyle",
+    id: "hungry-holics",
+    name: "Hungry Holic",
+    handle: "@hungryholicindia",
+    sector: "Food & Hospitality",
     profile:
-      "Known for its stylish and affordable jewellery collections designed for modern customers.",
+      "A vibrant café brand known for its youthful atmosphere and modern food experience.",
     engagement:
-      "Our work focused on improving their social media branding and enhancing audience engagement through visually appealing digital content.",
+      "We helped strengthen their online presence through creative content, audience-focused branding, and engaging social media strategies designed to connect with younger consumers.",
   },
   {
-    id: "dayalx",
-    name: "DayalX",
-    sector: "Healthcare, Industrial & Professional",
-    profile:
-      "An emerging scientific solutions platform focused on serving laboratories, colleges, universities, and schools across India.",
-    engagement:
-      "We helped build their digital identity from the ground up through branding, social media strategy, and long-term digital positioning.",
-    featured: true,
+    id: "anaura-studio",
+    name: "Anaura Studio",
+    handle: "@anaura.studio",
   },
   {
-    id: "ld-entreprises",
-    name: "L.D. Entreprises",
-    sector: "Healthcare, Industrial & Professional",
-    profile:
-      "A trusted supplier of scientific and laboratory materials for industrial and commercial clients.",
-    engagement:
-      "At YouLink, we worked on strengthening their professional digital presence to better represent their credibility and large-scale operations.",
-  },
-  {
-    id: "sri-omkar-hospital",
-    name: "Sri Omkar Hospital",
-    sector: "Healthcare, Industrial & Professional",
-    profile:
-      "A specialised ENT and Eye care hospital dedicated to quality healthcare and patient-focused services.",
-    engagement:
-      "We assisted in enhancing their online visibility and creating a professional digital presence to help them connect better with the local community.",
+    id: "papa-ji-daal-wale",
+    name: "Papa Ji Daal Wale",
+    handle: "@papajidaalwale",
+    sector: "Food & Hospitality",
   },
   {
     id: "glass-decor",
     name: "Glass Decor",
+    handle: "@glassdecor.india",
     sector: "Healthcare, Industrial & Professional",
     profile:
       "A premium aluminium doors and window systems brand known for its modern craftsmanship and quality solutions.",
     engagement:
       "Our work focused on improving their online brand image and positioning them as a premium player in the market.",
   },
+  {
+    id: "dayalx",
+    name: "DayalX",
+    handle: "@thedayalx",
+    sector: "Healthcare, Industrial & Professional",
+    profile:
+      "An emerging scientific solutions platform focused on serving laboratories, colleges, universities, and schools across India.",
+    engagement:
+      "We helped build their digital identity from the ground up through branding, social media strategy, and long-term digital positioning.",
+  },
 ];
 
-export const featuredClients = clients.filter((client) => client.featured);
+export const currentClients = clients.filter((client) => client.current);
 
-export const clientsBySector = sectors.map((sector) => ({
-  sector,
-  items: clients.filter((client) => client.sector === sector),
-}));
+/** Clients grouped by sector; any without a confirmed sector are collected last. */
+export const clientsBySector = [
+  ...sectors.map((sector) => ({
+    sector: sector as string,
+    items: clients.filter((client) => client.sector === sector),
+  })),
+  { sector: "More brands", items: clients.filter((client) => !client.sector) },
+].filter((group) => group.items.length > 0);
 
 /* ------------------------------------------------------------------ */
 /* Team                                                                */
