@@ -12,8 +12,8 @@ const Work = () => (
   <Layout>
     <PageHeader
       eyebrow="01 — Work"
-      title={clients.length + " brands. Six industries."}
-      lead="We've worked with brands across diverse industries — from fashion and food to healthcare, retail, jewellery, and industrial sectors. Legacy names, new cafés, and platforms we helped build from the ground up."
+      title={clients.length + " brands. Seven industries."}
+      lead="We've worked with brands across diverse industries — from fashion and food to healthcare, retail, jewellery, real estate, and industrial sectors. Legacy names, new cafés, and platforms we helped build from the ground up."
     >
       <ContactButton to="/hire">Start a project</ContactButton>
     </PageHeader>
@@ -26,8 +26,8 @@ const Work = () => (
               <dd className="display-sans" style={{ fontSize: "clamp(3rem, 7vw, 6rem)" }}>
                 {metric.value}
               </dd>
-              <dt className="mt-4 text-base font-medium text-[#D7E2EA]">{metric.label}</dt>
-              <p className="mt-2 text-sm font-light leading-relaxed text-[#D7E2EA] opacity-60">
+              <dt className="mt-4 text-base font-medium text-mist">{metric.label}</dt>
+              <p className="mt-2 text-sm font-light leading-relaxed text-mist opacity-60">
                 {metric.note}
               </p>
             </Panel>
@@ -40,14 +40,14 @@ const Work = () => (
       eyebrow="03 — Client index"
       lead="Every brand we've managed. Tap the Instagram mark to see their feed."
     >
-      <ul className="overflow-hidden rounded-[28px] border border-[#D7E2EA]/15 md:rounded-[36px]">
+      <ul className="overflow-hidden rounded-[28px] border border-mist/15 md:rounded-[36px]">
         {clients.map((client, index) => (
           <FadeIn
             as="li"
             key={client.id}
             delay={Math.min(index * 0.04, 0.4)}
             y={16}
-            className="flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-[#D7E2EA]/15 px-6 py-4 text-sm text-[#D7E2EA] transition-colors duration-300 first:border-t-0 hover:bg-[#D7E2EA]/[0.06]"
+            className="flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-mist/15 px-6 py-4 text-sm text-mist transition-colors duration-300 first:border-t-0 hover:bg-mist/[0.06]"
           >
             <span className="w-8 shrink-0 tabular-nums opacity-40">{pad(index + 1)}</span>
             <span className="flex min-w-0 flex-1 flex-wrap items-center gap-3 font-medium md:w-72 md:flex-none">
@@ -87,7 +87,7 @@ const Work = () => (
               <span className="display-sans block" style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.75rem)" }}>
                 {pad(index + 1)}
               </span>
-              <p className="mt-3 text-base font-medium text-[#D7E2EA]">{format}</p>
+              <p className="mt-3 text-base font-medium text-mist">{format}</p>
             </Panel>
           </FadeIn>
         ))}

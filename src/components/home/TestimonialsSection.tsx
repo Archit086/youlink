@@ -34,15 +34,15 @@ const columns = [
 
 /** A full-width wall of client engagements, between the work and the footer. */
 export const TestimonialsSection = () => (
-  <section className="relative bg-[#0C0C0C] px-5 py-20 sm:px-8 sm:py-24 md:px-10 md:py-32">
+  <section className="relative bg-ground px-5 py-20 sm:px-8 sm:py-24 md:px-10 md:py-32">
     <FadeIn y={20} duration={0.8} delay={0.1} className="mx-auto flex max-w-[540px] flex-col items-center text-center">
-      <span className="rounded-full border border-white/30 bg-white/20 px-4 py-1 text-sm font-medium text-white backdrop-blur-md">
+      <span className="rounded-full border border-strong/30 bg-strong/20 px-4 py-1 text-sm font-medium text-strong backdrop-blur-md">
         Clients
       </span>
       <h2 className="display-serif mt-6" style={{ fontSize: "clamp(3rem, 8vw, 6rem)" }}>
         Brands we&apos;ve built with
       </h2>
-      <p className="mt-6 font-light leading-relaxed text-[#D7E2EA] opacity-70">
+      <p className="mt-6 font-light leading-relaxed text-mist opacity-70">
         Legacy names, new cafés, and platforms we helped build from the ground up.
       </p>
     </FadeIn>

@@ -21,11 +21,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        /* The literal palette. */
-        ink: "#0C0C0C",
-        mist: "#D7E2EA",
-        steel: "#646973",
-        frost: "#BBCCD7",
+        /* Theme tokens (index.css): dark on :root, light under data-theme="light".
+           RGB channels, so opacity modifiers work: bg-mist/15, bg-ground/80. */
+        ground: "rgb(var(--ground) / <alpha-value>)",
+        mist: "rgb(var(--mist) / <alpha-value>)",
+        strong: "rgb(var(--strong) / <alpha-value>)",
+        raised: "rgb(var(--raised) / <alpha-value>)",
 
         /* shadcn compatibility — mapped onto the same values. */
         border: "hsl(var(--border))",

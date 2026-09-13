@@ -1,8 +1,9 @@
 import { FadeIn } from "@/components/motion/FadeIn";
 import { Panel } from "@/components/site/Page";
 import { CurrentBadge, InstagramLink } from "@/components/site/ClientBits";
+import { ClientLogo } from "@/components/work/ClientLogo";
 import type { Client } from "@/data/site";
-import { caseMedia } from "@/data/media";
+import { clientGalleries } from "@/data/media";
 
 interface CaseCardProps {
   client: Client;
@@ -11,12 +12,12 @@ interface CaseCardProps {
 }
 
 /**
- * One client: name, sector and Instagram, then what the brand is and what
- * YouLink did for it. The frame, profile and engagement notes appear only where
- * they exist for that client.
+ * One client on the Work page: name, sector and Instagram, their logo in a frame
+ * shaped to it, then what the brand is and what YouLink did for it. Each part
+ * appears only where it exists for that client.
  */
 export const CaseCard = ({ client, index, delay = 0 }: CaseCardProps) => {
-  const media = caseMedia[client.id];
+  const gallery = clientGalleries[client.id];
 
   return (
     <FadeIn delay={delay} y={30} className="h-full">
@@ -28,41 +29,38 @@ export const CaseCard = ({ client, index, delay = 0 }: CaseCardProps) => {
           <div className="flex items-center gap-3">
             {client.current && <CurrentBadge />}
             {client.since && (
-              <span className="eyebrow text-[#D7E2EA] opacity-40">Since {client.since}</span>
+              <span className="eyebrow text-mist opacity-40">Since {client.since}</span>
             )}
           </div>
         </div>
 
         <h3
-          className="mt-4 font-medium leading-tight text-[#D7E2EA]"
+          className="mt-4 font-medium leading-tight text-mist"
           style={{ fontSize: "clamp(1.25rem, 2.6vw, 2rem)" }}
         >
           {client.name}
         </h3>
 
         {client.sector && (
-          <p className="eyebrow mt-1 text-[#D7E2EA] opacity-40">{client.sector}</p>
+          <p className="eyebrow mt-1 text-mist opacity-40">{client.sector}</p>
         )}
 
         <InstagramLink handle={client.handle} name={client.name} className="mt-4 w-fit" />
 
-        {media && (
-          <img
-            src={media.columnTwo}
-            alt={"Work for " + client.name}
-            loading="lazy"
-            className="mt-6 h-56 w-full rounded-[24px] object-cover md:h-72 md:rounded-[28px]"
-          />
+        {gallery?.logo && (
+          <div className="mt-8 flex justify-center">
+            <ClientLogo clientId={client.id} gallery={gallery} name={client.name} />
+          </div>
         )}
 
         {client.profile && (
-          <p className="mt-6 text-sm font-light leading-relaxed text-[#D7E2EA] opacity-70">
+          <p className="mt-8 text-sm font-light leading-relaxed text-mist opacity-70">
             {client.profile}
           </p>
         )}
 
         {client.engagement && (
-          <p className="mt-4 border-t border-[#D7E2EA]/15 pt-4 text-sm font-light leading-relaxed text-[#D7E2EA] opacity-60">
+          <p className="mt-4 border-t border-mist/15 pt-4 text-sm font-light leading-relaxed text-mist opacity-60">
             {client.engagement}
           </p>
         )}

@@ -23,7 +23,7 @@ interface PageHeaderProps {
 export const PageHeader = ({ eyebrow, title, lead, children }: PageHeaderProps) => (
   <header className={cn(pageX, "pb-16 pt-16 sm:pb-20 sm:pt-24 md:pb-24 md:pt-32")}>
     <div className="mx-auto max-w-6xl">
-      <FadeIn as="p" delay={0} y={20} className="eyebrow text-[#D7E2EA] opacity-50">
+      <FadeIn as="p" delay={0} y={20} className="eyebrow text-mist opacity-50">
         {eyebrow}
       </FadeIn>
 
@@ -42,7 +42,7 @@ export const PageHeader = ({ eyebrow, title, lead, children }: PageHeaderProps) 
           as="p"
           delay={0.25}
           y={20}
-          className="mt-8 max-w-2xl text-base font-light leading-relaxed text-[#D7E2EA] opacity-70 md:text-lg"
+          className="mt-8 max-w-2xl text-base font-light leading-relaxed text-mist opacity-70 md:text-lg"
         >
           {lead}
         </FadeIn>
@@ -71,14 +71,14 @@ export const Section = ({ id, eyebrow, title, lead, className, children }: Secti
   <section id={id} className={cn(pageX, "py-14 sm:py-16 md:py-20", className)}>
     <div className="mx-auto max-w-6xl">
       {(eyebrow || title || lead) && (
-        <div className="mb-10 border-t border-[#D7E2EA]/15 pt-8 md:mb-14">
-          {eyebrow && <p className="eyebrow text-[#D7E2EA] opacity-50">{eyebrow}</p>}
+        <div className="mb-10 border-t border-mist/15 pt-8 md:mb-14">
+          {eyebrow && <p className="eyebrow text-mist opacity-50">{eyebrow}</p>}
           {title && (
             <FadeIn
               as="h2"
               delay={0}
               y={30}
-              className="mt-4 max-w-3xl font-medium leading-tight text-[#D7E2EA]"
+              className="mt-4 max-w-3xl font-medium leading-tight text-mist"
               style={{ fontSize: "clamp(1.5rem, 4vw, 3rem)" }}
             >
               {title}
@@ -89,7 +89,7 @@ export const Section = ({ id, eyebrow, title, lead, className, children }: Secti
               as="p"
               delay={0.1}
               y={20}
-              className="mt-5 max-w-2xl text-sm font-light leading-relaxed text-[#D7E2EA] opacity-60 md:text-base"
+              className="mt-5 max-w-2xl text-sm font-light leading-relaxed text-mist opacity-60 md:text-base"
             >
               {lead}
             </FadeIn>
@@ -112,7 +112,7 @@ export const Panel = ({ id, className, children }: PanelProps) => (
   <div
     id={id}
     className={cn(
-      "rounded-[28px] border border-[#D7E2EA]/15 bg-[#D7E2EA]/[0.03] p-6 md:rounded-[36px] md:p-8",
+      "rounded-[28px] border border-mist/15 bg-mist/[0.03] p-6 md:rounded-[36px] md:p-8",
       className,
     )}
   >
@@ -147,11 +147,11 @@ export const Numbered = ({
       >
         {String(index).padStart(2, "0")}
       </span>
-      <h3 className="mt-4 text-lg font-medium leading-tight text-[#D7E2EA] md:text-xl">
+      <h3 className="mt-4 text-lg font-medium leading-tight text-mist md:text-xl">
         {title}
       </h3>
       {description && (
-        <p className="mt-3 text-sm font-light leading-relaxed text-[#D7E2EA] opacity-60">
+        <p className="mt-3 text-sm font-light leading-relaxed text-mist opacity-60">
           {description}
         </p>
       )}
@@ -166,7 +166,7 @@ export const RuledList = ({ items, className }: { items: readonly string[]; clas
     {items.map((item) => (
       <li
         key={item}
-        className="flex items-start gap-3 border-t border-[#D7E2EA]/15 py-3 text-sm font-light text-[#D7E2EA] opacity-70 first:border-t-0"
+        className="flex items-start gap-3 border-t border-mist/15 py-3 text-sm font-light text-mist opacity-70 first:border-t-0"
       >
         <span className="opacity-40">—</span>
         {item}

@@ -14,8 +14,8 @@ const items = [
 
 /** The mark from the favicon, redrawn without its tile so it sits on imagery. */
 const YouLinkMark = () => (
-  <svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true">
-    <g stroke="#ffffff" strokeWidth="6" strokeLinecap="square" fill="none">
+  <svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" className="text-strong">
+    <g stroke="currentColor" strokeWidth="6" strokeLinecap="square" fill="none">
       <path d="M11 13 L22 30 L33 13" />
       <path d="M22 30 L22 51" />
       <path d="M44 13 L44 51 L55 51" />
@@ -39,10 +39,10 @@ export const SiteNav = ({ className }: { className?: string }) => {
     >
       <Link to="/" className="flex items-center gap-2" onClick={close}>
         <YouLinkMark />
-        <span className="font-playfair text-2xl italic text-white">{brand.name}</span>
+        <span className="font-playfair text-2xl italic text-strong">{brand.name}</span>
       </Link>
 
-      <div className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 rounded-full border border-white/30 bg-white/20 px-2 py-2 backdrop-blur-md md:flex">
+      <div className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 rounded-full border border-strong/30 bg-strong/20 px-2 py-2 backdrop-blur-md md:flex">
         {items.map((item) => (
           <NavLink
             key={item.to}
@@ -51,7 +51,7 @@ export const SiteNav = ({ className }: { className?: string }) => {
             className={({ isActive }) =>
               cn(
                 "rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
-                isActive ? "text-white" : "text-white/80 hover:bg-white/20 hover:text-white",
+                isActive ? "text-strong" : "text-strong/80 hover:bg-strong/20 hover:text-strong",
               )
             }
           >
@@ -60,32 +60,34 @@ export const SiteNav = ({ className }: { className?: string }) => {
         ))}
       </div>
 
-      <Link
-        to="/hire"
-        className="hidden rounded-full bg-white px-6 py-2.5 text-sm font-semibold text-gray-900 hover:bg-gray-100 md:block"
-      >
-        Start a project
-      </Link>
+      <div className="flex items-center gap-2 sm:gap-3">
+        <Link
+          to="/hire"
+          className="hidden rounded-full bg-strong px-6 py-2.5 text-sm font-semibold text-ground hover:bg-strong/90 md:block"
+        >
+          Start a project
+        </Link>
 
-      <button
-        type="button"
-        onClick={() => setMenuOpen((open) => !open)}
-        aria-expanded={menuOpen}
-        aria-label={menuOpen ? "Close menu" : "Open menu"}
-        className="rounded-full border border-white/30 bg-white/20 p-2 text-white backdrop-blur-md md:hidden"
-      >
-        {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-      </button>
+        <button
+          type="button"
+          onClick={() => setMenuOpen((open) => !open)}
+          aria-expanded={menuOpen}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+          className="rounded-full border border-strong/30 bg-strong/20 p-2 text-strong backdrop-blur-md md:hidden"
+        >
+          {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
+      </div>
 
       {menuOpen && (
-        <div className="absolute left-4 right-4 top-full flex flex-col gap-1 rounded-3xl border border-white/30 bg-black/70 p-3 backdrop-blur-md md:hidden">
+        <div className="absolute left-4 right-4 top-full flex flex-col gap-1 rounded-3xl border border-strong/30 bg-ground/80 p-3 backdrop-blur-md md:hidden">
           {items.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
               end
               onClick={close}
-              className="rounded-full px-4 py-2.5 text-sm font-medium text-white/90 hover:bg-white/20"
+              className="rounded-full px-4 py-2.5 text-sm font-medium text-strong/90 hover:bg-strong/20"
             >
               {item.label}
             </NavLink>
@@ -93,7 +95,7 @@ export const SiteNav = ({ className }: { className?: string }) => {
           <Link
             to="/hire"
             onClick={close}
-            className="mt-2 rounded-full bg-white px-4 py-2.5 text-center text-sm font-semibold text-gray-900"
+            className="mt-2 rounded-full bg-strong px-4 py-2.5 text-center text-sm font-semibold text-ground"
           >
             Start a project
           </Link>

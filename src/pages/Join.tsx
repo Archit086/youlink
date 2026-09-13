@@ -146,10 +146,9 @@ const Join = () => {
         <Section>
           <FadeIn delay={0} y={30}>
             <Panel className="max-w-2xl">
-              <p className="eyebrow text-[#D7E2EA] opacity-50">Next steps</p>
-              <p className="mt-4 text-sm font-light leading-relaxed text-[#D7E2EA] opacity-70">
-                Once approved, you'll receive an email with instructions to complete your ₹99/month
-                subscription via PhonePe to activate your account.
+              <p className="eyebrow text-mist opacity-50">Next steps</p>
+              <p className="mt-4 text-sm font-light leading-relaxed text-mist opacity-70">
+                Once approved, you'll receive an email with instructions to get started.
               </p>
             </Panel>
           </FadeIn>
@@ -176,17 +175,17 @@ const Join = () => {
           <div className="flex flex-col gap-4 lg:col-span-5">
             <FadeIn delay={0} y={30}>
               <Panel>
-                <p className="eyebrow text-[#D7E2EA] opacity-50">What you get</p>
+                <p className="eyebrow text-mist opacity-50">What you get</p>
                 <ul className="mt-6">
                   {benefits.map((benefit, index) => (
                     <li
                       key={benefit.title}
-                      className="flex items-start gap-4 border-t border-[#D7E2EA]/15 py-4 first:border-t-0"
+                      className="flex items-start gap-4 border-t border-mist/15 py-4 first:border-t-0"
                     >
-                      <span className="text-sm tabular-nums text-[#D7E2EA] opacity-40">
+                      <span className="text-sm tabular-nums text-mist opacity-40">
                         {String(index + 1).padStart(2, "0")}
                       </span>
-                      <span className="text-sm text-[#D7E2EA]">
+                      <span className="text-sm text-mist">
                         <span className="font-medium">{benefit.title}</span>
                         <span className="ml-2 font-light opacity-60">{benefit.description}</span>
                       </span>
@@ -195,32 +194,19 @@ const Join = () => {
                 </ul>
               </Panel>
             </FadeIn>
-
-            <FadeIn delay={0.1} y={30}>
-              <Panel>
-                <p className="eyebrow text-[#D7E2EA] opacity-50">
-                  Platform subscription (₹99/month)
-                </p>
-                <p className="mt-4 text-sm font-light leading-relaxed text-[#D7E2EA] opacity-70">
-                  After your application is approved, you'll need to complete a ₹99/month
-                  subscription via PhonePe to activate your account and start receiving project
-                  assignments.
-                </p>
-              </Panel>
-            </FadeIn>
           </div>
 
           {/* Right — the application */}
           <FadeIn delay={0.15} y={30} className="lg:col-span-7">
             <Panel className="md:p-10">
               <div className="flex items-baseline justify-between gap-4">
-                <p className="eyebrow text-[#D7E2EA]">Freelancer application</p>
-                <p className="eyebrow text-[#D7E2EA] opacity-40">* required</p>
+                <p className="eyebrow text-mist">Freelancer application</p>
+                <p className="eyebrow text-mist opacity-40">* required</p>
               </div>
 
               <form onSubmit={handleSubmit} className="mt-8 space-y-10">
                 <div className="space-y-6">
-                  <p className="eyebrow text-[#D7E2EA] opacity-50">Personal information</p>
+                  <p className="eyebrow text-mist opacity-50">Personal information</p>
 
                   <div className="grid gap-5 sm:grid-cols-2">
                     <div className="space-y-2">
@@ -296,8 +282,8 @@ const Join = () => {
                   </div>
                 </div>
 
-                <div className="space-y-6 border-t border-[#D7E2EA]/15 pt-8">
-                  <p className="eyebrow text-[#D7E2EA] opacity-50">Professional information</p>
+                <div className="space-y-6 border-t border-mist/15 pt-8">
+                  <p className="eyebrow text-mist opacity-50">Professional information</p>
 
                   <div className="grid gap-5 sm:grid-cols-2">
                     <div className="space-y-2">
@@ -363,14 +349,14 @@ const Join = () => {
                       onChange={handleChange}
                       placeholder="https://yourportfolio.com or LinkedIn URL"
                     />
-                    <p className="text-xs text-[#D7E2EA] opacity-50">
+                    <p className="text-xs text-mist opacity-50">
                       CV upload is coming soon — share your resume via the portfolio link for now.
                     </p>
                   </div>
                 </div>
 
-                <div className="space-y-6 border-t border-[#D7E2EA]/15 pt-8">
-                  <p className="text-xs text-[#D7E2EA] opacity-50">
+                <div className="space-y-6 border-t border-mist/15 pt-8">
+                  <p className="text-xs text-mist opacity-50">
                     Your data will be used only for internal screening and project coordination
                     within YouLink. We respect your privacy.
                   </p>

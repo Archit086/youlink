@@ -12,11 +12,11 @@ interface LayoutProps {
 }
 
 export const Layout = ({ children, showNavbar = true, showBackground = true }: LayoutProps) => (
-  <div className="relative flex min-h-screen flex-col bg-[#0C0C0C]" style={{ overflowX: "clip" }}>
+  <div className="relative flex min-h-screen flex-col bg-ground" style={{ overflowX: "clip" }}>
     {showBackground && <TreeBackground />}
     <a
       href="#main"
-      className="sr-only focus:not-sr-only focus:absolute focus:left-5 focus:top-5 focus:z-[60] focus:rounded-full focus:bg-[#D7E2EA] focus:px-5 focus:py-2 focus:text-sm focus:font-medium focus:text-[#0C0C0C]"
+      className="sr-only focus:not-sr-only focus:absolute focus:left-5 focus:top-5 focus:z-[60] focus:rounded-full focus:bg-mist focus:px-5 focus:py-2 focus:text-sm focus:font-medium focus:text-ground"
     >
       Skip to content
     </a>

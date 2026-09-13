@@ -10,10 +10,6 @@ const highlights = [
     description: "Clear pricing structure based on project scope. No hidden fees, no surprises.",
   },
   {
-    title: "50% advance system",
-    description: "Projects begin after 50% advance payment. Balance due upon final delivery.",
-  },
-  {
     title: "Legal agreements",
     description: "Every project comes with a service agreement protecting both parties.",
   },
@@ -42,14 +38,12 @@ const included = [
 ];
 
 const clientTerms = [
-  "50% advance to initiate project",
-  "Remaining 50% upon final delivery",
+  "Payment schedule set out in your service agreement",
   "Multiple payment options available",
   "Invoice with complete breakdown",
 ];
 
 const freelancerTerms = [
-  "₹99/month platform subscription",
   "Milestone-based project payouts",
   "Fair, transparent payout structure",
   "Timely payments after milestone approval",
@@ -66,7 +60,7 @@ const Pricing = () => (
     </PageHeader>
 
     <Section eyebrow="02 — What you can count on">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {highlights.map((item, index) => (
           <Numbered
             key={item.title}
@@ -96,7 +90,7 @@ const Pricing = () => (
 
         <FadeIn delay={0.12} y={30}>
           <Panel className="h-full">
-            <p className="eyebrow text-[#D7E2EA] opacity-50">What's included</p>
+            <p className="eyebrow text-mist opacity-50">What's included</p>
             <RuledList items={included} className="mt-6" />
           </Panel>
         </FadeIn>
@@ -107,13 +101,13 @@ const Pricing = () => (
       <div className="grid gap-4 lg:grid-cols-2">
         <FadeIn delay={0} y={30}>
           <Panel className="h-full">
-            <p className="eyebrow text-[#D7E2EA] opacity-50">For clients</p>
+            <p className="eyebrow text-mist opacity-50">For clients</p>
             <RuledList items={clientTerms} className="mt-6" />
           </Panel>
         </FadeIn>
         <FadeIn delay={0.1} y={30}>
           <Panel className="h-full">
-            <p className="eyebrow text-[#D7E2EA] opacity-50">For freelancers</p>
+            <p className="eyebrow text-mist opacity-50">For freelancers</p>
             <RuledList items={freelancerTerms} className="mt-6" />
           </Panel>
         </FadeIn>
@@ -123,13 +117,13 @@ const Pricing = () => (
     <Section eyebrow="05 — Revisions & refunds" title="Revision & refund policy">
       <FadeIn delay={0} y={30}>
         <Panel>
-          <p className="max-w-2xl text-sm font-light leading-relaxed text-[#D7E2EA] opacity-70 md:text-base">
+          <p className="max-w-2xl text-sm font-light leading-relaxed text-mist opacity-70 md:text-base">
             We offer revisions within the agreed scope. Refund policies are defined in the service
             agreement and depend on project stage and deliverables completed.
           </p>
           <Link
             to="/refund-policy"
-            className="mt-6 inline-block text-sm font-medium text-[#D7E2EA] underline underline-offset-4 transition-opacity hover:opacity-70"
+            className="mt-6 inline-block text-sm font-medium text-mist underline underline-offset-4 transition-opacity hover:opacity-70"
           >
             View the full policy
           </Link>

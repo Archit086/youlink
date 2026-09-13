@@ -2,94 +2,49 @@
  * Presentation media for the homepage.
  *
  * Deliberately kept out of `site.ts`, which carries only sourced business
- * facts. Everything here is art direction: the scrolling showcase strip and the
- * three stacked case cards. Swap these URLs for YouLink's own captures as soon
- * as the client work is exported.
+ * facts. Everything here is art direction: hero,
+ * services, footer and about imagery. Client logos and work are the exception:
+ * they are real, and come from the folders in src/assets/clients.
  */
 
-export interface CaseMedia {
-  /** Two stacked frames in the narrow left column. */
-  columnOne: [string, string];
-  /** One tall frame in the wide right column. */
-  columnTwo: string;
+/*
+ * Client photos live in src/assets/clients/<client id>/. In each folder, a file
+ * with "logo" in its name is the logo, and every other image is a piece of work,
+ * used in file-name order (up to MAX_WORK_IMAGES). No shape is assumed: the
+ * gallery measures each image and cuts its frame to match.
+ * See src/assets/clients/README.md.
+ */
+const clientPhotoFiles = import.meta.glob<string>(
+  "/src/assets/clients/*/*.{jpg,jpeg,png,webp,avif,JPG,JPEG,PNG,WEBP,AVIF}",
+  { eager: true, query: "?url", import: "default" },
+);
+
+export interface ClientGallery {
+  logo?: string;
+  /** The logo file name, used to match its measured frame in logo-frames.ts. */
+  logoFile?: string;
+  work: string[];
 }
 
+export const MAX_WORK_IMAGES = 3;
+
 /** Keyed by the client `id` in `site.ts`. */
-export const caseMedia: Record<string, CaseMedia> = {
-  chawlas: {
-    columnOne: [
-      "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055344_5eff02e0-87a5-41ce-b64f-eb08da8f33db.png&w=1280&q=85",
-      "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055431_11d841fd-8b41-46a5-82e4-b04f2407a7d8.png&w=1280&q=85",
-    ],
-    columnTwo:
-      "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055451_e317bf2d-28d4-48cc-86b0-6f72f25b6327.png&w=1280&q=85",
-  },
-  "saloni-lingerie": {
-    columnOne: [
-      "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055654_911201c5-36d9-4bc6-bac7-331adfce159f.png&w=1280&q=85",
-      "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055723_5ceda0b8-d9c2-4665-b2e3-83ba19ba76d1.png&w=1280&q=85",
-    ],
-    columnTwo:
-      "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055753_adc5dcbd-a8e6-49c0-b43a-9b030d835cea.png&w=1280&q=85",
-  },
-  dayalx: {
-    columnOne: [
-      "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055759_963cfb0b-4bd1-4b0f-9d0a-09bd6cf95b2f.png&w=1280&q=85",
-      "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_060108_438f781a-9846-4dcc-89ab-c4e6cb830f5b.png&w=1280&q=85",
-    ],
-    columnTwo:
-      "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260412_055818_9d062121-ad7e-46b9-999a-1a6a692ef1ee.png&w=1280&q=85",
-  },
-  "kaale-kulfi-wala": {
-    columnOne: [
-      "https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?auto=format&fit=crop&w=1280&q=80",
-      "https://images.unsplash.com/photo-1501443762994-82bd5dace89a?auto=format&fit=crop&w=1280&q=80",
-    ],
-    columnTwo: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=1280&q=80",
-  },
-  "mrtc-jewellers": {
-    columnOne: [
-      "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=1280&q=80",
-      "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=1280&q=80",
-    ],
-    columnTwo: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=1280&q=80",
-  },
-  "glass-decor": {
-    columnOne: [
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1280&q=80",
-      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1280&q=80",
-    ],
-    columnTwo: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1280&q=80",
-  },
-  "gift-heaven": {
-    columnOne: [
-      "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=1280&q=80",
-      "https://images.unsplash.com/photo-1513201099705-a9746e1e201f?auto=format&fit=crop&w=1280&q=80",
-    ],
-    columnTwo: "https://images.unsplash.com/photo-1607344645866-009c320b63e0?auto=format&fit=crop&w=1280&q=80",
-  },
-  "goat": {
-    columnOne: [
-      "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1280&q=80",
-      "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1280&q=80",
-    ],
-    columnTwo: "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=1280&q=80",
-  },
-  "chaffeine": {
-    columnOne: [
-      "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1280&q=80",
-      "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1280&q=80",
-    ],
-    columnTwo: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1280&q=80",
-  },
-  "sri-onkar": {
-    columnOne: [
-      "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1280&q=80",
-      "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1280&q=80",
-    ],
-    columnTwo: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1280&q=80",
-  },
-};
+export const clientGalleries: Record<string, ClientGallery> = {};
+
+for (const path of Object.keys(clientPhotoFiles).sort((a, b) =>
+  a.localeCompare(b, undefined, { numeric: true }),
+)) {
+  const [, , , , clientId, fileName] = path.split("/");
+  const gallery = (clientGalleries[clientId] ??= { work: [] });
+  if (/logo/i.test(fileName)) {
+    if (!gallery.logo) {
+      gallery.logo = clientPhotoFiles[path];
+      gallery.logoFile = fileName;
+    }
+  } else if (gallery.work.length < MAX_WORK_IMAGES) {
+    gallery.work.push(clientPhotoFiles[path]);
+  }
+}
 
 /** Decorative 3D objects anchored in the corners of the about section. */
 export const aboutOrnaments = {

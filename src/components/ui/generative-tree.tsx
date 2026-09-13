@@ -17,6 +17,8 @@ export type GenerativeTreeProps = {
   hue?: number;
   saturation?: number;
   brightness?: number;
+  /** Colour behind the tree, inside and around the canvas. */
+  background?: string;
   className?: string;
   style?: CSSProperties;
 };
@@ -35,11 +37,11 @@ function clamp(value: number, minimum: number, maximum: number) {
   return Math.min(maximum, Math.max(minimum, value));
 }
 
-function buildFocusedDocument(size: number, particleAmount: number) {
+function buildFocusedDocument(size: number, particleAmount: number, background: string) {
   const particleCount = Math.max(0, Math.round(50 * clamp(particleAmount, 0, 2)));
   const treePadding = 1 / clamp(size, 0.65, 1.5);
   const focusStyles = `<style data-generative-tree-focus>
-html, body, canvas { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #0a0a0a; }
+html, body, canvas { width: 100%; height: 100%; margin: 0; overflow: hidden; background: ${background}; }
 .label { display: none !important; }
 </style>`;
   const controls = `<script data-generative-tree-controls>
@@ -121,6 +123,7 @@ export default function GenerativeTree({
   hue = GENERATIVE_TREE_DEFAULTS.hue,
   saturation = GENERATIVE_TREE_DEFAULTS.saturation,
   brightness = GENERATIVE_TREE_DEFAULTS.brightness,
+  background = "#0a0a0a",
   className = "",
   style,
 }: GenerativeTreeProps) {
@@ -131,7 +134,10 @@ export default function GenerativeTree({
   );
   const safeSpeed = clamp(speed, 0, 3);
   const paused = !hostVisible || !documentVisible || safeSpeed === 0;
-  const source = useMemo(() => buildFocusedDocument(size, particleAmount), [particleAmount, size]);
+  const source = useMemo(
+    () => buildFocusedDocument(size, particleAmount, background),
+    [particleAmount, size, background],
+  );
 
   const postControls = useCallback(() => {
     iframeRef.current?.contentWindow?.postMessage(
@@ -167,7 +173,7 @@ export default function GenerativeTree({
   return (
     <div
       className={`threeui-background generative-tree${className ? ` ${className}` : ""}`}
-      style={{ background: "#0a0a0a", pointerEvents: "auto", ...style }}
+      style={{ background, pointerEvents: "auto", ...style }}
     >
       <iframe
         ref={iframeRef}
@@ -184,7 +190,7 @@ export default function GenerativeTree({
           width: "100%",
           height: "100%",
           border: 0,
-          background: "#0a0a0a",
+          background,
           opacity: clamp(opacity, 0.05, 1),
           filter: `hue-rotate(${clamp(hue, -180, 180)}deg) saturate(${clamp(saturation, 0, 2)}) brightness(${clamp(brightness, 0.35, 1.8)})`,
         }}

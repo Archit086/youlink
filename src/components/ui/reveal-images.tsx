@@ -37,7 +37,7 @@ function RevealImageListItem({ text, images, description, href }: RevealImageLis
         {text}
       </h3>
       {description && (
-        <p className="mt-3 max-w-xl text-sm font-light leading-relaxed text-[#D7E2EA] opacity-60 md:text-base">
+        <p className="mt-3 max-w-xl text-sm font-light leading-relaxed text-mist opacity-60 md:text-base">
           {description}
         </p>
       )}
@@ -82,9 +82,9 @@ interface RevealImageListProps {
 
 function RevealImageList({ items, heading, className }: RevealImageListProps) {
   return (
-    <div className={cn("flex flex-col gap-1 bg-[#0C0C0C]", className)}>
+    <div className={cn("flex flex-col gap-1 bg-ground", className)}>
       {heading && (
-        <p className="text-2xl font-medium tracking-[-0.03em] text-[#D7E2EA] opacity-80 sm:text-3xl md:text-4xl">
+        <p className="text-2xl font-medium tracking-[-0.03em] text-mist opacity-80 sm:text-3xl md:text-4xl">
           {heading}
         </p>
       )}

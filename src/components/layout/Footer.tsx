@@ -79,7 +79,7 @@ export const Footer = () => {
   return (
     <footer
       ref={footerRef}
-      className="relative overflow-hidden bg-[#0C0C0C] px-5 pb-10 pt-24 sm:px-8 sm:pt-32 md:px-10 md:pt-40"
+      className="relative overflow-hidden bg-ground px-5 pb-10 pt-24 sm:px-8 sm:pt-32 md:px-10 md:pt-40"
     >
       <svg
         aria-hidden="true"
@@ -127,7 +127,7 @@ export const Footer = () => {
 
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-[35] bg-gradient-to-b from-[#0C0C0C] via-[#0C0C0C]/10 to-[#0C0C0C]/70"
+        className="pointer-events-none absolute inset-0 z-[35] bg-gradient-to-b from-ground via-ground/10 to-ground/70"
       />
 
       <div className="relative z-40">
@@ -139,7 +139,7 @@ export const Footer = () => {
             Let&apos;s build
           </h2>
           <p
-            className="max-w-[520px] font-light leading-snug text-[#D7E2EA] opacity-70"
+            className="max-w-[520px] font-light leading-snug text-mist opacity-70"
             style={{ fontSize: "clamp(0.8rem, 1.4vw, 1.1rem)" }}
           >
             {brand.goal}
@@ -147,17 +147,17 @@ export const Footer = () => {
           <ContactButton to="/hire">Start a project</ContactButton>
         </FadeIn>
 
-        <div className="mx-auto mt-24 grid max-w-6xl gap-10 border-t border-[#D7E2EA]/15 pt-12 sm:grid-cols-2 md:mt-32 lg:grid-cols-4">
+        <div className="mx-auto mt-24 grid max-w-6xl gap-10 border-t border-mist/15 pt-12 sm:grid-cols-2 md:mt-32 lg:grid-cols-4">
           <div className="flex flex-col gap-4">
-            <p className="eyebrow text-[#D7E2EA] opacity-50">YouLink</p>
-            <p className="text-sm font-light leading-relaxed text-[#D7E2EA] opacity-70">
+            <p className="eyebrow text-mist opacity-50">YouLink</p>
+            <p className="text-sm font-light leading-relaxed text-mist opacity-70">
               {brand.positioning}
             </p>
             <a
               href={brand.instagram}
               target="_blank"
               rel="noreferrer noopener"
-              className="group inline-flex w-fit items-center gap-2 text-sm font-medium text-[#D7E2EA] transition-opacity duration-200 hover:opacity-70"
+              className="group inline-flex w-fit items-center gap-2 text-sm font-medium text-mist transition-opacity duration-200 hover:opacity-70"
             >
               <Instagram className="h-4 w-4" aria-hidden="true" />
               {brand.instagramHandle}
@@ -170,13 +170,13 @@ export const Footer = () => {
 
           {columns.map((column) => (
             <nav key={column.heading} aria-label={column.heading} className="flex flex-col gap-4">
-              <p className="eyebrow text-[#D7E2EA] opacity-50">{column.heading}</p>
+              <p className="eyebrow text-mist opacity-50">{column.heading}</p>
               <ul className="flex flex-col gap-2">
                 {column.links.map((link) => (
                   <li key={link.path}>
                     <Link
                       to={link.path}
-                      className="text-sm font-light text-[#D7E2EA] transition-opacity duration-200 hover:opacity-60"
+                      className="text-sm font-light text-mist transition-opacity duration-200 hover:opacity-60"
                     >
                       {link.name}
                     </Link>
@@ -187,7 +187,7 @@ export const Footer = () => {
           ))}
         </div>
 
-        <div className="mx-auto mt-16 flex max-w-6xl flex-col gap-2 border-t border-[#D7E2EA]/15 pt-6 text-xs text-[#D7E2EA] opacity-50 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mx-auto mt-16 flex max-w-6xl flex-col gap-2 border-t border-mist/15 pt-6 text-xs text-mist opacity-50 sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} YouLink. All rights reserved.</p>
           <p>{brand.tagline}</p>
         </div>

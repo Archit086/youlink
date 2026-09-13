@@ -47,8 +47,8 @@ Without these the site renders, but `/hire` and `/join` submissions will fail.
 The visual system is documented in [`docs/art-direction-brief.md`](docs/art-direction-brief.md).
 The short version:
 
-1. **One ground (`#0C0C0C`) and one ink (`#D7E2EA`).** Hierarchy comes from opacity, not from a
-   grey ramp. Every section sits on the same black ground.
+1. **Four colour tokens on one dark ground.** `ground`, `mist`, `strong` and `raised` (see
+   `src/index.css`); hierarchy comes from opacity.
 2. **Inter everywhere, Playfair Display italic for display lines.** No uppercase anywhere. Headings
    use `.display-serif`, big numerals use `.display-sans`.
 3. **One navigation bar** (`SiteNav`) on every page, and three sentence-case pill buttons: orange
@@ -56,7 +56,8 @@ The short version:
 4. **Spacing is standard Tailwind** - `px-6` is `1.5rem`. Radii are large: 40-60px on section
    shoulders and cards, fully round on buttons.
 5. **Motion is scroll-driven**: `FadeIn` and `AnimatedText` in `src/components/motion/`, plus the
-   hero spotlight and the stacking work cards.
+   hero spotlight and the stacking work cards. Page scrolling is eased site-wide by Lenis
+   (`src/components/layout/SmoothScroll.tsx`); add `data-lenis-prevent` to any inner scroll area.
 
 ## Content
 
@@ -66,6 +67,7 @@ which clients are current, and their Instagram handles) — nothing is invented.
 when adding to it.
 
 Presentation imagery lives separately in `src/data/media.ts` — the two hero frames, the footer's still, haze overlay and video, the corner
-ornaments, and the case frames. **All of it is placeholder art hot-linked
+and ornaments. **All of that is placeholder art hot-linked
 from third-party hosts.** Replace it with YouLink's own captures before launch; the layout expects
-one tall plus two stacked frames per case card.
+any shape. Client logos and work are real and live in `src/assets/clients/` (one folder per client;
+see the README there).

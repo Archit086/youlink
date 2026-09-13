@@ -19,7 +19,7 @@ const items = services
 export const ServicesSection = () => (
   <section
     id="services"
-    className="relative bg-[#0C0C0C] px-5 py-20 sm:px-8 sm:py-24 md:px-10 md:py-32"
+    className="relative bg-ground px-5 py-20 sm:px-8 sm:py-24 md:px-10 md:py-32"
   >
     <FadeIn
       as="h2"

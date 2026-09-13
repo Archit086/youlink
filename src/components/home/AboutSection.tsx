@@ -66,7 +66,7 @@ export const AboutSection = () => (
 
         <AnimatedText
           text={statement}
-          className="max-w-[560px] text-center font-medium leading-relaxed text-[#D7E2EA]"
+          className="max-w-[560px] text-center font-medium leading-relaxed text-mist"
           style={{ fontSize: "clamp(1rem, 2vw, 1.35rem)" }}
         />
       </div>

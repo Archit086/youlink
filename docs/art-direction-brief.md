@@ -18,10 +18,14 @@ position rather than by timers.
 
 ### Colour
 
-| Token   | Value     | Role                                                     |
-| ------- | --------- | -------------------------------------------------------- |
-| ink     | `#0C0C0C` | The ground. `html`, `body`, `#root` and the main wrapper.  |
-| mist    | `#D7E2EA` | Body copy, rules, outlines. Display type is plain white.    |
+| Token  | Value     | Role                                   |
+| ------ | --------- | -------------------------------------- |
+| ground | `#0C0C0C` | The page ground.                       |
+| mist   | `#D7E2EA` | Body copy, rules, outlines.            |
+| strong | `#FFFFFF` | Display type, headings, glass pills.   |
+| raised | `#141414` | Dropdowns and toasts.                  |
+
+Tokens are RGB channels in `index.css`, so opacity modifiers work (`border-mist/15`).
 
 Every section sits on the same ground; there are no light panels. Separation comes from spacing,
 hairlines, and the heavy top radius on the work section.
@@ -112,6 +116,12 @@ Two primitives in `src/components/motion/`, plus two effects built in place:
 
 Easing for reveals is `[0.25, 0.1, 0.25, 1]`; the default duration is 0.7s. Scroll listeners are
 passive and transforms are marked `will-change: transform`.
+
+The whole site scrolls through Lenis (`SmoothScroll.tsx`, `src/lib/smooth-scroll.ts`): wheel,
+trackpad and touch input ease toward their target (lerp 0.08, wheel x0.8, touch synced), so a
+hard flick glides a measured distance. It drives the real window scroll, so sticky positioning and
+`useScroll` work as normal. Nested scroll areas need `data-lenis-prevent`; reduced-motion visitors
+get native scrolling.
 
 `prefers-reduced-motion: reduce` collapses every animation and transition to ~0ms in `index.css`.
 The scroll-driven transforms still track position, which is correct — they follow the reader rather

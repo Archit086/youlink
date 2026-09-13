@@ -165,17 +165,17 @@ const Hire = () => {
           <div className="flex flex-col gap-4 lg:col-span-5">
             <FadeIn delay={0} y={30}>
               <Panel>
-                <p className="eyebrow text-[#D7E2EA] opacity-50">What happens next</p>
+                <p className="eyebrow text-mist opacity-50">What happens next</p>
                 <ol className="mt-6">
                   {nextSteps.map((step, index) => (
                     <li
                       key={step}
-                      className="flex items-start gap-4 border-t border-[#D7E2EA]/15 py-4 first:border-t-0"
+                      className="flex items-start gap-4 border-t border-mist/15 py-4 first:border-t-0"
                     >
-                      <span className="text-sm tabular-nums text-[#D7E2EA] opacity-40">
+                      <span className="text-sm tabular-nums text-mist opacity-40">
                         {String(index + 1).padStart(2, "0")}
                       </span>
-                      <span className="text-sm font-light text-[#D7E2EA] opacity-70">{step}</span>
+                      <span className="text-sm font-light text-mist opacity-70">{step}</span>
                     </li>
                   ))}
                 </ol>
@@ -184,8 +184,8 @@ const Hire = () => {
 
             <FadeIn delay={0.1} y={30}>
               <Panel>
-                <p className="eyebrow text-[#D7E2EA] opacity-50">Payment note</p>
-                <p className="mt-4 text-sm font-light leading-relaxed text-[#D7E2EA] opacity-70">
+                <p className="eyebrow text-mist opacity-50">Payment note</p>
+                <p className="mt-4 text-sm font-light leading-relaxed text-mist opacity-70">
                   Client payments are handled after requirement finalisation. No upfront online
                   payment is required at this stage.
                 </p>
@@ -197,8 +197,8 @@ const Hire = () => {
           <FadeIn delay={0.15} y={30} className="lg:col-span-7">
             <Panel className="md:p-10">
               <div className="flex items-baseline justify-between gap-4">
-                <p className="eyebrow text-[#D7E2EA]">Project enquiry</p>
-                <p className="eyebrow text-[#D7E2EA] opacity-40">* required</p>
+                <p className="eyebrow text-mist">Project enquiry</p>
+                <p className="eyebrow text-mist opacity-40">* required</p>
               </div>
 
               <form onSubmit={handleSubmit} className="mt-8 space-y-6">
@@ -323,7 +323,7 @@ const Hire = () => {
                   </div>
                 </div>
 
-                <p className="text-xs text-[#D7E2EA] opacity-50">
+                <p className="text-xs text-mist opacity-50">
                   Your data will be used only for project coordination within YouLink. We respect your
                   privacy.
                 </p>

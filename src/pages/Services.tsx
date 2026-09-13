@@ -65,12 +65,12 @@ const Services = () => (
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <h3
-                    className="mt-4 font-medium leading-tight text-[#D7E2EA]"
+                    className="mt-4 font-medium leading-tight text-mist"
                     style={{ fontSize: "clamp(1.25rem, 2.6vw, 2.1rem)" }}
                   >
                     {service.title}
                   </h3>
-                  <p className="mt-4 max-w-md text-sm font-light leading-relaxed text-[#D7E2EA] opacity-60 md:text-base">
+                  <p className="mt-4 max-w-md text-sm font-light leading-relaxed text-mist opacity-60 md:text-base">
                     {service.summary}
                   </p>
                   <LiveProjectButton to="/hire" className="mt-6">
@@ -79,14 +79,14 @@ const Services = () => (
                 </div>
 
                 <div className="lg:col-span-4">
-                  <p className="eyebrow text-[#D7E2EA] opacity-50">What you get</p>
+                  <p className="eyebrow text-mist opacity-50">What you get</p>
                   <RuledList items={service.capabilities} className="mt-4" />
                 </div>
 
                 {service.idealFor && (
                   <div className="lg:col-span-3">
-                    <p className="eyebrow text-[#D7E2EA] opacity-50">Ideal for</p>
-                    <p className="mt-4 text-sm font-light leading-relaxed text-[#D7E2EA] opacity-60">
+                    <p className="eyebrow text-mist opacity-50">Ideal for</p>
+                    <p className="mt-4 text-sm font-light leading-relaxed text-mist opacity-60">
                       {service.idealFor}
                     </p>
                   </div>
@@ -113,7 +113,7 @@ const Services = () => (
               >
                 {String(index + 1).padStart(2, "0")}
               </span>
-              <p className="mt-3 text-base font-medium text-[#D7E2EA]">{format}</p>
+              <p className="mt-3 text-base font-medium text-mist">{format}</p>
             </Panel>
           </FadeIn>
         ))}
@@ -137,7 +137,7 @@ const Services = () => (
     </Section>
 
     <Section>
-      <p className="text-sm font-light text-[#D7E2EA] opacity-50">
+      <p className="text-sm font-light text-mist opacity-50">
         Looking to work with us instead?{" "}
         <Link to="/join" className="underline underline-offset-4 hover:opacity-80">
           Join the freelancer network

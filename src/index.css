@@ -5,15 +5,20 @@
 /*
   YouLink — dark motion system.
 
-  One ground colour (#0C0C0C), one light (#D7E2EA). Inter for everything,
-  Playfair Display italic for display lines. Radii are heavy, rules are thin,
-  and every reveal is scroll-driven.
+  Colours are four tokens (ground, mist, strong, raised) stored as RGB channels
+  so Tailwind opacity modifiers work (bg-mist/15). Inter for everything,
+  Playfair Display italic for display lines.
 */
 
 @layer base {
   :root {
-    --ink: #0c0c0c;
-    --mist: #d7e2ea;
+    color-scheme: dark;
+
+    /* Theme tokens: page ground, body ink, headings and pills, raised surfaces. */
+    --ground: 12 12 12;
+    --mist: 215 226 234;
+    --strong: 255 255 255;
+    --raised: 20 20 20;
 
     /* shadcn compatibility — the same two values, in HSL. */
     --background: 0 0% 5%;
@@ -49,18 +54,19 @@
   html,
   body,
   #root {
-    background: #0c0c0c;
+    background: rgb(var(--ground));
   }
 
+  /* No CSS smooth scrolling: Lenis (SmoothScroll.tsx) eases the page, and the
+     two would fight over every scroll. */
   html {
     -webkit-text-size-adjust: 100%;
-    scroll-behavior: smooth;
   }
 
   body {
     font-family: "Inter", sans-serif;
     letter-spacing: -0.02em;
-    color: var(--mist);
+    color: rgb(var(--mist));
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
@@ -73,7 +79,7 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--mist);
+    outline: 2px solid rgb(var(--mist));
     outline-offset: 3px;
   }
 
@@ -83,16 +89,16 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #0c0c0c;
+    background: rgb(var(--ground));
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #2a2f36;
+    background: rgb(var(--mist) / 0.25);
     border-radius: 9999px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #3c434c;
+    background: rgb(var(--mist) / 0.4);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -119,7 +125,7 @@
     font-weight: 400;
     line-height: 0.95;
     letter-spacing: -0.04em;
-    color: #ffffff;
+    color: rgb(var(--strong));
   }
 
   /* Its counterpart for numerals: tight, regular-weight Inter. */
@@ -128,7 +134,7 @@
     font-weight: 400;
     line-height: 0.95;
     letter-spacing: -0.06em;
-    color: #ffffff;
+    color: rgb(var(--strong));
   }
 
   /* Small labels used to index sections. */

@@ -44,9 +44,9 @@ export const metrics = [
     note: "Brands we have managed, six of them current.",
   },
   {
-    value: "06",
+    value: "07",
     label: "Industries served",
-    note: "Fashion, food, healthcare, retail, jewellery and industrial sectors.",
+    note: "Fashion, food, healthcare, retail, jewellery, real estate and industrial sectors.",
   },
   {
     value: "04",
@@ -153,8 +153,10 @@ export const contentFormats = [
  * come from YouLink (September 2026). Profiles and engagement notes come from
  * the portfolio deck and exist only for the brands it covers; nothing has been
  * written for the rest. Sectors for Gift Heaven, GOAT, Chaffeine and Papa Ji
- * Daal Wale are read from their names. Skyrise and Anaura Studio have no sector
- * until YouLink confirms what they do.
+ * Daal Wale are read from their names. Profiles for the six newer clients (Gift
+ * Heaven, GOAT, Chaffeine, Skyrise, Anaura Studio, Papa Ji Daal Wale), their
+ * sectors where not read from a name, and Papa Ji's founding year come from
+ * YouLink directly.
  */
 
 export interface Client {
@@ -163,11 +165,11 @@ export interface Client {
   /** Instagram handle, including the leading @. */
   handle: string;
   sector?: string;
-  /** What the client is, in the deck's own terms. */
+  /** What the client is, from the deck or from YouLink. */
   profile?: string;
   /** What YouLink did for them, in the deck's own terms. */
   engagement?: string;
-  /** Only where the deck states a founding year. */
+  /** Only where a founding year is stated, by the deck or by YouLink. */
   since?: string;
   /** An active engagement. Current clients lead the homepage work section. */
   current?: boolean;
@@ -180,6 +182,7 @@ export const sectors = [
   "Food & Hospitality",
   "Fashion, Retail & Lifestyle",
   "Healthcare, Industrial & Professional",
+  "Real Estate",
 ] as const;
 
 export const clients: Client[] = [
@@ -188,6 +191,8 @@ export const clients: Client[] = [
     name: "Gift Heaven",
     handle: "@thegiftsheaven",
     sector: "Fashion, Retail & Lifestyle",
+    profile:
+      "Gift Heaven is a Chandigarh-based gifting brand offering a wide range of gifts and thoughtful products for different occasions. From personalized presents to celebration essentials, the brand focuses on making gifting more creative, convenient and memorable.",
     current: true,
   },
   {
@@ -195,6 +200,8 @@ export const clients: Client[] = [
     name: "GOAT",
     handle: "@greatestofalltaste",
     sector: "Food & Hospitality",
+    profile:
+      "GOAT is a popular restaurant in the Tricity known for its delicious non-vegetarian cuisine. With a focus on rich flavours, hearty portions and a memorable dining experience, GOAT has built a strong reputation among food lovers looking for great non-veg food.",
     current: true,
   },
   {
@@ -202,6 +209,8 @@ export const clients: Client[] = [
     name: "Chaffeine",
     handle: "@chaffeine.cafe",
     sector: "Food & Hospitality",
+    profile:
+      "Chaffeine is a popular café and restaurant in Ambala Cantt, best known for its delicious chai and coffee. Alongside its beverages, it offers a variety of food options, making it a go-to spot for casual meetups, conversations and relaxed dining.",
     current: true,
   },
   {
@@ -242,6 +251,9 @@ export const clients: Client[] = [
     id: "skyrise",
     name: "Skyrise",
     handle: "@theskyrisemeerut",
+    sector: "Real Estate",
+    profile:
+      "Skyrise is a real estate business operating across Meerut, focused on helping customers discover and invest in property opportunities. With an emphasis on quality projects and customer-focused real estate solutions, Skyrise aims to build lasting value for its clients.",
   },
   {
     id: "chawlas",
@@ -288,12 +300,18 @@ export const clients: Client[] = [
     id: "anaura-studio",
     name: "Anaura Studio",
     handle: "@anaura.studio",
+    sector: "Fashion, Retail & Lifestyle",
+    profile:
+      "Anaura Studios is a Chandigarh-based studio specializing in the creation of costumes and attire for Hindu deities. Combining traditional aesthetics with detailed craftsmanship, the studio creates culturally inspired costumes designed specifically for religious and devotional settings.",
   },
   {
     id: "papa-ji-daal-wale",
     name: "Papa Ji Daal Wale",
     handle: "@papajidaalwale",
     sector: "Food & Hospitality",
+    since: "1948",
+    profile:
+      "Papa Ji Daal Wale is a well-known dhaba in Meerut with a long-standing reputation for its distinctive North Indian flavours. Established in 1948, the restaurant is particularly known for its dal dishes and traditional taste that has kept customers coming back for generations.",
   },
   {
     id: "glass-decor",
@@ -437,9 +455,9 @@ export const clientProcess = [
       "We match you with the right freelancer team led by an experienced supervisor for your project type.",
   },
   {
-    title: "Legal agreement + 50% advance",
+    title: "Legal agreement",
     description:
-      "Sign a service agreement for legal protection. Project begins after 50% advance payment.",
+      "Sign a service agreement for legal protection before work begins.",
   },
   {
     title: "Milestone-based execution",
@@ -468,11 +486,6 @@ export const freelancerProcess = [
     title: "Approval by admin/supervisor",
     description:
       "Qualified applicants are approved and added to our verified freelancer network.",
-  },
-  {
-    title: "Subscription payment (₹99/month)",
-    description:
-      "Activate your account with a nominal monthly subscription to access project opportunities.",
   },
   {
     title: "Assignment to supervised projects",

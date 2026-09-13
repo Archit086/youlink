@@ -10,7 +10,7 @@ interface ActionButtonProps {
 }
 
 const pill =
-  "inline-block rounded-full px-7 py-3 text-center text-sm font-medium text-white transition-all hover:scale-[1.03] active:scale-95";
+  "inline-block rounded-full px-7 py-3 text-center text-sm font-medium transition-all hover:scale-[1.03] active:scale-95";
 
 const render = (classes: string, { to, href, children }: Pick<ActionButtonProps, "to" | "href" | "children">) =>
   href ? (
@@ -31,7 +31,7 @@ export const ContactButton = ({
   className,
 }: Partial<ActionButtonProps>) =>
   render(
-    cn(pill, "bg-[#e8702a] hover:bg-[#d2611f] hover:shadow-lg hover:shadow-[#e8702a]/30", className),
+    cn(pill, "bg-[#e8702a] text-white hover:bg-[#d2611f] hover:shadow-lg hover:shadow-[#e8702a]/30", className),
     { to, href, children },
   );
 
@@ -42,7 +42,7 @@ export const LiveProjectButton = ({
   children = "View the work",
   className,
 }: Partial<ActionButtonProps>) =>
-  render(cn(pill, "border border-white/30 bg-white/20 backdrop-blur-md hover:bg-white/30", className), {
+  render(cn(pill, "border border-strong/30 bg-strong/20 text-strong backdrop-blur-md hover:bg-strong/30", className), {
     to,
     href,
     children,

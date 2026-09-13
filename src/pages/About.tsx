@@ -49,7 +49,7 @@ const About = () => (
     <Section>
       <AnimatedText
         text={brand.promise}
-        className="mx-auto max-w-4xl text-center font-medium leading-snug text-[#D7E2EA]"
+        className="mx-auto max-w-4xl text-center font-medium leading-snug text-mist"
         style={{ fontSize: "clamp(1.5rem, 4.5vw, 3.5rem)" }}
       />
     </Section>
@@ -79,17 +79,17 @@ const About = () => (
       <div className="grid gap-4 lg:grid-cols-2">
         <FadeIn delay={0} y={30}>
           <Panel className="h-full">
-            <p className="eyebrow text-[#D7E2EA] opacity-50">Traditional freelancing</p>
+            <p className="eyebrow text-mist opacity-50">Traditional freelancing</p>
             <ul className="mt-6">
               {challenges.map((item, index) => (
                 <li
                   key={item}
-                  className="flex items-start gap-4 border-t border-[#D7E2EA]/15 py-4 first:border-t-0"
+                  className="flex items-start gap-4 border-t border-mist/15 py-4 first:border-t-0"
                 >
-                  <span className="text-sm tabular-nums text-[#D7E2EA] opacity-40">
+                  <span className="text-sm tabular-nums text-mist opacity-40">
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  <span className="text-sm font-light text-[#D7E2EA] opacity-60">{item}</span>
+                  <span className="text-sm font-light text-mist opacity-60">{item}</span>
                 </li>
               ))}
             </ul>
@@ -97,18 +97,18 @@ const About = () => (
         </FadeIn>
 
         <FadeIn delay={0.1} y={30}>
-          <Panel className="h-full border-[#D7E2EA]/40">
-            <p className="eyebrow text-[#D7E2EA]">The YouLink answer</p>
+          <Panel className="h-full border-mist/40">
+            <p className="eyebrow text-mist">The YouLink answer</p>
             <ul className="mt-6">
               {answers.map((item, index) => (
                 <li
                   key={item}
-                  className="flex items-start gap-4 border-t border-[#D7E2EA]/15 py-4 first:border-t-0"
+                  className="flex items-start gap-4 border-t border-mist/15 py-4 first:border-t-0"
                 >
-                  <span className="text-sm tabular-nums text-[#D7E2EA] opacity-40">
+                  <span className="text-sm tabular-nums text-mist opacity-40">
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  <span className="text-sm font-light text-[#D7E2EA]">{item}</span>
+                  <span className="text-sm font-light text-mist">{item}</span>
                 </li>
               ))}
             </ul>
@@ -135,14 +135,14 @@ const About = () => (
       <FadeIn delay={0} y={30}>
         <Panel className="md:p-12">
           <p
-            className="max-w-3xl font-light leading-relaxed text-[#D7E2EA]"
+            className="max-w-3xl font-light leading-relaxed text-mist"
             style={{ fontSize: "clamp(1.1rem, 2.2vw, 1.75rem)" }}
           >
             Talented freelancers often lack structure, and clients struggle to find reliable teams.
             We bridge that gap with a supervised ecosystem where freelancers grow, clients succeed,
             and quality is never compromised.
           </p>
-          <p className="mt-8 max-w-2xl border-t border-[#D7E2EA]/15 pt-6 text-sm font-light text-[#D7E2EA] opacity-60">
+          <p className="mt-8 max-w-2xl border-t border-mist/15 pt-6 text-sm font-light text-mist opacity-60">
             {brand.goal}
           </p>
         </Panel>
