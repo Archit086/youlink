@@ -1,4 +1,4 @@
-import { useRef, type CSSProperties } from "react";
+import { useRef } from "react";
 import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { ContactButton, LiveProjectButton } from "@/components/site/Buttons";
@@ -21,34 +21,32 @@ interface CaseCardProps {
   media: { columnOne: [string, string]; columnTwo: string };
 }
 
+/** Pixels each card parks below the one before, so the stack shows its edges. */
+const STACK_STEP = 28;
+
 const frame = "w-full rounded-[40px] object-cover sm:rounded-[50px] md:rounded-[60px]";
 
 /**
- * One card in the stack. Each sticks under the one before it and shrinks as the
- * next slides over, so the pile reads as depth rather than as a list.
+ * One card in the stack. Its wrapper is a full viewport tall and sticks to the
+ * top of the list, so the next wrapper scrolls up over it. As later cards
+ * arrive, this one shrinks from its top edge.
  */
 const CaseCard = ({ index, total, progress, name, sector, handle, media }: CaseCardProps) => {
   const targetScale = 1 - (total - 1 - index) * 0.03;
-  const scale = useTransform(progress, [index * (1 / total), 1], [1, targetScale]);
+  const scale = useTransform(progress, [index / total, 1], [1, targetScale]);
 
   return (
-    <div className="flex h-[85vh] items-start justify-center">
+    <div
+      className="sticky top-0 flex h-screen items-start justify-center supports-[height:100svh]:h-svh"
+      style={{ paddingTop: `calc(5vh + ${index * STACK_STEP}px)` }}
+    >
       <motion.article
-        className="sticky top-[calc(6rem+var(--stack-offset))] w-full rounded-[40px] border-2 border-[#D7E2EA] bg-[#0C0C0C] p-4 sm:rounded-[50px] sm:p-6 md:top-[calc(8rem+var(--stack-offset))] md:rounded-[60px] md:p-8"
-        style={{
-          scale,
-          transformOrigin: "top",
-          /* Each card parks 28px lower than the one above it, so the stack
-             shows its own edges. */
-          ...({ "--stack-offset": `${index * 28}px` } as CSSProperties),
-        }}
+        className="w-full origin-top rounded-[40px] border-2 border-[#D7E2EA] bg-[#0C0C0C] p-4 will-change-transform sm:rounded-[50px] sm:p-6 md:rounded-[60px] md:p-8"
+        style={{ scale }}
       >
         <div className="flex flex-wrap items-center justify-between gap-4 px-2 pb-4 md:gap-8 md:px-4 md:pb-6">
           <div className="flex items-center gap-4 md:gap-8">
-            <span
-              className="display-sans"
-              style={{ fontSize: "clamp(3rem, 10vw, 140px)" }}
-            >
+            <span className="display-sans" style={{ fontSize: "clamp(3rem, 10vw, 140px)" }}>
               {String(index + 1).padStart(2, "0")}
             </span>
 
@@ -103,8 +101,9 @@ const CaseCard = ({ index, total, progress, name, sector, handle, media }: CaseC
 };
 
 /**
- * YouLink's current clients, stacked, each with a link to their Instagram.
- * Pulled up over the section above on its own rounded shoulder.
+ * YouLink's current clients as a stack: each card pins near the top of the
+ * screen and the next slides up over it, leaving a band of every earlier card
+ * showing above. Pulled up over the section above on its own rounded shoulder.
  */
 export const ProjectsSection = () => {
   const containerRef = useRef<HTMLDivElement>(null);
